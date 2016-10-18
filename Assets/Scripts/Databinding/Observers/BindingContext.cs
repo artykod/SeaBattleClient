@@ -83,7 +83,8 @@ namespace Foundation.Databinding
             None,
             MonoBinding,
             MockBinding,
-            PropBinding
+            PropBinding,
+            Manual,
         }
 
 
@@ -252,6 +253,12 @@ namespace Foundation.Databinding
                 case BindingContextMode.None:
                     ClearTypeData();
                     DataInstance = null;
+                    break;
+                case BindingContextMode.Manual:
+                    Context = null;
+                    DataInstance = Model;
+                    if (DataType == null)
+                        DataType = GetDataType();
                     break;
             }
         }

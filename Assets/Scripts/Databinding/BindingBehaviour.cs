@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
-using System.Linq;
 using Foundation.Databinding;
 using System.Linq.Expressions;
 
@@ -150,7 +148,6 @@ public abstract class BindingBehaviour : BindingContext, IObservableModel
             NotifyProperty((propertyAccessor.Body as MemberExpression).Member.Name, value);
             return true;
         }
-
         return false;
     }
 }

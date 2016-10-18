@@ -52,6 +52,10 @@ namespace Foundation.Editor
                     Target.FindModel();
                     break;
 
+                case BindingContext.BindingContextMode.Manual:
+                    Target.FindModel();
+                    break;
+
                 default:
                     EditorGUILayout.LabelField("Please select a binding mode.");
                     break;
