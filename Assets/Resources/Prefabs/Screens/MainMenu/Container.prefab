@@ -128,7 +128,7 @@ MonoBehaviour:
   LabelBinding:
     BindingName: Label
     Filters: 1
-    MemberName: MenuTitle
+    MemberName: Title
 --- !u!114 &114000013584806270
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -13,13 +13,21 @@
         }
     }
 
-    public MainMenuItem(string itemName) : base("Screens/MainMenu/Item")
+    private System.Action _onClick;
+
+    public MainMenuItem(string itemName, System.Action onClick = null) : base("Screens/MainMenu/Item")
     {
         Name = itemName;
+        _onClick = onClick;
     }
 
     public void Click()
     {
         Core.Log("Click on item named '{0}'", Name);
+
+        if (_onClick != null)
+        {
+            _onClick();
+        }
     }
 }

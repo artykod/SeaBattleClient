@@ -5,13 +5,13 @@ public abstract class BindingObject : ObservableObject
 {
     private Transform _cachedTransform;
 
-    public GameObject Instance
+    protected GameObject Instance
     {
         get;
         private set;
     }
 
-    public Transform transform
+    protected Transform transform
     {
         get
         {
@@ -21,6 +21,12 @@ public abstract class BindingObject : ObservableObject
             }
             return _cachedTransform;
         }
+    }
+
+    protected BindingObject Parent
+    {
+        get;
+        set;
     }
 
     protected virtual Transform Content
@@ -42,9 +48,30 @@ public abstract class BindingObject : ObservableObject
         Instance.SetActive(true);
     }
 
+    public virtual void Destroy()
+    {
+        if (Parent != null)
+        {
+            Parent.RemoveChild(this);
+            Parent = null;
+        }
+        Object.Destroy(Instance);
+        Instance = null;
+    }
+
     protected BindingObject AddChild(BindingObject child)
     {
         child.transform.SetParent(Content, false);
+        child.Parent = this;
         return child;
+    }
+
+    protected void RemoveChild(BindingObject child)
+    {
+        if (child.Parent == this)
+        {
+            child.Parent = null;
+            child.transform.SetParent(null, false);
+        }
     }
 }

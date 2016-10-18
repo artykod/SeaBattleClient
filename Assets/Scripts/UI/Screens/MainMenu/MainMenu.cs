@@ -2,16 +2,16 @@
 
 public class MainMenu : BindingScreen
 {
-    private string _menuTitle;
-    public string MenuTitle
+    private string _title;
+    public string Title
     {
         get
         {
-            return _menuTitle;
+            return _title;
         }
         set
         {
-            Set(ref _menuTitle, value, () => MenuTitle);
+            Set(ref _title, value, () => Title);
         }
     }
 
@@ -25,19 +25,22 @@ public class MainMenu : BindingScreen
 
     public MainMenu() : base("MainMenu/Container")
     {
-        MenuTitle = "Sea battle game title";
+        Title = "Sea battle game title";
 
-        var items = new string[] 
-        {
-            "New game",
-            "Settings",
-            "About",
-            "Exit"
-        };
+        AddChild(new MainMenuItem("Play"));
+        AddChild(new MainMenuItem("Records"));
+        AddChild(new MainMenuItem("Settings", () => new Settings()));
+        AddChild(new MainMenuItem("Exit", () => Destroy()));
+    }
 
-        for (int i = 0; i < items.Length; i++)
-        {
-            AddChild(new MainMenuItem(items[i]));
-        }
+    public override void Destroy()
+    {
+        base.Destroy();
+
+        Application.Quit();
+        
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }
