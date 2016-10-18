@@ -4,7 +4,7 @@ using UnityEditor;
 
 public static class EditorTools
 {
-    [MenuItem("GameObject/Game/Create new screen", false, -200)]
+    [MenuItem("GameObject/Game/Create new screen", false, -100)]
     private static void CreateScreen()
     {
         var screen = new GameObject("Screen");
@@ -19,5 +19,19 @@ public static class EditorTools
         scaler.referenceResolution = new Vector2(1920f, 1080f);
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         scaler.matchWidthOrHeight = 1f;
+    }
+
+    [MenuItem("Assets/Edit in scene", false, -1000)]
+    private static void EditInScene()
+    {
+        var uiRoot = GameObject.Find("UIRoot").transform;
+        var go = (PrefabUtility.InstantiatePrefab(Selection.activeGameObject) as GameObject).transform;
+        if (go.GetComponent<CanvasScaler>() == null)
+        {
+            go.SetParent(uiRoot, false);
+            go.localScale = Vector3.one;
+            go.localPosition = Vector3.zero;
+            go.localRotation = Quaternion.identity;
+        }
     }
 }

@@ -41,6 +41,7 @@ GameObject:
   - 222: {fileID: 222000010592859440}
   - 114: {fileID: 114000011800588574}
   - 114: {fileID: 114000014134454470}
+  - 114: {fileID: 114000012373390048}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -97,6 +98,27 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000012373390048
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012818369282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80a053472ad5c5543afa06058f437325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BindingProxy: {fileID: 0}
+  DebugMode: 0
+  EnabledBinding:
+    BindingName: Enabled
+    Filters: 1
+    MemberName: 
+  OnClickBinding:
+    BindingName: OnClick
+    Filters: 0
+    MemberName: Click
 --- !u!114 &114000013055319536
 MonoBehaviour:
   m_ObjectHideFlags: 1

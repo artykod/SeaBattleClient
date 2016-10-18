@@ -15,6 +15,14 @@ public class MainMenu : BindingScreen
         }
     }
 
+    protected override Transform Content
+    {
+        get
+        {
+            return transform.FindChild("ItemsRoot");
+        }
+    }
+
     public MainMenu() : base("MainMenu/Container")
     {
         MenuTitle = "Sea battle game title";
@@ -26,10 +34,10 @@ public class MainMenu : BindingScreen
             "About",
             "Exit"
         };
+
         for (int i = 0; i < items.Length; i++)
         {
-            var item = AddChild(new MainMenuItem(items[i]));
-            item.Instance.transform.localPosition = new Vector3(0f, (items.Length - i) * 100f - 300f);
+            AddChild(new MainMenuItem(items[i]));
         }
     }
 }

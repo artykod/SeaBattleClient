@@ -3,10 +3,32 @@ using Foundation.Databinding;
 
 public abstract class BindingObject : ObservableObject
 {
+    private Transform _cachedTransform;
+
     public GameObject Instance
     {
         get;
         private set;
+    }
+
+    public Transform transform
+    {
+        get
+        {
+            if ((object)_cachedTransform == null)
+            {
+                _cachedTransform = Instance.transform;
+            }
+            return _cachedTransform;
+        }
+    }
+
+    protected virtual Transform Content
+    {
+        get
+        {
+            return transform;
+        }
     }
 
     public BindingObject(string prefabName = null)
@@ -22,7 +44,7 @@ public abstract class BindingObject : ObservableObject
 
     protected BindingObject AddChild(BindingObject child)
     {
-        child.Instance.transform.SetParent(Instance.transform, false);
+        child.transform.SetParent(Content, false);
         return child;
     }
 }

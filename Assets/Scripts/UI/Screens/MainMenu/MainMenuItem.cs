@@ -1,4 +1,4 @@
-﻿public class MainMenuItem : BindingScreen
+﻿public class MainMenuItem : BindingObject
 {
     private string _name;
     public string Name
@@ -13,8 +13,13 @@
         }
     }
 
-    public MainMenuItem(string itemName) : base("MainMenu/Item")
+    public MainMenuItem(string itemName) : base("Screens/MainMenu/Item")
     {
         Name = itemName;
+    }
+
+    public void Click()
+    {
+        Core.Log("Click on item named '{0}'", Name);
     }
 }
