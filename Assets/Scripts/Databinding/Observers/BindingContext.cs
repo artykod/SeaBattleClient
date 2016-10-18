@@ -11,12 +11,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-#if UNITY_WSA && !UNITY_EDITOR
-using Windows.Foundation;
-using Windows.ApplicationModel;
-using Windows.Storage;
-#endif
-
 namespace Foundation.Databinding
 {
     /// <summary>
@@ -33,77 +27,6 @@ namespace Foundation.Databinding
     {
         #region Editor stuff
 
-#if UNITY_WSA && !UNITY_EDITOR
-
-        private static Assembly[] _assemblies;
-        public static Assembly[] Assemblies
-        {
-            get
-            {
-                RefreshAssembly();
-                return _assemblies;
-            }
-        }
-
-        private static TypeInfo[] _modelTypes;
-        public static TypeInfo[] ModelTypes
-        {
-            get
-            {
-                RefreshAssembly();
-                return _modelTypes;
-            }
-        }
-
-        private static string[] _namespaces;
-        public static string[] NameSpaces
-        {
-            get
-            {
-                RefreshAssembly();
-                return _namespaces;
-            }
-        }
-        static async void RefreshAssembly()
-        {
-            if (_assemblies == null)
-            {
-                _assemblies = await GetLoadedAssemblies();
-                _modelTypes = _assemblies.SelectMany(o => o.DefinedTypes).Where(o => o.IsPublic).OrderBy(o => o.Name).ToArray();
-                _namespaces = _modelTypes.Select(o => o.Namespace).OrderBy(o => o).Distinct().ToArray();
-            }
-        }
-
-        protected static async System.Threading.Tasks.Task<Assembly[]> GetLoadedAssemblies()
-        {
-            // Find assemblies.
-            StorageFolder folder = Package.Current.InstalledLocation;
-
-            var loadedAssemblies = new List<Assembly>();
-
-            var folderFilesAsync = await folder.GetFilesAsync().AsTask();
-
-            foreach (var file in folderFilesAsync)
-            {
-                if (file.FileType == ".dll" || file.FileType == ".exe")
-                {
-                    try
-                    {
-                        var filename = file.Name.Substring(0, file.Name.Length - file.FileType.Length);
-                        AssemblyName name = new AssemblyName { Name = filename };
-                        Assembly asm = Assembly.Load(name);
-                        loadedAssemblies.Add(asm);
-                    }
-                    catch (BadImageFormatException)
-                    {
-                        // Thrown reflecting on C++ executable files for which the C++ compiler stripped the relocation addresses (such as Unity dlls): http://msdn.microsoft.com/en-us/library/x4cw969y(v=vs.110).aspx
-                    }
-                }
-            }
-
-            return loadedAssemblies.OrderBy(o => o.FullName).ToArray();
-        }
-#else
         private static Assembly[] _assemblies;
 
         public static Assembly[] Assemblies
@@ -151,7 +74,6 @@ namespace Foundation.Databinding
                 _namespaces = _modelTypes.Select(o => o.Namespace).OrderBy(o => o).Distinct().ToArray();
             }
         }
-#endif
 
         /// <summary>
         ///     Ways to discover a view model
@@ -165,7 +87,7 @@ namespace Foundation.Databinding
         }
 
 
-        [HideInInspector] public BindingContextMode ContextMode;
+        [HideInInspector] public BindingContextMode ContextMode = BindingContextMode.MonoBinding;
 
         [HideInInspector] public bool ModelIsMock;
 
@@ -192,17 +114,14 @@ namespace Foundation.Databinding
         /// <summary>
         ///     MonoBinding Field
         /// </summary>
-        [HideInInspector] public ObservableBehaviour ViewModel;
+        [HideInInspector] public MonoBehaviour ViewModel;
 
         /// <summary>
         ///     Gets Data ValueType from backing values
         /// </summary>
         /// <returns></returns>
-#if UNITY_WSA && !UNITY_EDITOR
-        public TypeInfo GetDataType()
-#else
+        [HideInInspector]
         public Type GetDataType()
-#endif
         {
             return ModelTypes.FirstOrDefault(o => o.FullName == ModelFullName);
         }
@@ -211,6 +130,7 @@ namespace Foundation.Databinding
         ///     Has a data type (from backing values)
         /// </summary>
         /// <returns></returns>
+        [HideInInspector]
         public bool HasDataType()
         {
             return !string.IsNullOrEmpty(ModelFullName) && !string.IsNullOrEmpty(ModelNamespace);
@@ -218,20 +138,13 @@ namespace Foundation.Databinding
 
         #endregion
 
-#if UNITY_WSA && !UNITY_EDITOR
-        private TypeInfo _dataType;
-        /// <summary>
-        /// The current model type. Used by editors.
-        /// </summary>
-        public TypeInfo DataType
-#else
         private Type _dataType;
 
         /// <summary>
         ///     The current model type. Used by editors.
         /// </summary>
+        [HideInInspector]
         public Type DataType
-#endif
         {
             get { return _dataType; }
             set
@@ -261,6 +174,7 @@ namespace Foundation.Databinding
         /// <summary>
         ///     The current model instance. May be set remotely
         /// </summary>
+        [HideInInspector]
         public object DataInstance
         {
             get { return _dataInstance; }
@@ -296,6 +210,7 @@ namespace Foundation.Databinding
         /// <summary>
         ///     Prints debug messages. It can get spammy
         /// </summary>
+        [HideInInspector]
         public bool DebugMode;
 
         // ReSharper disable once UnusedMember.Resource
@@ -313,6 +228,7 @@ namespace Foundation.Databinding
 
 
         [ContextMenu("Find Model")]
+        [HideInInspector]
         public void FindModel()
         {
             switch (ContextMode)
@@ -380,11 +296,7 @@ namespace Foundation.Databinding
 
 
             // set the data type if not null (Used By Editor Inspector).
-#if UNITY_WSA && !UNITY_EDITOR
-            DataType = DataInstance.GetType().GetTypeInfo();
-#else
             DataType = DataInstance.GetType();
-#endif
 
             if (!Application.isPlaying)
                 return;
@@ -415,6 +327,7 @@ namespace Foundation.Databinding
         }
 
         [ContextMenu("Clear TypeData")]
+        [HideInInspector]
         public void ClearTypeData()
         {
             DataType = null;
@@ -430,6 +343,7 @@ namespace Foundation.Databinding
         ///     Registers the binder with the this context.
         /// </summary>
         /// <param name="child"></param>
+        [HideInInspector]
         public void SubscribeBinder(IBindingElement child)
         {
             if (!Binders.Contains(child))
@@ -442,6 +356,7 @@ namespace Foundation.Databinding
         ///     Unregisters the binder with this context
         /// </summary>
         /// <param name="child"></param>
+        [HideInInspector]
         public void UnsubscribeBinder(IBindingElement child)
         {
             child.Model = null;
@@ -452,6 +367,7 @@ namespace Foundation.Databinding
         /// <summary>
         ///     Clears all children
         /// </summary>
+        [HideInInspector]
         public void ClearBinders()
         {
             Binders.Clear();
@@ -475,6 +391,7 @@ namespace Foundation.Databinding
         }
 
         [ContextMenu("Debug Info")]
+        [HideInInspector]
         public void DebugInfo()
         {
             Debug.Log("Binders : " + Binders.Count);
@@ -492,6 +409,7 @@ namespace Foundation.Databinding
         /// <summary>
         ///     For hierarchal binding.
         /// </summary>
+        [HideInInspector]
         public BindingContext Context
         {
             get { return _parentContext; }
@@ -516,6 +434,7 @@ namespace Foundation.Databinding
 
         [SerializeField] private IObservableModel _model;
 
+        [HideInInspector]
         public IObservableModel Model
         {
             get { return _model; }
@@ -535,6 +454,7 @@ namespace Foundation.Databinding
         /// </summary>
         [HideInInspector] [SerializeField] private string _propertyName;
 
+        [HideInInspector]
         public string PropertyName
         {
             get { return _propertyName; }
@@ -549,6 +469,7 @@ namespace Foundation.Databinding
             }
         }
 
+        [HideInInspector]
         public void OnBindingMessage(ObservableMessage message)
         {
             if (message.Name == PropertyName)
@@ -564,6 +485,7 @@ namespace Foundation.Databinding
             }
         }
 
+        [HideInInspector]
         public void OnBindingRefresh()
         {
         }
@@ -609,33 +531,20 @@ namespace Foundation.Databinding
                 return;
 
 
-#if UNITY_WSA&& !UNITY_EDITOR
-    // Use reflection to set local type (Value will be null, no instance
-            var member = Context.DataType.DeclaredMembers.FirstOrDefault(o=> o.Name == PropertyName);
-#else
             // Use reflection to set local type (Value will be null, no instance
             var member = Context.DataType.GetMember(PropertyName).FirstOrDefault();
-#endif
 
             if (member == null)
                 return;
 
             if (member is FieldInfo)
             {
-#if UNITY_WSA&& !UNITY_EDITOR
-                DataType = ((FieldInfo)member).FieldType.GetTypeInfo();
-#else
                 DataType = ((FieldInfo) member).FieldType;
-#endif
             }
 
             if (member is PropertyInfo)
             {
-#if UNITY_WSA&& !UNITY_EDITOR
-                DataType = ((PropertyInfo)member).PropertyType.GetTypeInfo();
-#else
                 DataType = ((PropertyInfo) member).PropertyType;
-#endif
             }
         }
 

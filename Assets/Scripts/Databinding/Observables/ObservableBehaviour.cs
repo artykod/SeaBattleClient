@@ -7,12 +7,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-#if UNITY_WSA
-using System.Runtime.CompilerServices;
-#else
 using System.Diagnostics;
 using System.Linq;
-#endif
 
 namespace Foundation.Databinding
 {
@@ -144,8 +140,7 @@ namespace Foundation.Databinding
         {
             IsApplicationQuit = true;
         }
-
-#if !UNITY_WSA
+        
         /// <summary>
         /// Mvvm light set method
         /// </summary>
@@ -186,32 +181,5 @@ namespace Foundation.Databinding
 
             return false;
         }
-#else
-        /// <summary>
-        /// Mvvm light set method
-        /// </summary>
-        /// <remarks>
-        /// https://github.com/NVentimiglia/Unity3d-Databinding-Mvvm-Mvc/issues/3
-        /// https://github.com/negue
-        /// </remarks>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="valueHolder"></param>
-        /// <param name="value"></param>
-        /// <param name="propName"></param>
-        /// <returns></returns>
-        protected bool Set<T>(ref T valueHolder, T value, [CallerMemberName] string propName = null)
-        {
-            var same = EqualityComparer<T>.Default.Equals(valueHolder, value);
-
-            if (!same)
-            {
-                NotifyProperty(propName, value);
-                valueHolder = value;
-                return true;
-            }
-
-            return false;
-        }
-#endif
     }
 }

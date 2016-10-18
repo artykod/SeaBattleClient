@@ -88,11 +88,13 @@ namespace Foundation.Databinding
         /// <remarks>
         ///     For Master / Details situations.
         /// </remarks>
+        [HideInInspector]
         public GameObject BindingProxy;
 
         /// <summary>
         ///     Prints Debug messages. This can get spammy.
         /// </summary>
+        [HideInInspector]
         public bool DebugMode;
 
         #endregion

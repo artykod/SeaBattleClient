@@ -1,27 +1,11 @@
-﻿using UnityEngine;
-using Foundation.Databinding;
+﻿using System;
+using System.Linq.Expressions;
+using UnityEngine;
 
-public interface IBindProperty
+public class MainMenu : BindingBehaviour
 {
-    object GetValue();
-    System.Type GetType();
-}
 
-public class Property<T> : IBindProperty
-{
-    public T Value;
-    public object GetValue()
-    {
-        return Value;
-    }
-    public System.Type GetType()
-    {
-        return typeof(T);
-    }
-}
 
-public class MainMenu : ObservableBehaviour
-{
     private string _bindedText;
     public string BindedText
     {
@@ -31,21 +15,33 @@ public class MainMenu : ObservableBehaviour
         }
         set
         {
-            _bindedText = value;
-            NotifyProperty("BindedText", _bindedText);
+            Set(ref _bindedText, value, () => BindedText);
         }
     }
 
-    public Property<string> StrVal
+    private string _buttonText;
+    public string ButtonText
     {
-        get;
-        set;
+        get
+        {
+            return _buttonText;
+        }
+        set
+        {
+            Set(ref _buttonText, value, () => ButtonText);
+        }
     }
 
     private void Start()
     {
-        BindedText = "test text";
-        StrVal = new Property<string>();
-        StrVal.Value = "str 2";
+        BindedText = "Hello world";
+        ButtonText = "Click me";
+    }
+
+    private static int counter;
+
+    public void StartGame()
+    {
+        ButtonText = (counter++).ToString();
     }
 }

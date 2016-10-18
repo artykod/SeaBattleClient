@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Foundation.Editor
 {
-    [CustomEditor(typeof (BindingContext))]
+    [CustomEditor(typeof (BindingContext), true)]
     public class BindingContextEditor : UnityEditor.Editor
     {
         public bool SupressUnityEngine;
@@ -29,7 +29,10 @@ namespace Foundation.Editor
             if (Target == null)
                 return;
 
-            ModeSelection();
+            if (Target is BindingBehaviour)
+                Target.ContextMode = BindingContext.BindingContextMode.MonoBinding;
+            else
+                ModeSelection();
 
             switch (Target.ContextMode)
             {
@@ -67,17 +70,23 @@ namespace Foundation.Editor
 
             if (i != index)
             {
-                Target.ContextMode =
-                    (BindingContext.BindingContextMode) Enum.Parse(typeof (BindingContext.BindingContextMode), modes[i]);
+                if (Target is BindingBehaviour)
+                    Target.ContextMode = BindingContext.BindingContextMode.MonoBinding;
+                else
+                    Target.ContextMode =
+                        (BindingContext.BindingContextMode) Enum.Parse(typeof (BindingContext.BindingContextMode), modes[i]);
                 EditorUtility.SetDirty(target);
             }
         }
 
         private void MonoSelection()
         {
-            Target.ViewModel =
-                (ObservableBehaviour)
-                    EditorGUILayout.ObjectField("ViewModel Componenet", Target.ViewModel, typeof (ObservableBehaviour), true);
+            if (Target is BindingBehaviour)
+                Target.ViewModel = Target;
+            else
+                Target.ViewModel =
+                    (MonoBehaviour)
+                        EditorGUILayout.ObjectField("ViewModel Componenet", Target.ViewModel, typeof (MonoBehaviour), true);
             if (Target.ViewModel != null)
                 EditorGUILayout.LabelField(Target.ViewModel.GetType().ToString());
         }
