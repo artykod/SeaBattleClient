@@ -21,8 +21,8 @@ GameObject:
   - 224: {fileID: 224000013404903426}
   - 222: {fileID: 222000013883789470}
   - 114: {fileID: 114000013853929918}
-  - 114: {fileID: 114000010187076916}
   - 114: {fileID: 114000010895360304}
+  - 114: {fileID: 114000010666782902}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -41,7 +41,7 @@ GameObject:
   - 222: {fileID: 222000011625599696}
   - 114: {fileID: 114000010692003896}
   - 114: {fileID: 114000010019754796}
-  - 114: {fileID: 114000012239637838}
+  - 114: {fileID: 114000010528044614}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -73,6 +73,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000012974236840}
   - 114: {fileID: 114000013233629080}
+  - 114: {fileID: 114000010070456702}
   m_Layer: 0
   m_Name: ItemsRoot
   m_TagString: Untagged
@@ -138,7 +139,31 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114000010187076916
+--- !u!114 &114000010070456702
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012940875254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cbba320011f25648b4a207e6559e200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: Root
+--- !u!114 &114000010528044614
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011423548336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa5dd9a0ed6ef24b939735c1f33ef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: Close
+--- !u!114 &114000010666782902
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -146,20 +171,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010548701892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f4af5c9a3e50c4b81789966003bd23, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BindingProxy: {fileID: 0}
-  DebugMode: 0
-  ColorBinding:
-    BindingName: Color
-    Filters: 1
-    MemberName: 
-  FormatString: 
-  LabelBinding:
-    BindingName: Label
-    Filters: 1
-    MemberName: Title
+  _propertyName: Title
+  _format: '{0}'
+  _additionalValues: []
 --- !u!114 &114000010692003896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -233,27 +250,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
---- !u!114 &114000012239637838
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011423548336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a053472ad5c5543afa06058f437325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BindingProxy: {fileID: 0}
-  DebugMode: 0
-  EnabledBinding:
-    BindingName: Enabled
-    Filters: 1
-    MemberName: 
-  OnClickBinding:
-    BindingName: OnClick
-    Filters: 0
-    MemberName: Close
 --- !u!114 &114000013233629080
 MonoBehaviour:
   m_ObjectHideFlags: 1

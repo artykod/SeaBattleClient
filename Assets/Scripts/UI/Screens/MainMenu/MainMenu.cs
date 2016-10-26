@@ -2,43 +2,33 @@
 
 public class MainMenu : BindingScreen
 {
-    private string _title;
-    public string Title
-    {
-        get
-        {
-            return _title;
-        }
-        set
-        {
-            Set(ref _title, value, () => Title);
-        }
-    }
+    public Bind<string> Title;
+    public Bind<GameObject> Root;
 
     protected override Transform Content
     {
         get
         {
-            return transform.FindChild("ItemsRoot");
+            return Root.Value.transform;
         }
     }
 
     public MainMenu() : base("MainMenu/Container")
     {
-        Title = "Sea battle game title";
+        Title.Value = "Sea battle game title";
 
-        AddChild(new MainMenuItem("Play"));
-        AddChild(new MainMenuItem("Records"));
-        AddChild(new MainMenuItem("Settings", () => new Settings()));
-        AddChild(new MainMenuItem("Exit", () => Destroy()));
+        AddLast(new MainMenuItem("Play"));
+        AddLast(new MainMenuItem("Records"));
+        AddLast(new MainMenuItem("Settings", () => new Settings()));
+        AddLast(new MainMenuItem("Exit", () => Destroy()));
     }
 
-    public override void Destroy()
+    protected override void OnDestroy()
     {
-        base.Destroy();
+        base.OnDestroy();
 
         Application.Quit();
-        
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif

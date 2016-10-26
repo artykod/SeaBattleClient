@@ -1,29 +1,19 @@
-﻿public class MainMenuItem : BindingObject
+﻿public class MainMenuItem : BindModel
 {
-    private string _name;
-    public string Name
-    {
-        get
-        {
-            return _name;
-        }
-        set
-        {
-            Set(ref _name, value, () => Name);
-        }
-    }
+    public Bind<string> Name;
 
     private System.Action _onClick;
 
     public MainMenuItem(string itemName, System.Action onClick = null) : base("Screens/MainMenu/Item")
     {
-        Name = itemName;
+        Name.Value = itemName;
         _onClick = onClick;
     }
 
+    [BindCommand]
     public void Click()
     {
-        Core.Log("Click on item named '{0}'", Name);
+        Core.Log("Click on item named '{0}'", Name.Value);
 
         if (_onClick != null)
         {

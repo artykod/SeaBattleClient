@@ -21,8 +21,8 @@ GameObject:
   - 224: {fileID: 224000012655207620}
   - 222: {fileID: 222000010621340716}
   - 114: {fileID: 114000013055319536}
-  - 114: {fileID: 114000010252460966}
   - 114: {fileID: 114000014267941082}
+  - 114: {fileID: 114000013084390924}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -41,7 +41,8 @@ GameObject:
   - 222: {fileID: 222000010592859440}
   - 114: {fileID: 114000011800588574}
   - 114: {fileID: 114000014134454470}
-  - 114: {fileID: 114000012373390048}
+  - 114: {fileID: 114000013859836050}
+  - 114: {fileID: 114000011717450856}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -49,28 +50,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114000010252460966
+--- !u!114 &114000011717450856
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011104400256}
+  m_GameObject: {fileID: 1000012818369282}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f4af5c9a3e50c4b81789966003bd23, type: 3}
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BindingProxy: {fileID: 0}
-  DebugMode: 0
-  ColorBinding:
-    BindingName: Color
-    Filters: 1
-    MemberName: 
-  FormatString: 
-  LabelBinding:
-    BindingName: Label
-    Filters: 1
-    MemberName: Name
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 600
+  m_PreferredHeight: 100
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
 --- !u!114 &114000011800588574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,27 +95,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000012373390048
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012818369282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80a053472ad5c5543afa06058f437325, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BindingProxy: {fileID: 0}
-  DebugMode: 0
-  EnabledBinding:
-    BindingName: Enabled
-    Filters: 1
-    MemberName: 
-  OnClickBinding:
-    BindingName: OnClick
-    Filters: 0
-    MemberName: Click
 --- !u!114 &114000013055319536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -152,6 +128,32 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Button
+--- !u!114 &114000013084390924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011104400256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: Name
+  _format: '{0}'
+  _additionalValues: []
+--- !u!114 &114000013859836050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012818369282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aa5dd9a0ed6ef24b939735c1f33ef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: Click
 --- !u!114 &114000014134454470
 MonoBehaviour:
   m_ObjectHideFlags: 1

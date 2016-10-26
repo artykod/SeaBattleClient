@@ -1,23 +1,24 @@
-﻿public class Settings : BindingScreen
+﻿using UnityEngine;
+
+public class Settings : BindingScreen
 {
-    private string _title;
-    public string Title
+    public Bind<string> Title;
+    public Bind<GameObject> Root;
+
+    protected override Transform Content
     {
         get
         {
-            return _title;
-        }
-        set
-        {
-            Set(ref _title, value, () => Title);
+            return Root.Value.transform;
         }
     }
 
     public Settings() : base("Settings/Container")
     {
-        Title = "Settings";
+        Title.Value = "Settings";
     }
 
+    [BindCommand]
     public void Close()
     {
         Destroy();
