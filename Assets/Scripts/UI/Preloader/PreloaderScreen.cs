@@ -7,21 +7,29 @@ public class PreloaderScreen : BindScreen
 
     public PreloaderScreen() : base("Preloader/Preloader")
     {
-        Progress.Value = 0.5f;
-
+        Progress.Value = 0f;
         StartCoroutine(LoadMainScene());
     }
 
     private IEnumerator LoadMainScene()
     {
-        var loading = SceneManager.LoadSceneAsync("Main");
-        while (!loading.isDone)
+        var total = 3f;
+        var fakeLoading = 0f;
+        while (fakeLoading < total)
         {
-            Progress.Value = loading.progress;
+            fakeLoading += UnityEngine.Time.unscaledDeltaTime;
+            Progress.Value = fakeLoading / total;
             yield return null;
         }
 
-        Progress.Value = loading.progress;
+        var loading = SceneManager.LoadSceneAsync("Main");
+        while (!loading.isDone)
+        {
+            //Progress.Value = loading.progress;
+            yield return null;
+        }
+
+        //Progress.Value = loading.progress;
 
         Destroy();
 
