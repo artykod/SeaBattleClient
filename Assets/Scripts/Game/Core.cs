@@ -2,13 +2,18 @@
 
 public class Core : MonoBehaviour
 {
-    public static void Log(string fmt, params object[] args)
-    {
-        Debug.LogFormat(fmt, args);
-    }
+    private PlayerData _player;
 
     private void Awake()
     {
-        new MainMenu();
+        _player = new PlayerData
+        {
+            Avatar = "Textures/avatar",
+            Name = "Имя игрока",
+            Gold = 1000,
+            Silver = 9999,
+        };
+
+        new MenuScreen(_player);
     }
 }
