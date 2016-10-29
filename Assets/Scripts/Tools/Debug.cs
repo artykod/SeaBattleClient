@@ -1,5 +1,5 @@
 ﻿using System;
-using Game;
+using GameImpl;
 
 /// <summary>
 /// Имя Debug переопределит класс Debug в юнити, что позволит удобно отключать все отладочные логи в случае необходимости.
@@ -24,7 +24,7 @@ public class Debug
 	}
 }
 
-namespace Game
+namespace GameImpl
 {
 	public class DebugImpl
 	{

@@ -27,11 +27,11 @@
 	"rules.text7":"List of enemy ships. The red marked lined.",
 	"rules.text8":"Point the sight and shoot at the enemy cells in the field. Your task is to sink all ships.",
 	
-	"setup.title":"Field layout setup",
-	"setup.back":"To menu",
-	"setup.reset":"Reset layout",
-	"setup.autolayout":"Autolayout",
-	"setup.battle":"Battle!",
+	"layout.title":"Field layout setup",
+	"layout.back":"To menu",
+	"layout.reset":"Reset layout",
+	"layout.autolayout":"Autolayout",
+	"layout.battle":"Battle!",
 	
 	"game.chat.hint":"Type message...",
 	"game.chat.send":"Send",

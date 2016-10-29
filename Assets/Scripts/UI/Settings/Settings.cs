@@ -7,8 +7,14 @@
     public Settings() : base("Settings/Settings")
     {
         Language.Value = LanguageController.Instance.CurrentLanguage == global::Language.Russian ? 1 : 2;
-        Volume.OnValueChanged += (val) => IsVolumeDisabled.Value = val.Value < 0.0001f;
-        Volume.Value = 0.5f;
+        IsVolumeDisabled.Value = !SoundController.Instance.IsSoundEnabled;
+        Volume.OnValueChanged += (val) =>
+        {
+            SoundController.Instance.SoundVolume = val.Value;
+            SoundController.Instance.IsSoundEnabled = val.Value > 0.0001f;
+            IsVolumeDisabled.Value = !SoundController.Instance.IsSoundEnabled;
+        };
+        Volume.Value = SoundController.Instance.IsSoundEnabled ? SoundController.Instance.SoundVolume : 0f;
     }
 
     [BindCommand]

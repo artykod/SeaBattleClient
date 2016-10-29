@@ -72,7 +72,7 @@ public class DebugConsole : SingletonBehaviour<DebugConsole, DebugConsole>
 			logStyle = GUI.skin.label;
 			logStyle.wordWrap = true;
 
-			if (GUI.Button(new Rect(0f, 0f, width, height / 25f), "\nClear log\n"))
+			if (GUI.Button(new Rect(0f, 0f, width / 2, height / 25f), "\nclear log\n"))
 			{
 				logs.Clear();
 			}
@@ -92,7 +92,7 @@ public class DebugConsole : SingletonBehaviour<DebugConsole, DebugConsole>
 			GUILayout.EndScrollView();
 		}
 
-		if (GUI.Button(new Rect(width - 64f, height - 32f, 64f, 32f), "Console"))
+		if (GUI.Button(new Rect(width - 64f, 0f/*height - 32f*/, 64f, 32f), "log"))
 		{
 			showDebug = !showDebug;
 		}

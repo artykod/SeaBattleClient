@@ -18,13 +18,24 @@ public class Menu : BindScreen
         Player.Gold.Value = _player.Gold;
         Player.Silver.Value = _player.Silver;
 
-        IsSoundEnabled.Value = true;
+        IsSoundEnabled.Value = SoundController.Instance.IsSoundEnabled;
+        IsSoundEnabled.OnValueChanged += OnSoundEnabledChanged;
+    }
+
+    protected override void OnShowScreen()
+    {
+        IsSoundEnabled.Value = SoundController.Instance.IsSoundEnabled;
+    }
+
+    private void OnSoundEnabledChanged(Bind<bool> bind)
+    {
+        SoundController.Instance.IsSoundEnabled = bind.Value;
     }
 
     [BindCommand]
     private void Play()
     {
-
+        new Layout();
     }
 
     [BindCommand]

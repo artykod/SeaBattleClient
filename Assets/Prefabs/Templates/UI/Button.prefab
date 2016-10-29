@@ -36,7 +36,7 @@ GameObject:
   - 224: {fileID: 224000013138874258}
   - 222: {fileID: 222000010839471216}
   - 114: {fileID: 114000011747778180}
-  - 114: {fileID: 114000013913856734}
+  - 114: {fileID: 114000012904068844}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -177,6 +177,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '@Text@'
+--- !u!114 &114000012904068844
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013414137744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: 
 --- !u!114 &114000013856000914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,20 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 2.3418367
---- !u!114 &114000013913856734
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013414137744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: 
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000013977371440
 MonoBehaviour:
   m_ObjectHideFlags: 1

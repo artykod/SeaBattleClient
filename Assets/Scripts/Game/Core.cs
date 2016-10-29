@@ -5,7 +5,7 @@ public class Core : MonoBehaviour
 #if UNITY_EDITOR
     static Core()
     {
-        Game.DebugImpl.Instance = new DebugUnity();
+        GameImpl.DebugImpl.Instance = new DebugUnity();
     }
 #endif
 
@@ -13,7 +13,7 @@ public class Core : MonoBehaviour
 
     private void Awake()
     {
-        Game.DebugImpl.Instance = new DebugUnity();
+        GameImpl.DebugImpl.Instance = new DebugUnity();
         DebugConsole.Instance.Init();
         LanguageController.Instance.Initialize();
 

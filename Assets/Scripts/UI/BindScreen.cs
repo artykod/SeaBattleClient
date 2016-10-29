@@ -17,8 +17,18 @@ public abstract class BindScreen : BindModel
         }
         set
         {
+            var prev = _canvas.enabled;
+
             _canvas.enabled = value;
             _caster.enabled = value;
+
+            if (prev != value)
+            {
+                if (value)
+                    OnShowScreen();
+                else
+                    OnHideScreen();
+            }
         }
     }
 
@@ -30,6 +40,8 @@ public abstract class BindScreen : BindModel
         if (_screens.Count > 0) _screens.Peek().IsVisible = false;
 
         _screens.Push(this);
+
+        OnShowScreen();
     }
 
     protected override void OnDestroy()
@@ -40,4 +52,7 @@ public abstract class BindScreen : BindModel
 
         if (_screens.Count > 0) _screens.Peek().IsVisible = true;
     }
+
+    protected virtual void OnShowScreen() { }
+    protected virtual void OnHideScreen() { }
 }
