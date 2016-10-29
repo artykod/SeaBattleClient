@@ -2,10 +2,20 @@
 
 public class Core : MonoBehaviour
 {
+#if UNITY_EDITOR
+    static Core()
+    {
+        Game.DebugImpl.Instance = new DebugUnity();
+    }
+#endif
+
     private PlayerData _player;
 
     private void Awake()
     {
+        Game.DebugImpl.Instance = new DebugUnity();
+        DebugConsole.Instance.Init();
+
         _player = new PlayerData
         {
             Avatar = "Textures/avatar",
@@ -14,6 +24,6 @@ public class Core : MonoBehaviour
             Silver = 9999,
         };
 
-        new MenuScreen(_player);
+        new Menu(_player);
     }
 }
