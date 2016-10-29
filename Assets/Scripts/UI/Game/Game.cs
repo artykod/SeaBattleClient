@@ -1,6 +1,6 @@
-﻿public class Game : BindScreen
+﻿public class Game : EmptyScreenWithBackground
 {
-    public Game() : base("Game/Game")
+    public Game() : base("Game")
     {
     }
 

@@ -5,6 +5,7 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
 {
     private BindContextMonoBehaviour _contextBehaviour;
     private Transform _cachedTransform;
+    private int _firstSiblingCounter;
 
     public GameObject Instance
     {
@@ -16,10 +17,7 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
     {
         get
         {
-            if ((object)_cachedTransform == null)
-            {
-                _cachedTransform = Instance.transform;
-            }
+            if ((object)_cachedTransform == null) _cachedTransform = Instance.transform;
             return _cachedTransform;
         }
     }
@@ -45,10 +43,7 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         {
             prefabName = "Prefabs/" + prefabName;
             prefab = Resources.Load<GameObject>(prefabName);
-            if (prefab == null)
-            {
-                Debug.LogError("Cannot load prefab from resources: " + prefabName);
-            }
+            if (prefab == null) Debug.LogError("Cannot load prefab from resources: " + prefabName);
         }
         Instance = prefab ? Object.Instantiate(prefab) : new GameObject();
         Instance.name = GetType().Name;
@@ -74,15 +69,15 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         }
     }
 
-    protected BindModel AddFirst(BindModel child, bool forceToRoot = false)
+    protected BindModel AddFirst(BindModel child)
     {
-        AddChild(child, forceToRoot).transform.SetAsFirstSibling();
+        AddChild(child).transform.SetSiblingIndex(_firstSiblingCounter++);
         return child;
     }
 
-    protected BindModel AddLast(BindModel child, bool forceToRoot = false)
+    protected BindModel AddLast(BindModel child)
     {
-        AddChild(child, forceToRoot).transform.SetAsLastSibling();
+        AddChild(child).transform.SetAsLastSibling();
         return child;
     }
 
@@ -95,9 +90,9 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         }
     }
 
-    private BindModel AddChild(BindModel child, bool forceToRoot)
+    private BindModel AddChild(BindModel child)
     {
-        child.transform.SetParent(forceToRoot ? transform : Content, false);
+        child.transform.SetParent(Content, false);
         child.Parent = this;
         return child;
     }

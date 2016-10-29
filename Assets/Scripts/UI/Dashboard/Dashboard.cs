@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
-public class Dashboard : BindScreen
+public class Dashboard : EmptyScreenWithBackground
 {
     private PlayerData _player;
     public PlayerContext Player;
 
-    public Dashboard(PlayerData player) : base("Dashboard/Dashboard")
+    public Dashboard(PlayerData player) : base("Dashboard")
     {
         _player = player;
 

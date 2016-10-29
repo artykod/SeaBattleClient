@@ -1,20 +1,20 @@
-﻿public class Settings : BindScreen
+﻿public class Settings : EmptyScreenWithBackground
 {
     public Bind<int> Language;
     public Bind<float> Volume;
     public Bind<bool> IsVolumeDisabled;
 
-    public Settings() : base("Settings/Settings")
+    public Settings() : base("Settings")
     {
         Language.Value = LanguageController.Instance.CurrentLanguage == global::Language.Russian ? 1 : 2;
-        IsVolumeDisabled.Value = !SoundController.Instance.IsSoundEnabled;
+        IsVolumeDisabled.Value = !SoundController.IsSoundEnabled;
         Volume.OnValueChanged += (val) =>
         {
-            SoundController.Instance.SoundVolume = val.Value;
-            SoundController.Instance.IsSoundEnabled = val.Value > 0.0001f;
-            IsVolumeDisabled.Value = !SoundController.Instance.IsSoundEnabled;
+            SoundController.SoundVolume = val.Value;
+            SoundController.IsSoundEnabled = val.Value > 0.0001f;
+            IsVolumeDisabled.Value = !SoundController.IsSoundEnabled;
         };
-        Volume.Value = SoundController.Instance.IsSoundEnabled ? SoundController.Instance.SoundVolume : 0f;
+        Volume.Value = SoundController.IsSoundEnabled ? SoundController.SoundVolume : 0f;
     }
 
     [BindCommand]

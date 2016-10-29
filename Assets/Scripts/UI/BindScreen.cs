@@ -2,9 +2,9 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public abstract class BindScreen : BindModel
+public abstract class EmptyScreenWithBackground : BindModel
 {
-    private static Stack<BindScreen> _screens = new Stack<BindScreen>();
+    private static Stack<EmptyScreenWithBackground> _screens = new Stack<EmptyScreenWithBackground>();
 
     protected Canvas _canvas;
     protected GraphicRaycaster _caster;
@@ -32,10 +32,12 @@ public abstract class BindScreen : BindModel
         }
     }
 
-    public BindScreen(string screenName) : base("UI/" + screenName)
+    public EmptyScreenWithBackground(string screenName) : base("UI/" + screenName)
     {
         _canvas = Instance.GetComponent<Canvas>();
         _caster = Instance.GetComponent<GraphicRaycaster>();
+
+        AddFirst(new EmptyBackground());
 
         if (_screens.Count > 0) _screens.Peek().IsVisible = false;
 

@@ -1,12 +1,14 @@
 ﻿using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Preloader : BindScreen
+public class Preloader : EmptyScreenWithBackground
 {
     public Bind<float> Progress;
 
-    public Preloader() : base("Preloader/Preloader")
+    public Preloader() : base("Preloader")
     {
+        AddFirst(new BackgroundArt());
+
         Progress.Value = 0f;
         StartCoroutine(LoadMainScene());
     }

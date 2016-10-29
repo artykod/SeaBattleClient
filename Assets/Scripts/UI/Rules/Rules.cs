@@ -1,8 +1,8 @@
-﻿public class Rules : BindScreen
+﻿public class Rules : EmptyScreenWithBackground
 {
     public Bind<int> Page { get; private set; }
 
-    public Rules() : base("Rules/Rules")
+    public Rules() : base("Rules")
     {
         Page.Value = 1;
     }

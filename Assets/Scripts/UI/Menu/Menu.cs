@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Menu : BindScreen
+public class Menu : EmptyScreenWithBackground
 {
     private PlayerData _player;
 
@@ -9,8 +9,10 @@ public class Menu : BindScreen
     
     public Bind<bool> IsSoundEnabled { get; private set; }
 
-    public Menu(PlayerData player) : base("Menu/Menu")
+    public Menu(PlayerData player) : base("Menu")
     {
+        AddFirst(new BackgroundArt());
+
         _player = player;
 
         Player.Avatar.Value = Resources.Load<Texture2D>(_player.Avatar);
@@ -18,18 +20,12 @@ public class Menu : BindScreen
         Player.Gold.Value = _player.Gold;
         Player.Silver.Value = _player.Silver;
 
-        IsSoundEnabled.Value = SoundController.Instance.IsSoundEnabled;
-        IsSoundEnabled.OnValueChanged += OnSoundEnabledChanged;
+        IsSoundEnabled.OnValueChanged += (val) => SoundController.IsSoundEnabled = val.Value;
     }
 
     protected override void OnShowScreen()
     {
-        IsSoundEnabled.Value = SoundController.Instance.IsSoundEnabled;
-    }
-
-    private void OnSoundEnabledChanged(Bind<bool> bind)
-    {
-        SoundController.Instance.IsSoundEnabled = bind.Value;
+        IsSoundEnabled.Value = SoundController.IsSoundEnabled;
     }
 
     [BindCommand]

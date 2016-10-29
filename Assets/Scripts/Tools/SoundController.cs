@@ -11,21 +11,19 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
     private const string PREFS_SOUND_ENABLED = "sound_on";
     private const string PREFS_MUSIC_ENABLED = "music_on";
     private const string PREFS_SOUND_VOLUME = "sound_volume";
-
     private const string PATH_SOUNDS = "sounds/";
     private const string PATH_MUSICS = "music/";
-
     public const string SOUND_BUTTON_CLICK = "button";
     public const string MUSIC = "music";
-
-    private AudioSource sourceSound = null;
-    private AudioSource sourceMusic = null;
 
     private static IEnumerator buttonsClickTracker = null;
     private static Button lastSelectedButton = null;
     private static HashSet<string> activeSounds = new HashSet<string>();
 
-    public bool IsSoundEnabled
+    private AudioSource sourceSound = null;
+    private AudioSource sourceMusic = null;
+
+    public static bool IsSoundEnabled
     {
         get
         {
@@ -37,7 +35,7 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
             PlayerPrefs.Save();
         }
     }
-    public bool IsMusicEnabled
+    public static bool IsMusicEnabled
     {
         get
         {
@@ -48,16 +46,21 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
             PlayerPrefs.SetInt(PREFS_MUSIC_ENABLED, value ? 1 : 0);
             PlayerPrefs.Save();
 
+#if UNITY_EDITOR
+            if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) return;
+#endif
+
             if (!value)
             {
-                sourceMusic.Stop();
+                Instance.sourceMusic.Stop();
             }
-            else {
-                sourceMusic.Play();
+            else
+            {
+                Instance.sourceMusic.Play();
             }
         }
     }
-    public float SoundVolume
+    public static float SoundVolume
     {
         get
         {
