@@ -38,7 +38,7 @@ GameObject:
   - 224: {fileID: 224000013248920062}
   - 222: {fileID: 222000011160652718}
   - 114: {fileID: 114000012630978846}
-  - 114: {fileID: 114000013074171526}
+  - 114: {fileID: 114000011567735350}
   m_Layer: 0
   m_Name: Text_1
   m_TagString: Untagged
@@ -56,7 +56,7 @@ GameObject:
   - 224: {fileID: 224000013989733130}
   - 222: {fileID: 222000011283553034}
   - 114: {fileID: 114000011282200468}
-  - 114: {fileID: 114000013632222326}
+  - 114: {fileID: 114000013811162258}
   m_Layer: 0
   m_Name: Text_1
   m_TagString: Untagged
@@ -91,7 +91,7 @@ GameObject:
   - 224: {fileID: 224000011127772736}
   - 222: {fileID: 222000012952428346}
   - 114: {fileID: 114000011421040584}
-  - 114: {fileID: 114000013429392578}
+  - 114: {fileID: 114000010495917644}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -109,7 +109,7 @@ GameObject:
   - 224: {fileID: 224000011996409802}
   - 222: {fileID: 222000010899565558}
   - 114: {fileID: 114000013581846602}
-  - 114: {fileID: 114000012534545366}
+  - 114: {fileID: 114000014288634836}
   m_Layer: 0
   m_Name: Text_3
   m_TagString: Untagged
@@ -127,7 +127,7 @@ GameObject:
   - 224: {fileID: 224000014083374458}
   - 222: {fileID: 222000012466552862}
   - 114: {fileID: 114000012299076770}
-  - 114: {fileID: 114000010523891796}
+  - 114: {fileID: 114000012956923120}
   m_Layer: 0
   m_Name: Text_5
   m_TagString: Untagged
@@ -202,7 +202,7 @@ GameObject:
   - 224: {fileID: 224000011726593632}
   - 222: {fileID: 222000011891979996}
   - 114: {fileID: 114000011351385200}
-  - 114: {fileID: 114000010810644534}
+  - 114: {fileID: 114000011636736684}
   m_Layer: 0
   m_Name: Text_4
   m_TagString: Untagged
@@ -221,7 +221,7 @@ GameObject:
   - 222: {fileID: 222000013016753340}
   - 114: {fileID: 114000012651194222}
   - 114: {fileID: 114000012939011832}
-  - 114: {fileID: 114000012960403398}
+  - 114: {fileID: 114000010744655306}
   m_Layer: 0
   m_Name: Caption
   m_TagString: Untagged
@@ -239,7 +239,7 @@ GameObject:
   - 224: {fileID: 224000010756806724}
   - 222: {fileID: 222000011565947588}
   - 114: {fileID: 114000012500484576}
-  - 114: {fileID: 114000012314196706}
+  - 114: {fileID: 114000012539825450}
   m_Layer: 0
   m_Name: Text_2
   m_TagString: Untagged
@@ -306,7 +306,7 @@ GameObject:
   - 224: {fileID: 224000011286557200}
   - 222: {fileID: 222000010042157014}
   - 114: {fileID: 114000014152752222}
-  - 114: {fileID: 114000011574431002}
+  - 114: {fileID: 114000012783677754}
   m_Layer: 0
   m_Name: Text_3
   m_TagString: Untagged
@@ -324,7 +324,7 @@ GameObject:
   - 224: {fileID: 224000012186604124}
   - 222: {fileID: 222000010156162430}
   - 114: {fileID: 114000014011788558}
-  - 114: {fileID: 114000011750811150}
+  - 114: {fileID: 114000013584681026}
   m_Layer: 0
   m_Name: Text_2
   m_TagString: Untagged
@@ -367,6 +367,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000010495917644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010561993030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: common.btn_back
 --- !u!114 &114000010520131298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -394,20 +406,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000010523891796
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011381658340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: Text8
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000010662098984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -423,6 +421,18 @@ MonoBehaviour:
   _inverted: 0
   _compareMethod: 0
   _compareValue: 2
+--- !u!114 &114000010744655306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012341466118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: rules.title
 --- !u!114 &114000010781772530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -492,20 +502,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000010810644534
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012312258142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: Text7
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000010864525618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -628,20 +624,30 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '@Text@'
---- !u!114 &114000011574431002
+--- !u!114 &114000011567735350
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013857890370}
+  m_GameObject: {fileID: 1000010500688270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: Text6
-  _format: '{0}'
-  _additionalValues: []
+  _localeKey: rules.text1
+--- !u!114 &114000011636736684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012312258142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: rules.text7
 --- !u!114 &114000011695619940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -658,20 +664,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &114000011750811150
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013902406562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: Text2
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000012024333026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -758,20 +750,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _propertyName: Back
---- !u!114 &114000012314196706
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012414924256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: Text5
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000012415256118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -845,20 +823,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.7
   m_Text: '@Text@'
---- !u!114 &114000012534545366
+--- !u!114 &114000012539825450
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011176023906}
+  m_GameObject: {fileID: 1000012414924256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: Text3
-  _format: '{0}'
-  _additionalValues: []
+  _localeKey: rules.text5
 --- !u!114 &114000012630978846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -925,6 +901,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: '@Rules@'
+--- !u!114 &114000012783677754
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013857890370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: rules.text6
 --- !u!114 &114000012932460002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -959,34 +947,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &114000012960403398
+--- !u!114 &114000012956923120
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012341466118}
+  m_GameObject: {fileID: 1000011381658340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: RulesText
-  _format: '{0}'
-  _additionalValues: []
---- !u!114 &114000013074171526
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010500688270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: Text1
-  _format: '{0}'
-  _additionalValues: []
+  _localeKey: rules.text8
 --- !u!114 &114000013262508770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1029,20 +1001,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114000013429392578
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010561993030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: TextBack
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000013524609254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1103,20 +1061,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.7
   m_Text: '@Text@'
---- !u!114 &114000013632222326
+--- !u!114 &114000013584681026
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010520713282}
+  m_GameObject: {fileID: 1000013902406562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: Text4
-  _format: '{0}'
-  _additionalValues: []
+  _localeKey: rules.text2
 --- !u!114 &114000013772747428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1155,6 +1111,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &114000013811162258
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010520713282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: rules.text4
 --- !u!114 &114000013818077100
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1263,6 +1231,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.7
   m_Text: '@Text@'
+--- !u!114 &114000014288634836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011176023906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: rules.text3
 --- !u!222 &222000010042157014
 CanvasRenderer:
   m_ObjectHideFlags: 1

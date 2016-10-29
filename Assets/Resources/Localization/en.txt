@@ -1,0 +1,39 @@
+{
+	"common.default_name":"Player",
+	"common.btn_back":"To menu",
+	
+	"menu.play":"Play",
+	"menu.dashboard":"Dashboard",
+	"menu.settings":"Settings",
+	"menu.rules":"Rules",
+	
+	"dashboard.buy":"Buy",
+	"dashboard.statistics":"Statistics",
+	"dashboard.battles":"Battles",
+	"dashboard.wins":"Wins",
+	"dashboard.loses":"Loses",
+	"dashboard.draw":"Draws",
+	
+	"settings.sound":"Sound",
+	"settings.language":"Язык/Language",
+	
+	"rules.title":"Game rules",
+	"rules.text1":"Choose from the list of ships and drag them onto the playing field.",
+	"rules.text2":"Place the ships on the green cells. On the red cells can not be placed.",
+	"rules.text3":"The position of the ship can be changed making circular rotation. When the ship's accommodation is over, click on it again and the ship will be dark blue. You can also return the ship back to the list.",
+	"rules.text4":"Displays running number and position of sight.",
+	"rules.text5":"Shows whose turn it is to walk.",
+	"rules.text6":"Your field",
+	"rules.text7":"List of enemy ships. The red marked lined.",
+	"rules.text8":"Point the sight and shoot at the enemy cells in the field. Your task is to sink all ships.",
+	
+	"setup.title":"Field layout setup",
+	"setup.back":"To menu",
+	"setup.reset":"Reset layout",
+	"setup.autolayout":"Autolayout",
+	"setup.battle":"Battle!",
+	
+	"game.chat.hint":"Type message...",
+	"game.chat.send":"Send",
+	"game.back":"Quit from battle",
+}

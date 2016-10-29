@@ -60,7 +60,7 @@ GameObject:
   - 224: {fileID: 224000014156932562}
   - 222: {fileID: 222000012008540658}
   - 114: {fileID: 114000010543491424}
-  - 114: {fileID: 114000010213125392}
+  - 114: {fileID: 114000010381527006}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -267,7 +267,7 @@ GameObject:
   - 224: {fileID: 224000011277532452}
   - 222: {fileID: 222000010742511298}
   - 114: {fileID: 114000013832740604}
-  - 114: {fileID: 114000014243337854}
+  - 114: {fileID: 114000013080103436}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -303,7 +303,7 @@ GameObject:
   - 224: {fileID: 224000011547273608}
   - 222: {fileID: 222000013468788416}
   - 114: {fileID: 114000012897122868}
-  - 114: {fileID: 114000012112769792}
+  - 114: {fileID: 114000011566771380}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -401,20 +401,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114000010213125392
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010281495324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: AddGoldText
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000010244110182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -453,6 +439,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &114000010381527006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010281495324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: dashboard.buy
 --- !u!114 &114000010410184064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -696,6 +694,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114000011566771380
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012470315318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: dashboard.buy
 --- !u!114 &114000011603322894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -737,20 +747,6 @@ MonoBehaviour:
   _propertyName: Player.Avatar
   _tiled: 0
   _scale: {x: 1, y: 1}
---- !u!114 &114000012112769792
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012470315318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: AddSilverText
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000012177333742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -973,6 +969,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114000013080103436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012226055108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: common.btn_back
 --- !u!114 &114000013252589020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1203,20 +1211,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000014243337854
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012226055108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: TextBack
-  _format: '{0}'
-  _additionalValues: []
 --- !u!222 &222000010071818590
 CanvasRenderer:
   m_ObjectHideFlags: 1

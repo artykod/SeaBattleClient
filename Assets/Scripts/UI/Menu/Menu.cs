@@ -6,11 +6,7 @@ public class Menu : BindScreen
 
     public SocialContext Social { get; private set; }
     public PlayerContext Player { get; private set; }
-
-    public Bind<string> TextPlay { get; private set; }
-    public Bind<string> TextDashboard { get; private set; }
-    public Bind<string> TextSettings { get; private set; }
-    public Bind<string> TextRules { get; private set; }
+    
     public Bind<bool> IsSoundEnabled { get; private set; }
 
     public Menu(PlayerData player) : base("Menu/Menu")
@@ -21,11 +17,6 @@ public class Menu : BindScreen
         Player.Name.Value = _player.Name;
         Player.Gold.Value = _player.Gold;
         Player.Silver.Value = _player.Silver;
-
-        TextPlay.Value = "Играть";
-        TextDashboard.Value = "Личный кабинет";
-        TextSettings.Value = "Настройки";
-        TextRules.Value = "Правила";
 
         IsSoundEnabled.Value = true;
     }

@@ -15,13 +15,14 @@ public class Core : MonoBehaviour
     {
         Game.DebugImpl.Instance = new DebugUnity();
         DebugConsole.Instance.Init();
+        LanguageController.Instance.Initialize();
 
         _player = new PlayerData
         {
             Avatar = "Textures/avatar",
-            Name = "Имя игрока",
-            Gold = 1000,
-            Silver = 9999,
+            Name = "Player " + Random.Range(1, 100500),
+            Gold = Random.Range(1, 100500),
+            Silver = Random.Range(1, 100500),
         };
 
         new Menu(_player);

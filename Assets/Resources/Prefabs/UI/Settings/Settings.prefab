@@ -147,7 +147,7 @@ GameObject:
   - 224: {fileID: 224000010219981408}
   - 222: {fileID: 222000011356878704}
   - 114: {fileID: 114000010638670634}
-  - 114: {fileID: 114000011384101058}
+  - 114: {fileID: 114000013764348494}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -183,7 +183,7 @@ GameObject:
   - 222: {fileID: 222000013866673556}
   - 114: {fileID: 114000011192786496}
   - 114: {fileID: 114000012398359772}
-  - 114: {fileID: 114000013434369620}
+  - 114: {fileID: 114000013081221670}
   m_Layer: 0
   m_Name: VolumeText
   m_TagString: Untagged
@@ -410,7 +410,7 @@ GameObject:
   - 222: {fileID: 222000011883648954}
   - 114: {fileID: 114000012419922318}
   - 114: {fileID: 114000011755744352}
-  - 114: {fileID: 114000013212128004}
+  - 114: {fileID: 114000010129274822}
   m_Layer: 0
   m_Name: LanguageText
   m_TagString: Untagged
@@ -435,6 +435,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000010129274822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014132565644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: settings.language
 --- !u!114 &114000010175621944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -783,20 +795,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: English
---- !u!114 &114000011384101058
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011174687306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: TextBack
-  _format: '{0}'
-  _additionalValues: []
 --- !u!114 &114000011400755560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1286,21 +1284,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000013212128004
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000014132565644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _propertyName: LanguageText
-  _format: '{0}'
-  _additionalValues: []
---- !u!114 &114000013434369620
+--- !u!114 &114000013081221670
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1308,12 +1292,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011653312016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: VolumeText
-  _format: '{0}'
-  _additionalValues: []
+  _localeKey: settings.sound
 --- !u!114 &114000013462921122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1453,6 +1435,18 @@ MonoBehaviour:
   _inverted: 1
   _compareMethod: 0
   _compareValue: 2
+--- !u!114 &114000013764348494
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011174687306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f04926542442f164cb3b84b2febaa1c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localeKey: common.btn_back
 --- !u!114 &114000014172912372
 MonoBehaviour:
   m_ObjectHideFlags: 1
