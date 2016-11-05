@@ -67,7 +67,7 @@ public class DebugConsole : SingletonBehaviour<DebugConsole, DebugConsole>
 
 		if (showDebug)
 		{
-			GUI.Box(new Rect(0f, 0f, width, height), new GUIContent(), GUI.skin.box);
+			GUI.Box(new Rect(0f, 32f, width, height), new GUIContent(), GUI.skin.box);
 
 			logStyle = GUI.skin.label;
 			logStyle.wordWrap = true;
@@ -77,7 +77,7 @@ public class DebugConsole : SingletonBehaviour<DebugConsole, DebugConsole>
 				logs.Clear();
 			}
 
-			scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(width), GUILayout.Height(height - 100f));
+			scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.Width(width), GUILayout.Height(height));
 
 			Color temp = GUI.color;
 

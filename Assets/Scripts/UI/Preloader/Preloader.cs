@@ -4,37 +4,40 @@ using System.Collections;
 public class Preloader : EmptyScreenWithBackground
 {
     public Bind<float> Progress;
+    public Bind<string> LoadingStatus;
 
     public Preloader() : base("Preloader")
     {
         AddFirst(new BackgroundArt());
-
+        
         Progress.Value = 0f;
         StartCoroutine(LoadMainScene());
     }
 
     private IEnumerator LoadMainScene()
     {
-        var total = 3f;
-        var fakeLoading = 0f;
-        while (fakeLoading < total)
-        {
-            fakeLoading += UnityEngine.Time.unscaledDeltaTime;
-            Progress.Value = fakeLoading / total;
-            yield return null;
-        }
-
-        var loading = SceneManager.LoadSceneAsync("Main");
+        var loading = SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
         while (!loading.isDone)
         {
-            //Progress.Value = loading.progress;
+            Progress.Value = loading.progress;
+            LoadingStatus.Value = "Loading scene: " + (loading.progress * 100f) + "%";
+            yield return null;
+        }
+        Progress.Value = loading.progress;
+
+        LoadingStatus.Value = "Connecting...";
+
+        while (Core.Instance == null || !Core.Instance.IsLoginDone)
+        {
             yield return null;
         }
 
-        //Progress.Value = loading.progress;
+        LoadingStatus.Value = "Start game...";
 
         Destroy();
 
         SceneManager.UnloadScene(0);
+
+        Core.Instance.StartGame();
     }
 }

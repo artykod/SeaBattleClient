@@ -99,9 +99,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1138413344}
   - 20: {fileID: 1138413343}
-  - 92: {fileID: 1138413342}
-  - 124: {fileID: 1138413341}
-  - 81: {fileID: 1138413340}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -109,27 +106,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1138413340
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1138413339}
-  m_Enabled: 1
---- !u!124 &1138413341
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1138413339}
-  m_Enabled: 1
---- !u!92 &1138413342
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1138413339}
-  m_Enabled: 1
 --- !u!20 &1138413343
 Camera:
   m_ObjectHideFlags: 0
@@ -187,7 +163,7 @@ GameObject:
   - 4: {fileID: 1766140680}
   - 114: {fileID: 1766140679}
   m_Layer: 0
-  m_Name: Preloader
+  m_Name: Preloading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

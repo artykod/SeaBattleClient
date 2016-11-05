@@ -16,6 +16,7 @@ public abstract class SingletonBehaviour<TypeBase, TypeImpl> : MonoBehaviour whe
 				{
 					instance.gameObject.name = singletonBehaviour.SingletonName;
 				}
+                DontDestroyOnLoad(instance.gameObject);
 			}
 			return instance;
 		}
