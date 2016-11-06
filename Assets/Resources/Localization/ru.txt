@@ -36,4 +36,11 @@
 	"game.chat.hint":"Написать сообщение...",
 	"game.chat.send":"Отправить",
 	"game.back":"Выйти из боя",
+
+    "lobby.title":"Подключиться к игре",
+    "lobby.join":"Присоединиться",
+    "lobby.play_with_bot":"Играть с компьютером",
+    "lobby.create":"Создать матч",
+    "lobby.create.btn":"Создать",
+    "lobby.cancel":"Отменить",
 }

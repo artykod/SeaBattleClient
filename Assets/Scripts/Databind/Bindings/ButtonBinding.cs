@@ -30,6 +30,6 @@ public class ButtonBinding : BindViewMonoBehaviour
 
     private void OnClickHandler()
     {
-        _context.InvokeCommand(Name);
+        if (_button.interactable) _context.InvokeCommand(Name);
     }
 }

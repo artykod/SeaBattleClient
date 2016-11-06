@@ -15,7 +15,15 @@ public interface IBindContext
     IBindContext GetTargetContext(string name);
 }
 
+public interface INeastedBindContext : IBindContext
+{
+}
+
 public sealed class BindCommandAttribute : Attribute
+{
+}
+
+public class NeastedBindContext : BindContext, INeastedBindContext
 {
 }
 
@@ -54,7 +62,7 @@ public class BindContext : IBindContext
                 _data[name] = instance;
             }
 
-            if (typeof(IBindContext).IsAssignableFrom(type) && !type.IsAssignableFrom(domainType))
+            if (typeof(INeastedBindContext).IsAssignableFrom(type))
             {
                 var instance = f.GetValue(_bindDomain) as IBindContext;
                 if (instance == null)
@@ -83,7 +91,7 @@ public class BindContext : IBindContext
                 _data[name] = instance;
             }
 
-            if (typeof(IBindContext).IsAssignableFrom(type) && !type.IsAssignableFrom(domainType))
+            if (typeof(INeastedBindContext).IsAssignableFrom(type))
             {
                 var instance = p.GetValue(_bindDomain, null) as IBindContext;
                 if (instance == null)

@@ -8,6 +8,7 @@ public abstract class EmptyScreenWithBackground : BindModel
 
     protected Canvas _canvas;
     protected GraphicRaycaster _caster;
+    private EmptyBackground _background;
 
     protected bool IsVisible
     {
@@ -32,12 +33,25 @@ public abstract class EmptyScreenWithBackground : BindModel
         }
     }
 
+    protected bool IsLoading
+    {
+        get
+        {
+            return _background.IsLoading.Value;
+        }
+        set
+        {
+            _background.IsLoading.Value = value;
+        }
+    }
+
     public EmptyScreenWithBackground(string screenName) : base("UI/" + screenName)
     {
         _canvas = Instance.GetComponent<Canvas>();
         _caster = Instance.GetComponent<GraphicRaycaster>();
 
-        AddFirst(new EmptyBackground());
+        _background = new EmptyBackground();
+        AddFirst(_background);
 
         if (_screens.Count > 0) _screens.Peek().IsVisible = false;
 

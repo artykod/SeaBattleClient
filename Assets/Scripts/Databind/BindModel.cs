@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityListener
 {
     private BindContextMonoBehaviour _contextBehaviour;
     private Transform _cachedTransform;
     private int _firstSiblingCounter;
+    private HashSet<BindModel> _children;
 
     public GameObject Instance
     {
@@ -26,6 +28,14 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
     {
         get;
         set;
+    }
+
+    protected BindModel Root
+    {
+        get
+        {
+            return Parent == null ? this : Parent.Root;
+        }
     }
 
     protected virtual Transform Content
@@ -50,12 +60,15 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         Instance.SetActive(false);
         _contextBehaviour = Instance.AddComponent<BindContextMonoBehaviour>();
         _contextBehaviour.SetContext(this);
+        _children = new HashSet<BindModel>();
         Instance.SetActive(true);
         OnCreate();
     }
 
     public void Destroy()
     {
+        Clear();
+
         if (Parent != null)
         {
             Parent.RemoveChild(this);
@@ -83,6 +96,7 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
 
     protected void RemoveChild(BindModel child)
     {
+        _children.Remove(child);
         if (child.Parent == this)
         {
             child.Parent = null;
@@ -90,8 +104,17 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         }
     }
 
+    protected void Clear()
+    {
+        var children = new List<BindModel>(_children.Count);
+        foreach (var i in _children) children.Add(i);
+        foreach (var i in children) i.Destroy();
+        _children.Clear();
+    }
+
     private BindModel AddChild(BindModel child)
     {
+        _children.Add(child);
         child.transform.SetParent(Content, false);
         child.Parent = this;
         return child;

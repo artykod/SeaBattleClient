@@ -36,4 +36,11 @@
 	"game.chat.hint":"Type message...",
 	"game.chat.send":"Send",
 	"game.back":"Quit from battle",
+
+    "lobby.title":"Connect to game",
+    "lobby.join":"Join",
+    "lobby.play_with_bot":"Play with CPU",
+    "lobby.create":"Create match",
+    "lobby.create.btn":"Create",
+    "lobby.cancel":"Cancel",
 }

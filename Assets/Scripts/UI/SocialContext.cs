@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SocialContext : BindContext
+public class SocialContext : NeastedBindContext
 {
     [BindCommand]
     private void Fb()

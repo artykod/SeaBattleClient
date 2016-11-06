@@ -36,7 +36,7 @@ public class Menu : EmptyScreenWithBackground
     [BindCommand]
     private void Play()
     {
-        new Layout();
+        new Lobby();
     }
 
     [BindCommand]

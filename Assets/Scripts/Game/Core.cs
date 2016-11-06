@@ -19,8 +19,12 @@ public class Core : MonoBehaviour
     public ServerApi.Auth Auth { get; private set; }
     public ServerApi.Lobby Lobby { get; private set; }
     public ServerApi.Match Match { get; private set; }
-
     public Data.Character Character { get; private set; }
+
+    public void StartMatch(string matchToken)
+    {
+        Match = new ServerApi.Match(matchToken);
+    }
 
     private void Awake()
     {

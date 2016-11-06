@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlayerContext : BindContext
+public class PlayerContext : NeastedBindContext
 {
     public Bind<Texture2D> Avatar;
     public Bind<string> Name;

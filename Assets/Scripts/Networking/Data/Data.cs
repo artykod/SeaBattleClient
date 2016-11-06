@@ -90,17 +90,17 @@ namespace Data
     public class LobbyMatchPlayer
     {
         [JsonProperty("id")]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [JsonProperty("nick")]
-        public string Nick { get; private set; }
+        public string Nick { get; set; }
     }
 
     public class LobbyMatch
     {
         [JsonProperty("sides")]
-        public LobbyMatchPlayer[] Sides { get; private set; }
+        public LobbyMatchPlayer[] Sides { get; set; }
         [JsonProperty("bet")]
-        public MatchBet Bet { get; private set; }
+        public MatchBet Bet { get; set; }
     }
 
     public class Lobby : Dictionary<string, LobbyMatch>

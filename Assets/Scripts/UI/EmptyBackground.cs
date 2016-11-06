@@ -1,4 +1,8 @@
 ﻿public class EmptyBackground : BindModel
 {
-    public EmptyBackground() : base("UI/EmptyBackground") { }
+    public Bind<bool> IsLoading { get; private set; }
+
+    public EmptyBackground() : base("UI/EmptyBackground")
+    {
+    }
 }
