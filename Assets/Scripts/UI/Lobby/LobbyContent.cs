@@ -34,21 +34,30 @@ public class LobbyContent : BindModel
         _itemsContent = transform.FindChild("Items");
         _createBattleItemsContent = transform.FindChild("CreateBattleItems");
 
-        _contentTransform = _createBattleItemsContent;
-        AddLast(new LobbyCreateBattleWithPlayerItem());
-        AddLast(new LobbyCreateBattleWithCPUItem());
-        _contentTransform = transform;
-
-        _contentTransform = _itemsContent;
-        AddLast(_battleList = new LobbyBattleList(SortLobby(_lobby)));
-        _itemsContent.GetComponent<ScrollRect>().content = _battleList.transform as RectTransform;
-        _contentTransform = transform;
+        AddBattleList();
+        AddBattleCreateItems();
     }
 
     public void UpdateData(Data.Lobby lobby)
     {
         _lobby = lobby;
         _battleList.UpdateData(SortLobby(_lobby));
+    }
+
+    private void AddBattleCreateItems()
+    {
+        _contentTransform = _createBattleItemsContent;
+        AddLast(new LobbyCreateBattleWithPlayerItem());
+        AddLast(new LobbyCreateBattleWithCPUItem());
+        _contentTransform = transform;
+    }
+
+    private void AddBattleList()
+    {
+        _contentTransform = _itemsContent;
+        AddLast(_battleList = new LobbyBattleList(SortLobby(_lobby)));
+        _contentTransform.GetComponent<ScrollRect>().content = _battleList.transform as RectTransform;
+        _contentTransform = transform;
     }
 
     [BindCommand]

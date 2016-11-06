@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Data
 {
@@ -90,21 +91,45 @@ namespace Data
     public class LobbyMatchPlayer
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [JsonProperty("nick")]
-        public string Nick { get; set; }
+        public string Nick { get; private set; }
+
+        public LobbyMatchPlayer(int id, string nick)
+        {
+            Id = id;
+            Nick = nick;
+        }
     }
 
     public class LobbyMatch
     {
         [JsonProperty("sides")]
-        public LobbyMatchPlayer[] Sides { get; set; }
+        public LobbyMatchPlayer[] Sides { get; private set; }
         [JsonProperty("bet")]
-        public MatchBet Bet { get; set; }
+        public MatchBet Bet { get; private set; }
+
+        public LobbyMatch(MatchBet bet, LobbyMatchPlayer[] sides)
+        {
+            Sides = sides;
+            Bet = bet;
+        }
     }
 
     public class Lobby : Dictionary<string, LobbyMatch>
     {
+        public static Lobby GenerateStub(int count = 10)
+        {
+            var lobby = new Lobby();
+            for (int i = 0; i < count; i++)
+                lobby.Add(System.Guid.NewGuid().ToString(), new LobbyMatch(
+                    new MatchBet(Random.value > 0.5f ? CurrencyType.Gold : CurrencyType.Silver, Random.Range(10, 1000)),
+                    new LobbyMatchPlayer[] {
+                        new LobbyMatchPlayer(Random.Range(0, 9999999), System.Guid.NewGuid().ToString()),
+                        Random.value > 0.5f ? null : new LobbyMatchPlayer(Random.Range(0, 9999999), System.Guid.NewGuid().ToString()),
+                    }));
+            return lobby;
+        }
     }
 
     public class Match

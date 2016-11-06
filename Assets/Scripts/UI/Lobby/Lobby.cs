@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Lobby : EmptyScreenWithBackground
 {
     private LobbyContent _content;
+    private Data.Lobby _lobby;
 
     public Lobby() : base("Lobby/Lobby")
     {
         IsLoading = true;
 
         Core.Instance.Lobby.OnLobbyReceived += OnLobbyReceived;
-        Core.Instance.Lobby.GetLobby();
+        StartCoroutine(LobbyUpdateTracker());
     }
 
     protected override void OnDestroy()
@@ -22,32 +24,46 @@ public class Lobby : EmptyScreenWithBackground
     private void OnLobbyReceived(Data.Lobby lobby)
     {
         IsLoading = false;
+        UpdateData(lobby);
+    }
 
-        lobby = new Data.Lobby();
-        for (int i = 0; i < 10; i++)
+    private IEnumerator LobbyUpdateTracker()
+    {
+        do
         {
-            lobby.Add("match_token_" + i, new Data.LobbyMatch
-            {
-                Bet = new Data.MatchBet(Random.value > 0.5f ? Data.CurrencyType.Gold : Data.CurrencyType.Silver, Random.Range(10, 1000)),
-                Sides = new Data.LobbyMatchPlayer[]
-                {
-                    new Data.LobbyMatchPlayer()
-                    {
-                        Id = 0,
-                        Nick = "Nick " + i,
-                    },
-                    Random.value > 0.5f ? null : new Data.LobbyMatchPlayer()
-                    {
-                        Id = 1,
-                        Nick = "Enemy " + i,
-                    },
-                },
-            });
+            Core.Instance.Lobby.GetLobby();
+            yield return new WaitForSecondsRealtime(5f);
+        }
+        while (true);
+    }
+
+    private bool CheckLobbyEquals(Data.Lobby a, Data.Lobby b)
+    {
+        if (a == null && b != null) return false;
+        if (a != null && b == null) return false;
+
+        if (a.Count == b.Count)
+        {
+            foreach (var i in b) if (!a.ContainsKey(i.Key)) return false;
+            return true;
         }
 
+        return false;
+    }
+
+    private void UpdateData(Data.Lobby lobby)
+    {
+        if (CheckLobbyEquals(_lobby, lobby)) return;
+
+        _lobby = lobby;
+
         if (_content == null)
+        {
             AddLast(_content = new LobbyContent(lobby));
+        }
         else
+        {
             _content.UpdateData(lobby);
+        }
     }
 }
