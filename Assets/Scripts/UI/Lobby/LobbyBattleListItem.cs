@@ -21,13 +21,15 @@
         Nick.Value = matchData.Sides[0].Nick;
         CurrencyType.Value = matchData.Bet.Type;
         CurrencyValue.Value = matchData.Bet.Value;
-        CanJoin.Value = matchData.Sides[1] != null;
+        CanJoin.Value = matchData.Sides[1] == null;
     }
 
     [BindCommand]
     private void Join()
     {
+        Core.Instance.MakeApiForMatch(_matchToken);
         Root.Destroy();
-        new Layout(_matchToken, _matchData);
+        new Layout();
+        Core.Instance.Match.JoinToMatch((Data.CurrencyType)_matchData.Bet.Type, _matchData.Bet.Value);
     }
 }

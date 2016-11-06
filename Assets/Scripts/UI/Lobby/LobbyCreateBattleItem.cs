@@ -7,6 +7,8 @@ public abstract class LobbyCreateBattleItem : BindModel
     public Bind<int> BetValue { get; private set; }
     public Bind<bool> CanClickCreateButton { get; private set; }
 
+    protected abstract bool IsMatchWithBot { get; }
+
     public LobbyCreateBattleItem() : base("UI/Lobby/LobbyCreateBattleItem")
     {
         CanClickCreateButton.Value = true;
@@ -48,10 +50,18 @@ public abstract class LobbyCreateBattleItem : BindModel
     [BindCommand]
     protected void CreateMatch()
     {
-        MatchCreateClicked();
+        Core.Instance.Lobby.CreateMatch((Data.CurrencyType)BetCurrency.Value, BetValue.Value, IsMatchWithBot);
+        Core.Instance.Lobby.OnMatchReceived += OnNewMatchReceived;
     }
 
-    protected abstract void MatchCreateClicked();
+    private void OnNewMatchReceived(string token, Data.Match match)
+    {
+        Core.Instance.Lobby.OnMatchReceived -= OnNewMatchReceived;
+        Core.Instance.MakeApiForMatch(token);
+
+        Root.Destroy();
+        new Layout();
+    }
 
     private void RefreshState()
     {

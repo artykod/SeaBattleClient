@@ -21,7 +21,7 @@ public class Core : MonoBehaviour
     public ServerApi.Match Match { get; private set; }
     public Data.Character Character { get; private set; }
 
-    public void StartMatch(string matchToken)
+    public void MakeApiForMatch(string matchToken)
     {
         Match = new ServerApi.Match(matchToken);
     }

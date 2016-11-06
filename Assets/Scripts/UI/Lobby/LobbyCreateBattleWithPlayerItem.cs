@@ -5,7 +5,5 @@
         Title.Value = LanguageController.Localize("lobby.play_with_bot");
     }
 
-    protected override void MatchCreateClicked()
-    {
-    }
+    protected override bool IsMatchWithBot { get { return false; } }
 }

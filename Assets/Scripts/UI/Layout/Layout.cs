@@ -17,27 +17,36 @@
     public ShipContext Ship3 { get; private set; }
     public ShipContext Ship4 { get; private set; }
 
-    public Layout(string matchToken, Data.LobbyMatch lobbyMatch) : base("Layout")
+    public Layout() : base("Layout")
     {
-        Core.Instance.StartMatch(matchToken);
-        Core.Instance.Match.JoinToMatch((Data.CurrencyType)lobbyMatch.Bet.Type, lobbyMatch.Bet.Value);
+        Core.Instance.Match.OnMatchReceived += OnMatchReceived;
+        Core.Instance.Match.ResetField();
+    }
 
-        Ship1.Init(4, 0);
-        Ship2.Init(3, 0);
-        Ship3.Init(2, 0);
-        Ship4.Init(1, 0);
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Core.Instance.Match.OnMatchReceived -= OnMatchReceived;
+    }
+
+    private void OnMatchReceived(Data.Match match)
+    {
+        Ship1.Count.Value = match.My.FreeShips.Count1;
+        Ship2.Count.Value = match.My.FreeShips.Count2;
+        Ship3.Count.Value = match.My.FreeShips.Count3;
+        Ship4.Count.Value = match.My.FreeShips.Count4;
     }
 
     [BindCommand]
     private void ResetLayout()
     {
-
+        Core.Instance.Match.ResetField();
     }
 
     [BindCommand]
     private void AutoLayout()
     {
-
+        Core.Instance.Match.AutolayoutField();
     }
 
     [BindCommand]
