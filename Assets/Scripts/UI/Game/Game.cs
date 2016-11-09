@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Game : EmptyScreenWithBackground
 {
@@ -18,6 +19,8 @@ public class Game : EmptyScreenWithBackground
     public ShipViewContext MyFieldShip3_1;
     public ShipViewContext MyFieldShip3_2;
     public ShipViewContext MyFieldShip4_1;
+
+    public PlayerContext MyInfo;
     #endregion
 
     #region Opponent field bindings
@@ -36,7 +39,13 @@ public class Game : EmptyScreenWithBackground
     public ShipViewContext OpponentFieldShip3_1;
     public ShipViewContext OpponentFieldShip3_2;
     public ShipViewContext OpponentFieldShip4_1;
+
+    public PlayerContext OpponentInfo;
     #endregion
+
+    public Bind<bool> IsMyTurn;
+    public Bind<bool> IsOpponentTurn;
+    public Bind<int> TurnNumber;
 
     public Game() : base("Game")
     {
@@ -105,6 +114,25 @@ public class Game : EmptyScreenWithBackground
         OpponentFieldShip3_1.FetchFromModel(_ships_3, 0);
         OpponentFieldShip3_2.FetchFromModel(_ships_3, 1);
         OpponentFieldShip4_1.FetchFromModel(_ships_4, 0);
+
+        // turn setup
+        //
+        IsMyTurn.Value = match.My.Status == 3;
+        IsOpponentTurn.Value = match.Opponent != null ? match.Opponent.Status == 3 : false;
+        TurnNumber.Value = 1;
+
+        // my info setup
+        //
+        if (Core.Instance.Character != null)
+        {
+            MyInfo.Name.Value = Core.Instance.Character.Nick;
+            MyInfo.Avatar.Value = Resources.Load<Texture2D>(Core.Instance.Character.Avatar);
+        }
+
+        // opponent info setup
+        //
+        OpponentInfo.Name.Value = "TODO: opponent name";
+        OpponentInfo.Avatar.Value = null;
     }
 
     [BindCommand]

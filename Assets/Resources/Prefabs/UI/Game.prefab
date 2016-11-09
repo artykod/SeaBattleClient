@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000010857128522}
   m_Layer: 0
-  m_Name: EnemyInfo
+  m_Name: OpponentInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,6 +517,7 @@ GameObject:
   - 224: {fileID: 224000010455532080}
   - 222: {fileID: 222000011654256996}
   - 114: {fileID: 114000013599577852}
+  - 114: {fileID: 114000012001764552}
   m_Layer: 0
   m_Name: MyTurn
   m_TagString: Untagged
@@ -812,8 +813,9 @@ GameObject:
   - 224: {fileID: 224000010374880838}
   - 222: {fileID: 222000012680564280}
   - 114: {fileID: 114000012450000512}
+  - 114: {fileID: 114000010011254638}
   m_Layer: 0
-  m_Name: EnemyTurn
+  m_Name: OpponentTurn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -940,7 +942,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000013621702264}
   m_Layer: 0
-  m_Name: PlayerInfo
+  m_Name: MyInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1370,6 +1372,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000010011254638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012676803900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87e3fe887fde6f4e8a859cec6049176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: IsOpponentTurn
+  _inverted: 0
+  _compareMethod: 0
+  _compareValue: 1
 --- !u!114 &114000010022174406
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1445,7 +1462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2fc44b3dd72b7448ed7e671be84e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: 
+  _propertyName: MyInfo.Avatar
   _tiled: 0
   _scale: {x: 1, y: 1}
 --- !u!114 &114000010228112162
@@ -2174,7 +2191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: 
+  _propertyName: OpponentInfo.Name
   _format: '{0}'
   _additionalValues: []
 --- !u!114 &114000011095268668
@@ -3004,6 +3021,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000012001764552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011738792122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87e3fe887fde6f4e8a859cec6049176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: IsMyTurn
+  _inverted: 0
+  _compareMethod: 0
+  _compareValue: 1
 --- !u!114 &114000012011720476
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3715,7 +3747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2fc44b3dd72b7448ed7e671be84e92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: 
+  _propertyName: OpponentInfo.Avatar
   _tiled: 0
   _scale: {x: 1, y: 1}
 --- !u!114 &114000012759640392
@@ -4314,7 +4346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b5955596f6f64749be0e8c8e9018b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: 
+  _propertyName: MyInfo.Name
   _format: '{0}'
   _additionalValues: []
 --- !u!114 &114000013399876034
