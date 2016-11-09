@@ -34,8 +34,14 @@ public class Core : MonoBehaviour
         DebugConsole.Instance.Init();
         LanguageController.Instance.Initialize();
 
+        Connection.Instance.SetAuthCookies("connect.sid=s%3AZXF9eQm_32AyziO904hNkvqkF5DlVC-o.5IBXKnwS%2FyWMzsRzlHcvtBIEjP1ZZ3nVOpUHLy5Ikyc; Path=/; HttpOnly");
+
         Auth = new ServerApi.Auth();
         Lobby = new ServerApi.Lobby();
+        
+        MakeApiForMatch("eeM-yXsQRya-yQ");
+        new Layout();
+        return;
 
         Auth.OnLogin += OnLoginHandler;
         IsLoginDone = false;
@@ -43,6 +49,7 @@ public class Core : MonoBehaviour
 
     private IEnumerator Start()
     {
+        yield break;
         Auth.Login();
 
         while (!IsLoginDone)

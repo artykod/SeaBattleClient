@@ -11,11 +11,11 @@ public class PositionBinding : BindViewMonoBehaviour
 
     protected override object GetValueHandler()
     {
-        return _selfTransform.position;
+        return _selfTransform.localPosition;
     }
 
     protected override void ValueChangedHandler(object value)
     {
-        _selfTransform.position = (Vector3)value;
+        _selfTransform.localPosition = (Vector3)value;
     }
 }

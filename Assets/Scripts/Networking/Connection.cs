@@ -24,6 +24,11 @@ namespace Networking
             public string Token { get; private set; }
         }
 
+        public void SetAuthCookies(string cookies)
+        {
+            _requestHeaders["Cookie"] = cookies;
+        }
+
         public void Login(Action<Data.Character> onLogin)
         {
             GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin));
@@ -40,7 +45,9 @@ namespace Networking
         {
             GetInternal<Data.Character>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
-                _requestHeaders["Cookie"] = resp_h["SET-COOKIE"];
+                var cookies = resp_h["SET-COOKIE"];
+                Debug.Log("Auth cookies: " + cookies);
+                _requestHeaders["Cookie"] = cookies;
                 onLogin(resp);
             });
         }
