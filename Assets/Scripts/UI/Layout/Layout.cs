@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Layout : EmptyScreenWithBackground
 {
@@ -17,11 +18,21 @@ public class Layout : EmptyScreenWithBackground
     public ShipViewContext FieldShip3_1;
     public ShipViewContext FieldShip3_2;
     public ShipViewContext FieldShip4_1;
+    
+    private FieldCellsContent _fieldCells;
+
+    private Transform _root;
+    protected override Transform Content { get { return !_root ? transform : _root; } }
 
     public Layout() : base("Layout")
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
-        Core.Instance.Match.ResetField();
+        Core.Instance.Match.GetCurrentState();
+
+        _fieldCells = new FieldCellsContent();
+        _root = transform.FindChild("CellsRoot");
+        AddLast(_fieldCells);
+        _root = null;
     }
 
     protected override void OnDestroy()
@@ -37,7 +48,7 @@ public class Layout : EmptyScreenWithBackground
         var _ships_3 = new List<ShipModel>();
         var _ships_4 = new List<ShipModel>();
 
-        ShipModel.FillAllShips(match.My.Field, _ships_1, _ships_2, _ships_3, _ships_4);
+        ShipModel.FillAllShips(true, match.My.Field, _ships_1, _ships_2, _ships_3, _ships_4);
 
         FieldShip1_1.FetchFromModel(_ships_1, 0);
         FieldShip1_2.FetchFromModel(_ships_1, 1);
@@ -54,6 +65,8 @@ public class Layout : EmptyScreenWithBackground
         Ship2.Count.Value = match.My.FreeShips.Count2;
         Ship3.Count.Value = match.My.FreeShips.Count3;
         Ship4.Count.Value = match.My.FreeShips.Count4;
+
+        _fieldCells.UpdateData(match.My.Field);
     }
 
     [BindCommand]
@@ -71,13 +84,16 @@ public class Layout : EmptyScreenWithBackground
     [BindCommand]
     private void Battle()
     {
+        Root.Destroy();
+        Core.Instance.Match.SendReady();
         new Game();
     }
 
     [BindCommand]
     private void Back()
     {
-        Destroy();
+        Core.Instance.Match.SendNotReady();
+        Root.Destroy();
     }
 
     [BindCommand]

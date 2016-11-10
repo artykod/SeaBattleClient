@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class DashboardContent : BindModel
+﻿public class DashboardContent : BindModel
 {
     private Data.Character _character;
 
@@ -14,11 +12,11 @@ public class DashboardContent : BindModel
     public DashboardContent(Data.Character character, Data.BattleStatistics stats) : base("UI/Dashboard/DashboardContent")
     {
         _character = Core.Instance.Character;
-
-        Player.Avatar.Value = Resources.Load<Texture2D>(_character.Avatar);
+        
         Player.Name.Value = _character.Nick;
         Player.Gold.Value = _character.Gold;
         Player.Silver.Value = _character.Silver;
+        Core.Instance.LoadUserAvatar(_character.Id, Player.Avatar);
 
         var fmt = "{0} <color=#00188f>({1})</color>";
 
@@ -42,12 +40,12 @@ public class DashboardContent : BindModel
     [BindCommand]
     private void AddGold()
     {
-
+        Debug.Log("TODO: buy gold");
     }
 
     [BindCommand]
     private void AddSilver()
     {
-
+        Debug.Log("TODO: buy silver");
     }
 }

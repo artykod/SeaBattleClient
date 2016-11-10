@@ -8,6 +8,11 @@ public class ImageArrayBinding : BindViewMonoBehaviour
     private Sprite[] _array;
     private Image _image;
 
+    public void ReplaceArray(Sprite[] array)
+    {
+        _array = array;
+    }
+
     private void Awake()
     {
         _image = GetComponent<Image>();

@@ -29,6 +29,11 @@ namespace Networking
             _requestHeaders["Cookie"] = cookies;
         }
 
+        public string GetAuthCookies()
+        {
+            return _requestHeaders["Cookie"];
+        }
+
         public void Login(Action<Data.Character> onLogin)
         {
             GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin));

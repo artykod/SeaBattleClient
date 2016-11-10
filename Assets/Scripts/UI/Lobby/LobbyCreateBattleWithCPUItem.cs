@@ -2,7 +2,7 @@
 {
     public LobbyCreateBattleWithCPUItem() : base()
     {
-        Title.Value = LanguageController.Localize("lobby.create");
+        Title.Value = LanguageController.Localize("lobby.play_with_bot");
     }
 
     protected override bool IsMatchWithBot { get { return true; } }

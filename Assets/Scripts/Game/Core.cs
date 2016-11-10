@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿//#define DEBUG_BATTLE
+
+using UnityEngine;
 using Networking;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Core : MonoBehaviour
 {
@@ -24,6 +27,21 @@ public class Core : MonoBehaviour
     public void MakeApiForMatch(string matchToken)
     {
         Match = new ServerApi.Match(matchToken);
+
+        SaveMatchAuth(matchToken);
+    }
+
+    private void SaveMatchAuth(string token)
+    {
+        PlayerPrefs.SetString("match_token", token);
+        PlayerPrefs.SetString("auth_cookie", Connection.Instance.GetAuthCookies());
+        PlayerPrefs.Save();
+    }
+
+    private void LoadMatchAuth()
+    {
+        Connection.Instance.SetAuthCookies(PlayerPrefs.GetString("auth_cookie"));
+        MakeApiForMatch(PlayerPrefs.GetString("match_token"));
     }
 
     private void Awake()
@@ -34,23 +52,25 @@ public class Core : MonoBehaviour
         DebugConsole.Instance.Init();
         LanguageController.Instance.Initialize();
 
-        Connection.Instance.SetAuthCookies("connect.sid=s%3AZXF9eQm_32AyziO904hNkvqkF5DlVC-o.5IBXKnwS%2FyWMzsRzlHcvtBIEjP1ZZ3nVOpUHLy5Ikyc; Path=/; HttpOnly");
-
         Auth = new ServerApi.Auth();
         Lobby = new ServerApi.Lobby();
-        
-        MakeApiForMatch("eeM-yXsQRya-yQ");
-        new Layout();
-        return;
 
+#if DEBUG_BATTLE
+        IsLoginDone = true;
+        LoadMatchAuth();
+
+        new Layout();
+#else
         Auth.OnLogin += OnLoginHandler;
         IsLoginDone = false;
+#endif
     }
 
     private IEnumerator Start()
     {
-        yield break;
+#if !DEBUG_BATTLE
         Auth.Login();
+#endif
 
         while (!IsLoginDone)
         {
@@ -62,10 +82,50 @@ public class Core : MonoBehaviour
     {
         IsLoginDone = true;
         Character = character;
+
+        if (PreloaderBehaviour.Instance == null)
+        {
+            StartGame();
+        }
     }
 
     public void StartGame()
     {
         new Menu();
+    }
+
+    private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
+
+    public void LoadUserAvatar(int userId, Bind<Texture2D> texture)
+    {
+        var url = string.Format("http://45.120.149.115:4000/avatars/{0}.png", userId);
+        if (_avatarsCache.ContainsKey(url))
+        {
+            texture.Value = _avatarsCache[url];
+            return;
+        }
+        StartCoroutine(LoadUserAvatar(url, texture));
+    }
+
+    private IEnumerator LoadUserAvatar(string url, Bind<Texture2D> texture)
+    {
+        using (var loader = new WWW(url))
+        {
+            while (!loader.isDone)
+            {
+                yield return null;
+            }
+
+            if (string.IsNullOrEmpty(loader.error))
+            {
+                var tex = loader.textureNonReadable;
+                if (_avatarsCache.ContainsKey(url))
+                {
+                    Destroy(_avatarsCache[url]);
+                }
+                _avatarsCache[url] = tex;
+                texture.Value = tex;
+            }
+        }
     }
 }

@@ -47,9 +47,6 @@ namespace Data
         public int Silver { get; private set; }
         [JsonProperty("gold")]
         public int Gold { get; private set; }
-
-        [JsonIgnore]
-        public string Avatar { get { return "Textures/avatar"; } }
     }
 
     public class MatchBet
@@ -142,8 +139,18 @@ namespace Data
         public MatchBet Bet { get; private set; }
     }
 
+    public class MatchUser
+    {
+        [JsonProperty("id")]
+        public int Id { get; private set; }
+        [JsonProperty("nick")]
+        public string Nick { get; private set; }
+    }
+
     public class FieldState
     {
+        [JsonProperty("user")]
+        public MatchUser User { get; private set; }
         [JsonProperty("status")]
         public int Status { get; private set; }
         [JsonProperty("field")]

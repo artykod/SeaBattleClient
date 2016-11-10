@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class Menu : EmptyScreenWithBackground
+﻿public class Menu : EmptyScreenWithBackground
 {
     private Data.Character _character;
 
@@ -21,11 +19,11 @@ public class Menu : EmptyScreenWithBackground
     public void UpdateData()
     {
         _character = Core.Instance.Character;
-
-        Player.Avatar.Value = Resources.Load<Texture2D>(_character.Avatar);
+        
         Player.Name.Value = _character.Nick;
         Player.Gold.Value = _character.Gold;
         Player.Silver.Value = _character.Silver;
+        Core.Instance.LoadUserAvatar(_character.Id, Player.Avatar);
     }
 
     protected override void OnShowScreen()

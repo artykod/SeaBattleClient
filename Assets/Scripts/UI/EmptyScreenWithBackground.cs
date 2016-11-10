@@ -14,12 +14,14 @@ public abstract class EmptyScreenWithBackground : BindModel
     {
         get
         {
-            return _canvas.enabled;
+            return _canvas ? _canvas.enabled : false;
         }
         set
         {
-            var prev = _canvas.enabled;
+            if (_canvas == null) return;
 
+            var prev = _canvas.enabled;
+            
             _canvas.enabled = value;
             _caster.enabled = value;
 

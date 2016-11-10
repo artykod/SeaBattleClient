@@ -102,6 +102,11 @@ namespace Networking
                 Connection.Post<Data.Empty, Data.Match>(MatchRequest("setNotReady"), new Data.Empty(), resp => MatchReceived(resp));
             }
 
+            public void GetCurrentState()
+            {
+                Connection.Get<Data.Match>(MatchRequest(""), resp => MatchReceived(resp));
+            }
+
             public void Shoot(int x, int y)
             {
                 Connection.Post<Data.Empty, Data.ShootResult>(MatchRequest("shoot/{0}/{1}", x, y), new Data.Empty(), resp =>
