@@ -9,12 +9,23 @@ public class GameFieldInput : MonoBehaviour, IPointerClickHandler
 
     private int _x;
     private int _y;
+    private GameFieldWrongMoveAnimation _wrongMoveAnimation;
 
     public System.Action<int, int> OnCellClick = delegate { };
+
+    public void WrongMove()
+    {
+        if (_wrongMoveAnimation) _wrongMoveAnimation.Play();
+    }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         OnCellClick(_x, _y);
+    }
+
+    private void Awake()
+    {
+        _wrongMoveAnimation = GetComponentInChildren<GameFieldWrongMoveAnimation>();
     }
 
     private void Update()

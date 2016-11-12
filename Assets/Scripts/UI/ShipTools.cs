@@ -1,6 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+public class FieldShipsAliveStateContext : NeastedBindContext
+{
+    public Bind<int> Ship1_1;
+    public Bind<int> Ship1_2;
+    public Bind<int> Ship1_3;
+    public Bind<int> Ship1_4;
+    public Bind<int> Ship2_1;
+    public Bind<int> Ship2_2;
+    public Bind<int> Ship2_3;
+    public Bind<int> Ship3_1;
+    public Bind<int> Ship3_2;
+    public Bind<int> Ship4_1;
+}
+
 public class FieldCellContext : NeastedBindContext
 {
     public Bind<int> Mode;
