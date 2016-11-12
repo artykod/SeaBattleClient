@@ -49,6 +49,7 @@ namespace Networking
             public event Action<Data.Match> OnMatchReceived = delegate { };
             public event Action<Data.ShootResultType> OnShootResult = delegate { };
             public event Action<Data.OpponentField> OnOpponentFieldReceived = delegate { };
+            public event Action OnMatchNotFound = delegate { };
 
             private string _matchToken;
 
@@ -67,44 +68,59 @@ namespace Networking
                 OnMatchReceived(match);
             }
 
+            private void LayoutRequestErrorHandler(int errorCode)
+            {
+                MatchRequestErrorHandler(errorCode);
+            }
+
+            private void MatchRequestErrorHandler(int errorCode)
+            {
+                switch (errorCode)
+                {
+                    case 404:
+                        OnMatchNotFound();
+                        break;
+                }
+            }
+
             public void JoinToMatch(Data.CurrencyType currency, int value)
             {
-                Connection.Post<Data.MatchBet, Data.Match>(MatchRequest("new"), new Data.MatchBet(currency, value), resp => MatchReceived(resp));
+                Connection.Post<Data.MatchBet, Data.Match>(MatchRequest("new"), new Data.MatchBet(currency, value), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void AutolayoutField()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("autoSetUp"), new Data.Empty(), resp => MatchReceived(resp));
+                Connection.Post<Data.Empty, Data.Match>(MatchRequest("autoSetUp"), new Data.Empty(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
             public void ResetField()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("reset"), new Data.Empty(), resp => MatchReceived(resp));
+                Connection.Post<Data.Empty, Data.Match>(MatchRequest("reset"), new Data.Empty(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
             public void PlaceShip(Data.FieldShip ship)
             {
-                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("placeShip"), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp));
+                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("placeShip"), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
             public void ChangeShip(int x, int y, Data.FieldShip ship)
             {
-                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("changeShip/{0}/{1}", x, y), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp));
+                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("changeShip/{0}/{1}", x, y), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
             public void SendReady()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setReady"), new Data.Empty(), resp => MatchReceived(resp));
+                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setReady"), new Data.Empty(), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void SendNotReady()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setNotReady"), new Data.Empty(), resp => MatchReceived(resp));
+                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setNotReady"), new Data.Empty(), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void GetCurrentState()
             {
-                Connection.Get<Data.Match>(MatchRequest(""), resp => MatchReceived(resp));
+                Connection.Get<Data.Match>(MatchRequest(""), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void Shoot(int x, int y)
@@ -113,12 +129,12 @@ namespace Networking
                 {
                     OnMatchReceived(resp.Match);
                     OnShootResult(resp.Result);
-                });
+                }, MatchRequestErrorHandler);
             }
 
             public void GetOpponentFieldAfterBattle()
             {
-                Connection.Post<Data.Empty, Data.OpponentField>(MatchRequest("oppField"), new Data.Empty(), resp => OnOpponentFieldReceived(resp));
+                Connection.Post<Data.Empty, Data.OpponentField>(MatchRequest("oppField"), new Data.Empty(), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
             }
         }
     }

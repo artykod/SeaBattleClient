@@ -1,4 +1,5 @@
 ﻿#define USE_TEMP_AUTH_SERVER
+//#define NET_DEBUG
 
 using UnityEngine;
 using System;
@@ -36,7 +37,7 @@ namespace Networking
 
         public void Login(Action<Data.Character> onLogin)
         {
-            GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin));
+            GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin), null);
         }
 #else
         public void Login(Action<Data.Character> onLogin)
@@ -51,78 +52,100 @@ namespace Networking
             GetInternal<Data.Character>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
                 var cookies = resp_h["SET-COOKIE"];
-                Debug.Log("Auth cookies: " + cookies);
                 _requestHeaders["Cookie"] = cookies;
                 onLogin(resp);
-            });
+
+#if NET_DEBUG
+                Debug.Log("Auth cookies: " + cookies);
+#endif
+            }, null);
         }
 
-        public static void Get<T>(string method, Action<T> result) where T : class
+        public static void Get<T>(string method, Action<T> result, Action<int> onError = null) where T : class
         {
-            Instance.GetInternal<T>(GameServerAddress, method, (resp, resp_h) => result(resp));
+            Instance.GetInternal<T>(GameServerAddress, method, (resp, resp_h) => result(resp), onError);
         }
 
-        public static void Post<R, T>(string method, R data, Action<T> result) where T : class
+        public static void Post<R, T>(string method, R data, Action<T> result, Action<int> onError = null) where T : class
         {
-            Instance.PostInternal<R, T>(GameServerAddress, method, data, (resp, resp_h) => result(resp));
+            Instance.PostInternal<R, T>(GameServerAddress, method, data, (resp, resp_h) => result(resp), onError);
         }
 
-        private void GetInternal<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse) where T : class
+        private void GetInternal<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
         {
-            StartCoroutine(GetAsync(host, request, onResponse));
+            StartCoroutine(GetAsync(host, request, onResponse, onError));
         }
 
-        private IEnumerator GetAsync<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse) where T : class
+        private IEnumerator GetAsync<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
         {
+#if NET_DEBUG
             Debug.LogWarning("GET <<< {0}{1}", host, request);
+#endif
 
             using (var www = new WWW(host + request, null, _requestHeaders))
             {
-                while (!www.isDone)
-                {
-                    yield return null;
-                }
+                while (!www.isDone) yield return null;
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-                    Debug.LogWarning("GET >>> {0}", www.text);
                     onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
+#if NET_DEBUG
+                    Debug.LogWarning("GET >>> {0}", www.text);
+#endif
                 }
                 else
                 {
-                    Debug.LogError("{0}", www.error);
+                    ThrowNetworkError(www.error, onError);
                 }
             }
         }
 
-        private void PostInternal<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse) where T : class
+        private void PostInternal<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
         {
-            StartCoroutine(PostAsync(host, request, data, onResponse));
+            StartCoroutine(PostAsync(host, request, data, onResponse, onError));
         }
 
-        private IEnumerator PostAsync<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse) where T : class
+        private IEnumerator PostAsync<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
         {
             var json = JsonConvert.SerializeObject(data);
+#if NET_DEBUG
             Debug.LogWarning("POST <<< {0}{1}", host, request);
             Debug.Log("POST json = {0}", json);
+#endif
 
             using (var www = new WWW(host + request, System.Text.Encoding.UTF8.GetBytes(json), _requestHeaders))
             {
-                while (!www.isDone)
-                {
-                    yield return null;
-                }
+                while (!www.isDone) yield return null;
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-                    Debug.LogWarning("POST >>> {0}", www.text);
                     onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
+#if NET_DEBUG
+                    Debug.LogWarning("POST >>> {0}", www.text);
+#endif
                 }
                 else
                 {
-                    Debug.LogError(www.error);
+                    ThrowNetworkError(www.error, onError);
                 }
             }
+        }
+
+        private void ThrowNetworkError(string error, Action<int> errorCallback)
+        {
+            Debug.LogError("Network error: " + error);
+            if (errorCallback != null) errorCallback(ParseErrorCode(error));
+        }
+
+        private int ParseErrorCode(string error)
+        {
+            if (error.Contains("400")) return 400;
+            if (error.Contains("403")) return 403;
+            if (error.Contains("404")) return 404;
+            if (error.Contains("409")) return 409;
+            if (error.Contains("500")) return 500;
+
+            return -1;
         }
     }
 }

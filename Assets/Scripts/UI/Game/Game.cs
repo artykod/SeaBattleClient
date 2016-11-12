@@ -9,14 +9,22 @@ public class Game : EmptyScreenWithBackground
     public Game() : base("Game/Game")
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
+        Core.Instance.Match.OnMatchNotFound += OnMatchLost;
         StartCoroutine(CheckBattleState());
         IsLoading = true;
+    }
+
+    private void OnMatchLost()
+    {
+        Root.Destroy();
+        // TODO: match not found error
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Core.Instance.Match.OnMatchReceived -= OnMatchReceived;
+        Core.Instance.Match.OnMatchNotFound -= OnMatchLost;
     }
 
     private void OnMatchReceived(Data.Match match)
