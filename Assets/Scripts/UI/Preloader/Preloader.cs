@@ -24,18 +24,7 @@ public class Preloader : EmptyScreenWithBackground
             yield return null;
         }
         Progress.Value = loading.progress;
-
-        LoadingStatus.Value = "Connecting...";
-
-        while (Core.Instance == null || !Core.Instance.IsLoginDone)
-        {
-            yield return null;
-        }
-
-        LoadingStatus.Value = "Start game...";
-
         Destroy();
-
         SceneManager.UnloadScene(0);
 
         Core.Instance.StartGame();

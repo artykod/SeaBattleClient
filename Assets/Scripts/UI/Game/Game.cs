@@ -9,6 +9,7 @@ public class Game : EmptyScreenWithBackground
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
         StartCoroutine(CheckBattleState());
+        IsLoading = true;
     }
 
     protected override void OnDestroy()
@@ -23,6 +24,7 @@ public class Game : EmptyScreenWithBackground
         {
             _gameContent = new GameContent();
             AddLast(_gameContent);
+            IsLoading = false;
         }
         _gameContent.UpdateData(match);
     }

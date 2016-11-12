@@ -18,16 +18,16 @@ public class Core : MonoBehaviour
 #endif
 
     public bool IsLoginDone { get; private set; }
-
     public ServerApi.Auth Auth { get; private set; }
     public ServerApi.Lobby Lobby { get; private set; }
     public ServerApi.Match Match { get; private set; }
     public Data.Character Character { get; private set; }
 
+    private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
+
     public void MakeApiForMatch(string matchToken)
     {
         Match = new ServerApi.Match(matchToken);
-
         SaveMatchAuth(matchToken);
     }
 
@@ -64,6 +64,8 @@ public class Core : MonoBehaviour
         Auth.OnLogin += OnLoginHandler;
         IsLoginDone = false;
 #endif
+
+        if (PreloaderBehaviour.Instance == null) StartGame();
     }
 
     private IEnumerator Start()
@@ -71,30 +73,19 @@ public class Core : MonoBehaviour
 #if !DEBUG_BATTLE
         Auth.Login();
 #endif
-
-        while (!IsLoginDone)
-        {
-            yield return null;
-        }
+        while (!IsLoginDone) yield return null;
     }
 
     private void OnLoginHandler(Data.Character character)
     {
         IsLoginDone = true;
         Character = character;
-
-        if (PreloaderBehaviour.Instance == null)
-        {
-            StartGame();
-        }
     }
 
     public void StartGame()
     {
         new Menu();
     }
-
-    private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
 
     public void LoadUserAvatar(int userId, Bind<Texture2D> texture)
     {
@@ -111,10 +102,7 @@ public class Core : MonoBehaviour
     {
         using (var loader = new WWW(url))
         {
-            while (!loader.isDone)
-            {
-                yield return null;
-            }
+            while (!loader.isDone) yield return null;
 
             if (string.IsNullOrEmpty(loader.error))
             {

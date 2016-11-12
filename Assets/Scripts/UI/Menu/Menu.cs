@@ -1,57 +1,38 @@
 ﻿public class Menu : EmptyScreenWithBackground
 {
-    private Data.Character _character;
+    private MenuContent _menuContent;
 
-    public SocialContext Social { get; private set; }
-    public PlayerContext Player { get; private set; }
-    
-    public Bind<bool> IsSoundEnabled { get; private set; }
-
-    public Menu() : base("Menu")
+    public Menu() : base("Menu/Menu")
     {
         AddFirst(new BackgroundArt());
+        Core.Instance.Auth.OnLogin += LoginHandler;
+        IsLoading = true;
+    }
 
-        UpdateData();
+    protected override void OnDestroy()
+    {
+        Core.Instance.Auth.OnLogin -= LoginHandler;
+    }
 
-        IsSoundEnabled.OnValueChanged += (val) => SoundController.IsSoundEnabled = val.Value;
+    private void LoginHandler(Data.Character character)
+    {
+        if (_menuContent == null)
+        {
+            _menuContent = new MenuContent();
+            _menuContent.IsSoundEnabled.Value = SoundController.IsSoundEnabled;
+            AddLast(_menuContent);
+        }
+
+        IsLoading = false;
     }
 
     public void UpdateData()
     {
-        _character = Core.Instance.Character;
-        
-        Player.Name.Value = _character.Nick;
-        Player.Gold.Value = _character.Gold;
-        Player.Silver.Value = _character.Silver;
-        Core.Instance.LoadUserAvatar(_character.Id, Player.Avatar);
+        _menuContent.UpdateData();
     }
 
     protected override void OnShowScreen()
     {
-        IsSoundEnabled.Value = SoundController.IsSoundEnabled;
-    }
-
-    [BindCommand]
-    private void Play()
-    {
-        new Lobby();
-    }
-
-    [BindCommand]
-    private void Dashboard()
-    {
-        new Dashboard();
-    }
-
-    [BindCommand]
-    private void Settings()
-    {
-        new Settings();
-    }
-
-    [BindCommand]
-    private void Rules()
-    {
-        new Rules();
+        if (_menuContent != null) _menuContent.IsSoundEnabled.Value = SoundController.IsSoundEnabled;
     }
 }

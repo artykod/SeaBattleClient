@@ -92,7 +92,6 @@ public class Layout : EmptyScreenWithBackground
     [BindCommand]
     private void Back()
     {
-        Core.Instance.Match.SendNotReady();
         Root.Destroy();
     }
 
