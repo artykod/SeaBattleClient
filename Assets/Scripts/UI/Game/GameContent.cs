@@ -73,6 +73,16 @@ public class GameContent : BindModel
         TurnNumber.Value = 1;
     }
 
+    public void BlockUI()
+    {
+        _fieldInput.IsCrossVisible = false;
+    }
+
+    public void UnblockUI()
+    {
+        _fieldInput.IsCrossVisible = true;
+    }
+
     private void OnOpponentFieldClick(int x, int y)
     {
         if (IsMyTurn.Value && _opponentField != null && _opponentField[x][y] == 0)
@@ -171,6 +181,11 @@ public class GameContent : BindModel
         }
 
         TurnNumber.Value = match.TurnNumber;
+
+        if (IsMyTurn.Value)
+            UnblockUI();
+        else
+            BlockUI();
     }
 
     public void UpdateChat(Data.Chat chat)

@@ -7,6 +7,20 @@ public class GameFieldInput : MonoBehaviour, IPointerClickHandler
     public RectTransform CrossLineV;
     public RectTransform CrossLineH;
 
+    public bool IsCrossVisible
+    {
+        get
+        {
+            return Cross.gameObject.activeSelf;
+        }
+        set
+        {
+            Cross.gameObject.SetActive(value);
+            CrossLineV.gameObject.SetActive(value);
+            CrossLineH.gameObject.SetActive(value);
+        }
+    }
+
     private int _x;
     private int _y;
     private GameFieldWrongMoveAnimation _wrongMoveAnimation;
@@ -38,7 +52,7 @@ public class GameFieldInput : MonoBehaviour, IPointerClickHandler
         if (mp.x > rt.rect.xMax) mp.x = rt.rect.xMax;
         if (mp.y < rt.rect.yMin) mp.y = rt.rect.yMin;
         if (mp.y > rt.rect.yMax) mp.y = rt.rect.yMax;
-        
+
         _x = Mathf.Clamp(Mathf.FloorToInt((mp.x + 32f) / 64f), -4, 5);
         _y = Mathf.Clamp(Mathf.FloorToInt((mp.y + 16f) / 64f), -5, 4);
 

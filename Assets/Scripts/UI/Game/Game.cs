@@ -62,7 +62,11 @@ public class Game : EmptyScreenWithBackground
         _gameContent.UpdateData(match);
         _lastRequestSuccess = true;
 
-        if (match.My != null && match.Opponent != null && (match.My.Status == 3 || match.Opponent.Status == 3)) IsLoading = false;
+        if (match.My != null && match.Opponent != null && (match.My.Status == 3 || match.Opponent.Status == 3))
+        {
+            IsLoading = false;
+            if (_gameContent != null) _gameContent.UnblockUI();
+        }
 
         CheckEndMatch(match);
     }
@@ -84,6 +88,8 @@ public class Game : EmptyScreenWithBackground
                 _isBattleDone = true;
                 break;
         }
+
+        if (_isBattleDone && _gameContent != null) _gameContent.BlockUI();
     }
 
     private void ExitFromBattle()
@@ -97,7 +103,11 @@ public class Game : EmptyScreenWithBackground
         {
             if (_isBattleDone) break;
 
-            if (!_lastRequestSuccess) IsLoading = true;
+            if (!_lastRequestSuccess)
+            {
+                IsLoading = true;
+                if (_gameContent != null) _gameContent.BlockUI();
+            }
 
             _lastRequestSuccess = false;
             Core.Instance.Match.GetCurrentState();
