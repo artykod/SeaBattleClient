@@ -28,12 +28,13 @@ public class Layout : EmptyScreenWithBackground
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
         Core.Instance.Match.OnMatchNotFound += OnMatchNotFound;
-        Core.Instance.Match.GetCurrentState();
 
         _fieldCells = new FieldCellsContent();
         _root = transform.FindChild("CellsRoot");
         AddLast(_fieldCells);
         _root = null;
+
+        AutoLayout();
     }
 
     private void OnMatchNotFound()
@@ -95,6 +96,12 @@ public class Layout : EmptyScreenWithBackground
     [BindCommand]
     private void Battle()
     {
+        if (Ship1.Count.Value > 0 || Ship2.Count.Value > 0 || Ship3.Count.Value > 0 || Ship4.Count.Value > 0)
+        {
+            new ErrorDialog("error.layout_not_done");
+            return;
+        }
+
         Root.Destroy();
         Core.Instance.Match.SendReady();
         new Game();

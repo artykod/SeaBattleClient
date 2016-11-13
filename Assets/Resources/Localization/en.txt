@@ -51,6 +51,7 @@
 
     "error.cant_create_match":"Cannot create match",
     "error.match_not_found":"Match not found",
+    "error.layout_not_done":"Not all ships on field",
 
     "chat.send_fail":"Cannot send message to chat. Try again.",
 }

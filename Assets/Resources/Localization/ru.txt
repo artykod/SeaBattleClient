@@ -51,6 +51,7 @@
 
     "error.cant_create_match":"Не удалось создать матч",
     "error.match_not_found":"Матч не найден",
+    "error.layout_not_done":"Не все кораблки расставлены",
 
     "chat.send_fail":"Не удалось отправить сообщение. Попробуйте еще раз.",
 }
