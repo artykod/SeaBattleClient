@@ -61,7 +61,8 @@ public class ShipCountViewContext : NeastedBindContext
 
     public ShipCountViewContext()
     {
-        Count.OnValueChanged += (val) => Mode.Value = val.Value > 0 ? 0 : 2;
+        //Count.OnValueChanged += (val) => Mode.Value = val.Value > 0 ? 0 : 2;
+        Mode.Value = 2;
     }
 }
 
@@ -70,19 +71,37 @@ public class ShipViewContext : NeastedBindContext
     public Bind<bool> Visible;
     public Bind<float> Rotation;
     public Bind<Vector3> Position;
+    public Bind<GameObject> Object;
+
+    private Vector3 _initialPosition;
+
+    public ShipViewContext()
+    {
+        Position.Value = new Vector3(0f, 9999f);
+    }
 
     public void FetchFromModel(List<ShipModel> models, int index)
     {
+        if (Object.Value != null) _initialPosition = Object.Value.transform.localPosition;
+
         Visible.Value = models.Count > 0 && models.Count > index;
         if (Visible.Value)
         {
             var cellW = 64f;
             var w = cellW * 5f;
             var model = models[index];
-
-            Position.Value = new Vector3(model.X * cellW - w + cellW - 10f, (9 - model.Y) * cellW - w + 10f);
-            Rotation.Value = model.Direction == Data.ShipDirection.Horizontal ? -90f : 0f;
+            UpdateData(new Vector3(model.X * cellW - w + cellW - 10f, (9 - model.Y) * cellW - w + 10f), model.Direction);
         }
+        else
+        {
+            UpdateData(_initialPosition, Data.ShipDirection.Horizontal);
+        }
+    }
+
+    private void UpdateData(Vector3 position, Data.ShipDirection direction)
+    {
+        Position.Value = position;
+        Rotation.Value = direction == Data.ShipDirection.Vertical ? -90f : 0f;
     }
 }
 
@@ -144,7 +163,7 @@ public class ShipModel
                     {
                         X = x,
                         Y = y,
-                        Direction = Data.ShipDirection.Horizontal,
+                        Direction = Data.ShipDirection.Vertical,
                     });
                     count = 0;
 
@@ -184,7 +203,7 @@ public class ShipModel
                     {
                         X = x,
                         Y = y,
-                        Direction = Data.ShipDirection.Vertical,
+                        Direction = Data.ShipDirection.Horizontal,
                     });
                     count = 0;
 
