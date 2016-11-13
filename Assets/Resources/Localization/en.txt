@@ -17,7 +17,7 @@
 	"dashboard.draw":"Draws",
 	
 	"settings.sound":"Sound",
-	"settings.language":"Язык/Language",
+	"settings.language":"Language",
 	
 	"rules.title":"Game rules",
 	"rules.text1":"Choose from the list of ships and drag them onto the playing field.",
@@ -51,4 +51,6 @@
 
     "error.cant_create_match":"Cannot create match",
     "error.match_not_found":"Match not found",
+
+    "chat.send_fail":"Cannot send message to chat. Try again.",
 }

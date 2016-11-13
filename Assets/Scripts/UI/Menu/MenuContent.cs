@@ -6,6 +6,7 @@
     public PlayerContext Player { get; private set; }
     
     public Bind<bool> IsSoundEnabled { get; private set; }
+    public Bind<bool> IsTempLoginEnabled { get; private set; }
 
     public MenuContent() : base("UI/Menu/MenuContent")
     {
@@ -14,6 +15,7 @@
         UpdateData();
 
         IsSoundEnabled.OnValueChanged += (val) => SoundController.IsSoundEnabled = val.Value;
+        IsTempLoginEnabled.Value = Networking.Connection.TempLoginEnabled;
     }
 
     public void UpdateData()
@@ -48,5 +50,12 @@
     private void Rules()
     {
         new Rules();
+    }
+
+    [BindCommand]
+    private void Logout()
+    {
+        Networking.Connection.Instance.Logout();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("TempLogin", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }

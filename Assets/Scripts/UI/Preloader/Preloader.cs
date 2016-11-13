@@ -25,7 +25,7 @@ public class Preloader : EmptyScreenWithBackground
         }
         Progress.Value = loading.progress;
         Destroy();
-        SceneManager.UnloadScene(0);
+        SceneManager.UnloadScene(SceneManager.GetSceneByName("Preloader"));
 
         Core.Instance.StartGame();
     }

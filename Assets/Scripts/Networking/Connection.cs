@@ -15,9 +15,10 @@ namespace Networking
         private Dictionary<string, string> _requestHeaders = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
 #if USE_TEMP_AUTH_SERVER
-        private const string TempAuthServerAddress = "http://45.120.149.115:4000";
-        private const string TempAuthUserName = "u1@r.ru"; // u1@r.ru; u2@r.ru;
-        private const string TempAuthUserPassword = "111"; // 111; 222;
+        public const bool TempLoginEnabled = true;
+        public const string TempAuthServerAddress = "http://45.120.149.115:4000";
+        public static string TempAuthUserName = "u1@r.ru"; // u1@r.ru; u2@r.ru;
+        public static string TempAuthUserPassword = "111"; // 111; 222;
 
         private class TempAuthResponse
         {
@@ -39,11 +40,22 @@ namespace Networking
         {
             GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin), null);
         }
+
+        public void Logout()
+        {
+            _requestHeaders.Remove("Cookie");
+        }
 #else
+        public const bool TempLoginEnabled = false;
+
         public void Login(Action<Data.Character> onLogin)
         {
             throw new NotImplementedException();
             //CheckLoginToken("<website token>", onLogin);
+        }
+
+        public void Logout()
+        {
         }
 #endif
 

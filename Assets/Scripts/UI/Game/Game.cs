@@ -25,17 +25,25 @@ public class Game : EmptyScreenWithBackground
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
         Core.Instance.Match.OnMatchNotFound += OnMatchLost;
         Core.Instance.Match.OnChatReceived += OnChatReceived;
-    }
-
-    private void OnChatReceived(Data.Chat chat)
-    {
-        if (_gameContent != null) _gameContent.UpdateChat(chat);
+        Core.Instance.Match.OnFailSendChat += FailSendToChat;
     }
 
     private void Unsubscribe()
     {
         Core.Instance.Match.OnMatchReceived -= OnMatchReceived;
         Core.Instance.Match.OnMatchNotFound -= OnMatchLost;
+        Core.Instance.Match.OnChatReceived -= OnChatReceived;
+        Core.Instance.Match.OnFailSendChat -= FailSendToChat;
+    }
+
+    private void FailSendToChat()
+    {
+        new ErrorDialog("chat.send_fail");
+    }
+
+    private void OnChatReceived(Data.Chat chat)
+    {
+        if (_gameContent != null) _gameContent.UpdateChat(chat);
     }
 
     private void OnMatchLost()

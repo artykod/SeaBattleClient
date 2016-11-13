@@ -14,7 +14,7 @@ public class ChatItem : BindModel
     {
         _time = new DateTime(1970, 1, 1).AddMilliseconds(unixTime);
         Name.Value = playerName;
-        Time.Value = string.Format("{0:D2}:{1:D2}:{2:D2}", _time.Hour, _time.Minute, _time.Second);
+        Time.Value = string.Format("{0:T}", _time);
         Message.Value = message;
 
         Color c;

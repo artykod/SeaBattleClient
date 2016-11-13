@@ -17,7 +17,7 @@
 	"dashboard.draw":"Ничьи",
 	
 	"settings.sound":"Звук",
-	"settings.language":"Язык/Language",
+	"settings.language":"Язык",
 	
 	"rules.title":"Правила игры",
 	"rules.text1":"Выбирайте корабли из списка и перетаскивайте на игровое поле.",
@@ -51,4 +51,6 @@
 
     "error.cant_create_match":"Не удалось создать матч",
     "error.match_not_found":"Матч не найден",
+
+    "chat.send_fail":"Не удалось отправить сообщение. Попробуйте еще раз.",
 }
