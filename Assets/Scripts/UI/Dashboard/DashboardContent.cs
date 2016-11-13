@@ -40,12 +40,12 @@
     [BindCommand]
     private void AddGold()
     {
-        Debug.Log("TODO: buy gold");
+        new ErrorDialog("TODO buy gold");
     }
 
     [BindCommand]
     private void AddSilver()
     {
-        Debug.Log("TODO: buy silver");
+        new ErrorDialog("TODO buy silver");
     }
 }

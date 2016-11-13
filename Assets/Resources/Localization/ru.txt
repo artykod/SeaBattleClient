@@ -1,6 +1,8 @@
 {
 	"common.default_name":"Игрок",
 	"common.btn_back":"В меню",
+    "common.retry":"Сыграть еще",
+    "common.exit":"Выйти",
 	
 	"menu.play":"Играть",
 	"menu.dashboard":"Личный кабинет",
@@ -43,4 +45,10 @@
     "lobby.create":"Создать матч",
     "lobby.create.btn":"Создать",
     "lobby.cancel":"Отменить",
+
+    "dialog.win.caption":"Победа!",
+    "dialog.lose.caption":"Поражение",
+
+    "error.cant_create_match":"Не удалось создать матч",
+    "error.match_not_found":"Матч не найден",
 }

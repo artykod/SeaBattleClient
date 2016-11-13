@@ -27,6 +27,12 @@ namespace Networking
             public event Action<Data.Lobby> OnLobbyReceived = delegate { };
             public event Action<string, Data.Match> OnMatchReceived = delegate { };
             public event Action<Data.BattleStatistics> OnBattleStatisticsReceived = delegate { };
+            public event Action OnFailMatchCreate = delegate { };
+
+            private void CreateMatchErrorHandler(int errorCode)
+            {
+                OnFailMatchCreate();
+            }
 
             public void GetLobby()
             {
@@ -35,7 +41,7 @@ namespace Networking
 
             public void CreateMatch(Data.CurrencyType currency, int value, bool withBot)
             {
-                Connection.Post<Data.CreateMatchRequest, Data.CreateMatchResponse>("/m/new", new Data.CreateMatchRequest(new Data.MatchBet(currency, value), withBot), resp => OnMatchReceived(resp.Key, resp.Match));
+                Connection.Post<Data.CreateMatchRequest, Data.CreateMatchResponse>("/m/new", new Data.CreateMatchRequest(new Data.MatchBet(currency, value), withBot), resp => OnMatchReceived(resp.Key, resp.Match), CreateMatchErrorHandler);
             }
 
             public void GetStatistics()
@@ -50,6 +56,8 @@ namespace Networking
             public event Action<Data.ShootResultType> OnShootResult = delegate { };
             public event Action<Data.OpponentField> OnOpponentFieldReceived = delegate { };
             public event Action OnMatchNotFound = delegate { };
+            public event Action OnFailSendChat = delegate { };
+            public event Action<Data.Chat> OnChatReceived = delegate { };
 
             private string _matchToken;
 
@@ -81,6 +89,11 @@ namespace Networking
                         OnMatchNotFound();
                         break;
                 }
+            }
+
+            private void SendChatErrorHandler(int errorCode)
+            {
+                OnFailSendChat();
             }
 
             public void JoinToMatch(Data.CurrencyType currency, int value)
@@ -135,6 +148,19 @@ namespace Networking
             public void GetOpponentFieldAfterBattle()
             {
                 Connection.Post<Data.Empty, Data.OpponentField>(MatchRequest("oppField"), new Data.Empty(), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
+            }
+
+            public void SendChatMessage(string message)
+            {
+                if (string.IsNullOrEmpty(message)) return;
+                Connection.Post<Data.SendChatMessage, Data.Empty>(MatchRequest("chat"), new Data.SendChatMessage(message), resp => { }, SendChatErrorHandler);
+            }
+
+            public void RequestChat()
+            {
+                var fromDate = DateTime.UtcNow - new TimeSpan(0, 10, 0) - new DateTime(1970, 1, 1);
+                var method = string.Format("chat/{0}(\\d+)", fromDate.Ticks);
+                Connection.Get<Data.Chat>(MatchRequest(method), resp => OnChatReceived(resp));
             }
         }
     }

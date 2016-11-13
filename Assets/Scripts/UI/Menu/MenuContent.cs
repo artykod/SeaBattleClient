@@ -28,7 +28,7 @@
 
     [BindCommand]
     private void Play()
-    {
+    { 
         new Lobby();
     }
 

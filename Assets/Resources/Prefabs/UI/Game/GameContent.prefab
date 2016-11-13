@@ -3311,7 +3311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship2_1
+  _propertyName: OpponentShipsInfo.Ship2_2
   _array:
   - {fileID: 21300000, guid: 9cd31780c4b993841aee702a18229d53, type: 3}
   - {fileID: 21300000, guid: d90ba21705a339046b8b393a117b604b, type: 3}
@@ -3445,10 +3445,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f818394f23791994988d4844b0721cea, type: 3}
-    m_FontSize: 69
+    m_FontSize: 68
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 1
+    m_BestFit: 1
+    m_MinSize: 10
     m_MaxSize: 120
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -3860,7 +3860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship1_1
+  _propertyName: OpponentShipsInfo.Ship1_3
   _array:
   - {fileID: 21300000, guid: 9f81b53aba68b624aa875082d17e9b3b, type: 3}
   - {fileID: 21300000, guid: 1e1673796a99530448321dc6488a3084, type: 3}
@@ -4026,7 +4026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship1_1
+  _propertyName: OpponentShipsInfo.Ship1_2
   _array:
   - {fileID: 21300000, guid: 9f81b53aba68b624aa875082d17e9b3b, type: 3}
   - {fileID: 21300000, guid: 1e1673796a99530448321dc6488a3084, type: 3}
@@ -4263,7 +4263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship3_1
+  _propertyName: OpponentShipsInfo.Ship3_2
   _array:
   - {fileID: 21300000, guid: 0194cbebfbbf7b84fa506b54bfdd2892, type: 3}
   - {fileID: 21300000, guid: 66f0aa00375998047af5842ac66c4a92, type: 3}
@@ -4514,7 +4514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship2_1
+  _propertyName: OpponentShipsInfo.Ship2_3
   _array:
   - {fileID: 21300000, guid: 9cd31780c4b993841aee702a18229d53, type: 3}
   - {fileID: 21300000, guid: d90ba21705a339046b8b393a117b604b, type: 3}
@@ -4605,11 +4605,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f818394f23791994988d4844b0721cea, type: 3}
-    m_FontSize: 69
+    m_FontSize: 68
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 6
-    m_MaxSize: 69
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 120
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -5111,7 +5111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e496409ceb66c004ab4775b09f49115c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _propertyName: OpponentShipsInfo.Ship1_1
+  _propertyName: OpponentShipsInfo.Ship1_4
   _array:
   - {fileID: 21300000, guid: 9f81b53aba68b624aa875082d17e9b3b, type: 3}
   - {fileID: 21300000, guid: 1e1673796a99530448321dc6488a3084, type: 3}

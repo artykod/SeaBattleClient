@@ -59,8 +59,8 @@ public class GameContent : BindModel
         _opponentFieldCells = new FieldCellsContent();
         AddLast(_opponentFieldCells);
         _root = null;
-
-        ChatNewMessage.OnValueChanged += (val) => IsChatSendEnabled.Value = !string.IsNullOrEmpty(ChatNewMessage.Value);
+        
+        IsChatSendEnabled.Value = true;
         ChatNewMessage.Value = string.Empty;
 
         TurnNumber.Value = 1;
@@ -118,7 +118,6 @@ public class GameContent : BindModel
             MyFieldShip3_1.FetchFromModel(_ships_3, 0);
             MyFieldShip3_2.FetchFromModel(_ships_3, 1);
             MyFieldShip4_1.FetchFromModel(_ships_4, 0);
-            
         }
         else
         {
@@ -162,24 +161,7 @@ public class GameContent : BindModel
             _opponentField = null;
         }
 
-        CheckEndMatch(match);
-    }
-
-    private void CheckEndMatch(Data.Match match)
-    {
-        if (match == null || match.My == null) return;
-
-        switch (match.My.Status)
-        {
-            case 4:
-                Back();
-                // TODO: you lose dialog
-                break;
-            case 5:
-                Back();
-                // TODO: you win dialog
-                break;
-        }
+        TurnNumber.Value = match.TurnNumber;
     }
 
     [BindCommand]
@@ -191,9 +173,7 @@ public class GameContent : BindModel
     [BindCommand]
     private void ChatSend()
     {
-        if (!string.IsNullOrEmpty(ChatNewMessage.Value))
-        {
-            Debug.Log("TODO: send to chat " + ChatNewMessage.Value);
-        }
+        Core.Instance.Match.SendChatMessage(ChatNewMessage.Value);
+        ChatNewMessage.Value = string.Empty;
     }
 }

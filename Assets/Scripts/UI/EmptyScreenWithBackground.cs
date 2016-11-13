@@ -35,7 +35,7 @@ public abstract class EmptyScreenWithBackground : BindModel
         }
     }
 
-    protected bool IsLoading
+    public bool IsLoading
     {
         get
         {

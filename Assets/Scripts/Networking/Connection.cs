@@ -1,5 +1,5 @@
 ﻿#define USE_TEMP_AUTH_SERVER
-//#define NET_DEBUG
+#define NET_DEBUG
 
 using UnityEngine;
 using System;
@@ -88,10 +88,10 @@ namespace Networking
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
 #if NET_DEBUG
                     Debug.LogWarning("GET >>> {0}", www.text);
 #endif
+                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
                 }
                 else
                 {
@@ -119,10 +119,10 @@ namespace Networking
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
 #if NET_DEBUG
                     Debug.LogWarning("POST >>> {0}", www.text);
 #endif
+                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
                 }
                 else
                 {

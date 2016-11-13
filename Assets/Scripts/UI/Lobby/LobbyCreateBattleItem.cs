@@ -9,12 +9,45 @@ public abstract class LobbyCreateBattleItem : BindModel
 
     protected abstract bool IsMatchWithBot { get; }
 
+    private bool IsLoading
+    {
+        get
+        {
+            var root = Root as EmptyScreenWithBackground;
+            if (root != null) return root.IsLoading;
+            return false;
+        }
+        set
+        {
+            var root = Root as EmptyScreenWithBackground;
+            if (root != null) root.IsLoading = value;
+        }
+    }
+
     public LobbyCreateBattleItem() : base("UI/Lobby/LobbyCreateBattleItem")
     {
         CanClickCreateButton.Value = true;
         BetCurrency.Value = (int)Data.CurrencyType.Silver;
         BetValue.Value = 100;
         RefreshState();
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        Core.Instance.Lobby.OnFailMatchCreate += OnFailCreateMatch;
+        Core.Instance.Lobby.OnMatchReceived += OnNewMatchReceived;
+    }
+
+    private void Unsubscribe()
+    {
+        Core.Instance.Lobby.OnFailMatchCreate -= OnFailCreateMatch;
+        Core.Instance.Lobby.OnMatchReceived -= OnNewMatchReceived;
     }
 
     [BindCommand]
@@ -50,13 +83,24 @@ public abstract class LobbyCreateBattleItem : BindModel
     [BindCommand]
     protected void CreateMatch()
     {
+        Unsubscribe();
+        Subscribe();
+
         Core.Instance.Lobby.CreateMatch((Data.CurrencyType)BetCurrency.Value, BetValue.Value, IsMatchWithBot);
-        Core.Instance.Lobby.OnMatchReceived += OnNewMatchReceived;
+        IsLoading = true;
+    }
+
+    private void OnFailCreateMatch()
+    {
+        Unsubscribe();
+        IsLoading = false;
+        new ErrorDialog("error.cant_create_match");
     }
 
     private void OnNewMatchReceived(string token, Data.Match match)
     {
-        Core.Instance.Lobby.OnMatchReceived -= OnNewMatchReceived;
+        Unsubscribe();
+        IsLoading = false;
         Core.Instance.MakeApiForMatch(token);
 
         Root.Destroy();

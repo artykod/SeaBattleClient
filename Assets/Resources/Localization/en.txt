@@ -1,6 +1,8 @@
 {
 	"common.default_name":"Player",
 	"common.btn_back":"To menu",
+    "common.retry":"Play again",
+    "common.exit":"Exit",
 	
 	"menu.play":"Play",
 	"menu.dashboard":"Dashboard",
@@ -43,4 +45,10 @@
     "lobby.create":"Create match",
     "lobby.create.btn":"Create",
     "lobby.cancel":"Cancel",
+
+    "dialog.win.caption":"Win!",
+    "dialog.lose.caption":"Lose",
+
+    "error.cant_create_match":"Cannot create match",
+    "error.match_not_found":"Match not found",
 }

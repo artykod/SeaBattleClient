@@ -137,6 +137,8 @@ namespace Data
         public FieldState Opponent { get; private set; }
         [JsonProperty("bet")]
         public MatchBet Bet { get; private set; }
+        [JsonProperty("turnCnt")]
+        public int TurnNumber { get; private set; }
     }
 
     public class MatchUser
@@ -240,5 +242,30 @@ namespace Data
         public int LoseCount { get; private set; }
         [JsonIgnore]
         public int DrawCount { get { return TotalBattles - WinCount - LoseCount; } }
+    }
+
+    public class SendChatMessage
+    {
+        [JsonProperty("msg")]
+        public string Message { get; private set; }
+
+        public SendChatMessage(string message)
+        {
+            Message = message;
+        }
+    }
+
+    public class ChatMessage
+    {
+        [JsonProperty("usrId")]
+        public int UserId { get; private set; }
+        [JsonProperty("ts")]
+        public int Timestamp { get; private set; }
+        [JsonProperty("msg")]
+        public string Message { get; private set; }
+    }
+
+    public class Chat : List<ChatMessage>
+    {
     }
 }

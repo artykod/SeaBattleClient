@@ -5,26 +5,43 @@ public class Game : EmptyScreenWithBackground
 {
     private GameContent _gameContent;
     private bool _lastRequestSuccess;
+    private bool _isBattleDone;
 
     public Game() : base("Game/Game")
     {
-        Core.Instance.Match.OnMatchReceived += OnMatchReceived;
-        Core.Instance.Match.OnMatchNotFound += OnMatchLost;
+        Subscribe();
         StartCoroutine(CheckBattleState());
         IsLoading = true;
-    }
-
-    private void OnMatchLost()
-    {
-        Root.Destroy();
-        // TODO: match not found error
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        Core.Instance.Match.OnMatchReceived += OnMatchReceived;
+        Core.Instance.Match.OnMatchNotFound += OnMatchLost;
+        Core.Instance.Match.OnChatReceived += OnChatReceived;
+    }
+
+    private void OnChatReceived(Data.Chat chat)
+    {
+        foreach (var i in chat) Debug.Log("Chat msg: id {0} time: {1} msg: {2}", i.UserId, i.Timestamp, i.Message);
+    }
+
+    private void Unsubscribe()
+    {
         Core.Instance.Match.OnMatchReceived -= OnMatchReceived;
         Core.Instance.Match.OnMatchNotFound -= OnMatchLost;
+    }
+
+    private void OnMatchLost()
+    {
+        Root.Destroy();
+        new ErrorDialog("error.match_not_found");
     }
 
     private void OnMatchReceived(Data.Match match)
@@ -35,21 +52,53 @@ public class Game : EmptyScreenWithBackground
             AddLast(_gameContent);
         }
         _gameContent.UpdateData(match);
-        IsLoading = false;
         _lastRequestSuccess = true;
+
+        if (match.My != null && match.Opponent != null && (match.My.Status == 3 || match.Opponent.Status == 3)) IsLoading = false;
+
+        CheckEndMatch(match);
+    }
+
+    private void CheckEndMatch(Data.Match match)
+    {
+        if (match == null || match.My == null) return;
+
+        switch (match.My.Status)
+        {
+            case 4:
+                Unsubscribe();
+                new MatchLoseDialog().OnClose += (dialog) => ExitFromBattle();
+                _isBattleDone = true;
+                break;
+            case 5:
+                Unsubscribe();
+                new MatchWinDialog((Data.CurrencyType)match.Bet.Type, match.Bet.Value).OnClose += (dialog) => ExitFromBattle();
+                _isBattleDone = true;
+                break;
+        }
+    }
+
+    private void ExitFromBattle()
+    {
+        Root.Destroy();
     }
 
     private IEnumerator CheckBattleState()
     {
         do
         {
+            if (_isBattleDone) break;
+
             if (!_lastRequestSuccess) IsLoading = true;
 
             _lastRequestSuccess = false;
             Core.Instance.Match.GetCurrentState();
+            Core.Instance.Match.RequestChat();
 
             yield return new WaitForSecondsRealtime(2f);
         }
-        while (true);
+        while (!_isBattleDone);
+
+        IsLoading = false;
     }
 }

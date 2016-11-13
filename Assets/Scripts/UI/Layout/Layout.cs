@@ -27,6 +27,7 @@ public class Layout : EmptyScreenWithBackground
     public Layout() : base("Layout")
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
+        Core.Instance.Match.OnMatchNotFound += OnMatchNotFound;
         Core.Instance.Match.GetCurrentState();
 
         _fieldCells = new FieldCellsContent();
@@ -35,14 +36,22 @@ public class Layout : EmptyScreenWithBackground
         _root = null;
     }
 
+    private void OnMatchNotFound()
+    {
+        IsLoading = false;
+    }
+
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Core.Instance.Match.OnMatchReceived -= OnMatchReceived;
+        Core.Instance.Match.OnMatchNotFound -= OnMatchNotFound;
     }
 
     private void OnMatchReceived(Data.Match match)
     {
+        IsLoading = false;
+
         var _ships_1 = new List<ShipModel>();
         var _ships_2 = new List<ShipModel>();
         var _ships_3 = new List<ShipModel>();
@@ -72,12 +81,14 @@ public class Layout : EmptyScreenWithBackground
     [BindCommand]
     private void ResetLayout()
     {
+        IsLoading = true;
         Core.Instance.Match.ResetField();
     }
 
     [BindCommand]
     private void AutoLayout()
     {
+        IsLoading = true;
         Core.Instance.Match.AutolayoutField();
     }
 
