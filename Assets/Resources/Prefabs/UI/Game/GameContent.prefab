@@ -422,6 +422,7 @@ GameObject:
   - 114: {fileID: 114000014018747562}
   - 222: {fileID: 222000012674138796}
   - 114: {fileID: 114000011312580016}
+  - 114: {fileID: 114000012795482448}
   m_Layer: 0
   m_Name: Content
   m_TagString: Untagged
@@ -528,6 +529,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 224000010332977522}
+  - 114: {fileID: 114000010851075134}
   m_Layer: 0
   m_Name: CellsRoot
   m_TagString: Untagged
@@ -913,6 +915,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 224000012368619228}
+  - 114: {fileID: 114000012798791460}
   m_Layer: 0
   m_Name: CellsRoot
   m_TagString: Untagged
@@ -2329,6 +2332,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _propertyName: OpponentFieldShip3_1.Position
+--- !u!114 &114000010851075134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011486892058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cbba320011f25648b4a207e6559e200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: OpponentCellsRoot
 --- !u!114 &114000010871095150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4089,6 +4104,30 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000012795482448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011364406402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cbba320011f25648b4a207e6559e200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: ChatContentRoot
+--- !u!114 &114000012798791460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012843222040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cbba320011f25648b4a207e6559e200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _propertyName: MyCellsRoot
 --- !u!114 &114000012801149628
 MonoBehaviour:
   m_ObjectHideFlags: 1

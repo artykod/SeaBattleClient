@@ -35,9 +35,13 @@ public class GameContent : BindModel
 
     public Bind<bool> IsMyTurn;
     public Bind<bool> IsOpponentTurn;
-    public Bind<int> TurnNumber;
+    public Bind<string> TurnNumber;
     public Bind<string> ChatNewMessage;
     public Bind<bool> IsChatSendEnabled;
+
+    public Bind<GameObject> MyCellsRoot;
+    public Bind<GameObject> OpponentCellsRoot;
+    public Bind<GameObject> ChatContentRoot;
 
     private Data.FieldCells _opponentField;
     private GameFieldInput _fieldInput;
@@ -59,9 +63,9 @@ public class GameContent : BindModel
         _chatScroll = Instance.GetComponentInChildren<ChatScroll>();
 
         _myFieldCells = new FieldCellsContent();
-        _root = transform.FindChild("MyField/CellsRoot");
+        _root = MyCellsRoot.Value.transform;
         AddLast(_myFieldCells);
-        _root = transform.FindChild("OpponentField/CellsRoot");
+        _root = OpponentCellsRoot.Value.transform;
         _opponentFieldCells = new FieldCellsContent();
         AddLast(_opponentFieldCells);
         _root = null;
@@ -70,7 +74,7 @@ public class GameContent : BindModel
         ChatNewMessage.Value = string.Empty;
         ChatNewMessage.OnValueChanged += (val) => ChatSend();
 
-        TurnNumber.Value = 1;
+        TurnNumber.Value = string.Empty;
     }
 
     public void BlockUI()
@@ -180,12 +184,7 @@ public class GameContent : BindModel
             _opponentField = null;
         }
 
-        TurnNumber.Value = match.TurnNumber;
-
-        if (IsMyTurn.Value)
-            UnblockUI();
-        else
-            BlockUI();
+        TurnNumber.Value = match.TurnNumber > 0 ? match.TurnNumber.ToString() : string.Empty;
     }
 
     public void UpdateChat(Data.Chat chat)
@@ -197,7 +196,7 @@ public class GameContent : BindModel
             for (int i = 0; i < _chatItems.Length; i++) _chatItems[i].Destroy();
         }
         _chatItems = new ChatItem[chat.Count];
-        var chatRoot = transform.FindChild("Chat/All/Content");
+        var chatRoot = ChatContentRoot.Value.transform;
         _root = chatRoot;
         for (int i = 0; i < chat.Count; i++)
         {

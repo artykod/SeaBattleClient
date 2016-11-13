@@ -114,6 +114,10 @@ public class Core : MonoBehaviour
                 _avatarsCache[url] = tex;
                 texture.Value = tex;
             }
+            else
+            {
+                texture.Value = Resources.Load<Texture2D>("Textures/avatar");
+            }
         }
     }
 }

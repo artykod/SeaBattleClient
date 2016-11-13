@@ -94,14 +94,14 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.oriplay.babyshapes
-  bundleVersion: 1.2
+  bundleIdentifier: com.outsource.seabattle
+  bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   xboxOneDisableKinectGpuReservation: 0
   singlePassStereoRendering: 0
   protectGraphicsMemory: 0
-  AndroidBundleVersionCode: 4
+  AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 14
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -166,11 +166,11 @@ PlayerSettings:
   iOSDeviceRequirements: []
   iOSURLSchemes: []
   appleDeveloperTeamID: 
-  AndroidTargetDevice: 3
+  AndroidTargetDevice: 0
   AndroidSplashScreenScale: 2
-  androidSplashScreen: {fileID: 2800000, guid: d479e3038e470464ebd6abf98b91a649, type: 3}
+  androidSplashScreen: {fileID: 2800000, guid: c69b35c184edd9d4aafaac5c5039418b, type: 3}
   AndroidKeystoreName: G:/projects/oriplay/BabyShapes/user.keystore
-  AndroidKeyaliasName: user
+  AndroidKeyaliasName: 
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   androidEnableBanner: 1
@@ -185,7 +185,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: a76eed6aba5f60946bd0441ea59a95b1, type: 3}
+      m_Icon: {fileID: 2800000, guid: c69b35c184edd9d4aafaac5c5039418b, type: 3}
       m_Width: 128
       m_Height: 128
   m_BuildTargetBatching:
