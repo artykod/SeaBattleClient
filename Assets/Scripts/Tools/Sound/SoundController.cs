@@ -11,9 +11,18 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
     private const string PREFS_SOUND_ENABLED = "sound_on";
     private const string PREFS_MUSIC_ENABLED = "music_on";
     private const string PREFS_SOUND_VOLUME = "sound_volume";
-    private const string PATH_SOUNDS = "sounds/";
+    private const string PATH_SOUNDS = "sound/";
     private const string PATH_MUSICS = "music/";
-    public const string SOUND_BUTTON_CLICK = "button";
+
+    public const string SOUND_BUTTON_CLICK = "click";
+    public const string SOUND_CLOSE = "close";
+    public const string SOUND_BUY = "buy";
+    public const string SOUND_WIN = "win";
+    public const string SOUND_LOSE = "lose";
+    public const string SOUND_ERROR = "error";
+    public const string SOUND_SHOOT = "shoot";
+    public const string SOUND_BEEP = "beep";
+
     public const string MUSIC = "music";
 
     private static IEnumerator buttonsClickTracker = null;
@@ -33,6 +42,8 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
         {
             PlayerPrefs.SetInt(PREFS_SOUND_ENABLED, value ? 1 : 0);
             PlayerPrefs.Save();
+
+            IsMusicEnabled = value;
         }
     }
     public static bool IsMusicEnabled
@@ -43,18 +54,16 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
         }
         set
         {
+            var oldValue = IsMusicEnabled;
+
             PlayerPrefs.SetInt(PREFS_MUSIC_ENABLED, value ? 1 : 0);
             PlayerPrefs.Save();
-
-#if UNITY_EDITOR
-            if (UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) return;
-#endif
 
             if (!value)
             {
                 Instance.sourceMusic.Stop();
             }
-            else
+            else if (!oldValue)
             {
                 Instance.sourceMusic.Play();
             }
@@ -68,8 +77,12 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
         }
         set
         {
-            PlayerPrefs.SetFloat(PREFS_SOUND_VOLUME, Mathf.Clamp01(value));
+            var val = Mathf.Clamp01(value);
+            PlayerPrefs.SetFloat(PREFS_SOUND_VOLUME, val);
             PlayerPrefs.Save();
+
+            if (Instance != null && Instance.sourceSound != null) Instance.sourceSound.volume = val;
+            if (Instance != null && Instance.sourceMusic != null) Instance.sourceMusic.volume = val;
         }
     }
 
@@ -134,7 +147,7 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
     {
         sourceMusic.clip = LoadAudio(music);
         sourceMusic.loop = true;
-        sourceMusic.volume = 0.25f;
+        sourceMusic.volume = SoundVolume;
         if (IsMusicEnabled)
         {
             sourceMusic.Play();
@@ -201,8 +214,8 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
     {
         while (true)
         {
-            int touchId = -1;
-            bool isTouched = Input.GetMouseButtonDown(0);
+            var touchId = -1;
+            var isTouched = Input.GetMouseButtonDown(0);
 
 #if (UNITY_IOS || UNITY_ANDROID) && !UNITY_EDITOR
 			isTouched = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
@@ -219,7 +232,7 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
                     var obj = eventSystem.currentSelectedGameObject;
                     if (obj != null && eventSystem.IsPointerOverGameObject(touchId))
                     {
-                        Button button = obj.GetComponent<Button>();
+                        var button = obj.GetComponent<Button>();
                         if (button != null && button.interactable)
                         {
                             SubscribeToButtonClick(button);

@@ -41,5 +41,6 @@
     public YesNoDialog(string title) : base("YesNoDialog")
     {
         Title.Value = LanguageController.Localize(title);
+        SoundController.Sound(SoundController.SOUND_BEEP);
     }
 }

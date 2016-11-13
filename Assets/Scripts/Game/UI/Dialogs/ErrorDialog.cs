@@ -5,6 +5,7 @@
     public ErrorDialog(string titleLocKey) : base("ErrorDialog")
     {
         Title.Value = LanguageController.Localize(titleLocKey);
+        SoundController.Sound(SoundController.SOUND_ERROR);
     }
 
     [BindCommand]

@@ -7,5 +7,6 @@
     {
         CurrencyIcon.Value = (int)currency;
         Value.Value = bet;
+        SoundController.Sound(SoundController.SOUND_WIN);
     }
 }

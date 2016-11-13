@@ -4,6 +4,7 @@ public class BindContextMonoBehaviour : MonoBehaviour
 {
     public interface IUnityListener
     {
+        void Start();
         void Update();
         void LateUpdate();
         void OnDestroy();
@@ -22,6 +23,11 @@ public class BindContextMonoBehaviour : MonoBehaviour
     {
         _context = context;
         _unityListener = context as IUnityListener;
+    }
+
+    private void Start()
+    {
+        if (_unityListener != null) _unityListener.Start();
     }
 
     private void Update()

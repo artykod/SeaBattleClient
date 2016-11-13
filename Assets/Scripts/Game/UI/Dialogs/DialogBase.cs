@@ -46,6 +46,7 @@ public abstract class DialogBase : BindModel
     [BindCommand]
     protected void Exit()
     {
+        SoundController.Sound(SoundController.SOUND_CLOSE);
         StartCoroutine(FadeOut());
     }
 }

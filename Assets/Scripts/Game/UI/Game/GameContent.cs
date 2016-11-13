@@ -90,9 +90,14 @@ public class GameContent : BindModel
     private void OnOpponentFieldClick(int x, int y)
     {
         if (IsMyTurn.Value && _opponentField != null && _opponentField[x][y] == 0)
+        {
             Core.Instance.Match.Shoot(x, y);
+            SoundController.Sound(SoundController.SOUND_SHOOT);
+        }
         else
+        {
             _fieldInput.WrongMove();
+        }
     }
 
     private void FillAliveShips(FieldShipsAliveStateContext ships, Data.FieldState fieldState)

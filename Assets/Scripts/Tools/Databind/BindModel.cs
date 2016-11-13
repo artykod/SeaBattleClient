@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -121,6 +122,22 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
     }
 
     protected virtual void OnCreate() { }
+    protected virtual void OnStart()
+    {
+        var allButtons = Instance.GetComponentsInChildren<Button>(true);
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            var btnSound = allButtons[i].GetComponent<ButtonSound>();
+            if (btnSound == null) btnSound = allButtons[i].gameObject.AddComponent<ButtonSound>();
+        }
+
+        var allToggles = Instance.GetComponentsInChildren<Toggle>(true);
+        for (int i = 0; i < allToggles.Length; i++)
+        {
+            var btnSound = allToggles[i].GetComponent<ButtonSound>();
+            if (btnSound == null) btnSound = allToggles[i].gameObject.AddComponent<ButtonSound>();
+        }
+    }
     protected virtual void Update() { }
     protected virtual void LateUpdate() { }
     protected virtual void OnDestroy() { }
@@ -135,6 +152,7 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         _contextBehaviour.StopCoroutine(coroutine);
     }
 
+    void BindContextMonoBehaviour.IUnityListener.Start() { OnStart(); }
     void BindContextMonoBehaviour.IUnityListener.Update() { Update(); }
     void BindContextMonoBehaviour.IUnityListener.LateUpdate() { LateUpdate(); }
     void BindContextMonoBehaviour.IUnityListener.OnDestroy() { OnDestroy(); }

@@ -30,6 +30,7 @@ public class GameFieldInput : MonoBehaviour, IPointerClickHandler
     public void WrongMove()
     {
         if (_wrongMoveAnimation) _wrongMoveAnimation.Play();
+        SoundController.Sound(SoundController.SOUND_ERROR);
     }
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)

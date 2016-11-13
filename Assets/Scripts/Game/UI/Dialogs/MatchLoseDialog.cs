@@ -2,5 +2,6 @@
 {
     public MatchLoseDialog() : base("MatchLoseDialog")
     {
+        SoundController.Sound(SoundController.SOUND_LOSE);
     }
 }

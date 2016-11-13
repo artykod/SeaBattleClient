@@ -55,6 +55,9 @@ public class Core : MonoBehaviour
 
     private void Awake()
     {
+        //SoundController.Music(SoundController.MUSIC);
+        SoundController.StartButtonsClickTracker();
+
         Instance = this;
 
         GameImpl.DebugImpl.Instance = new DebugUnity();
