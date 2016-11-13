@@ -56,18 +56,12 @@ public class FieldContext : NeastedBindContext
 
 public class ShipCountViewContext : NeastedBindContext
 {
-    public Bind<int> Mode { get; set; }
-    public Bind<int> Count { get; set; }
+    public Bind<int> Mode;
+    public Bind<int> Count;
 
     public ShipCountViewContext()
     {
-        Count.OnValueChanged += (val) => Mode.Value = Count.Value > 0 ? 0 : 2;
-    }
-
-    public void Init(int count, int mode)
-    {
-        Count.Value = count;
-        Mode.Value = mode;
+        Count.OnValueChanged += (val) => Mode.Value = val.Value > 0 ? 0 : 2;
     }
 }
 

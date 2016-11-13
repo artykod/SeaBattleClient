@@ -189,7 +189,7 @@ public class GameContent : BindModel
             _opponentField = null;
         }
 
-        TurnNumber.Value = match.TurnNumber > 0 ? match.TurnNumber.ToString() : string.Empty;
+        TurnNumber.Value = match.TurnNumber.ToString();
     }
 
     public void UpdateChat(Data.Chat chat)

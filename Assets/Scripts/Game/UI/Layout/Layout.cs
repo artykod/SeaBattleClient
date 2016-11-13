@@ -34,6 +34,11 @@ public class Layout : EmptyScreenWithBackground
         AddLast(_fieldCells);
         _root = null;
 
+        Ship1.Count.Value = 4;
+        Ship2.Count.Value = 3;
+        Ship3.Count.Value = 2;
+        Ship4.Count.Value = 1;
+
         AutoLayout();
     }
 

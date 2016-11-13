@@ -7,6 +7,7 @@ public class ImageArrayBinding : BindViewMonoBehaviour
     [SerializeField]
     private Sprite[] _array;
     private Image _image;
+    private int _index;
 
     public void ReplaceArray(Sprite[] array)
     {
@@ -20,12 +21,12 @@ public class ImageArrayBinding : BindViewMonoBehaviour
 
     protected override void ValueChangedHandler(object value)
     {
-        var index = (int)value;
-        _image.sprite = index >= 0 && index < _array.Length ? _array[index] : null;
+        _index = (int)value;
+        _image.sprite = _index >= 0 && _index < _array.Length ? _array[_index] : null;
     }
 
     protected override object GetValueHandler()
     {
-        return _image.sprite;
+        return _index;
     }
 }
