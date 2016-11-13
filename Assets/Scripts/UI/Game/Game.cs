@@ -29,7 +29,7 @@ public class Game : EmptyScreenWithBackground
 
     private void OnChatReceived(Data.Chat chat)
     {
-        foreach (var i in chat) Debug.Log("Chat msg: id {0} time: {1} msg: {2}", i.UserId, i.Timestamp, i.Message);
+        if (_gameContent != null) _gameContent.UpdateChat(chat);
     }
 
     private void Unsubscribe()

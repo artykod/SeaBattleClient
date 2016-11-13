@@ -43,6 +43,10 @@ public class GameContent : BindModel
     private GameFieldInput _fieldInput;
     private FieldCellsContent _myFieldCells;
     private FieldCellsContent _opponentFieldCells;
+    private ChatItem[] _chatItems;
+    private int _myUserId;
+    private int _opponentUserId;
+    private ChatScroll _chatScroll;
 
     private Transform _root;
     protected override Transform Content { get { return !_root ? transform : _root; } }
@@ -51,6 +55,8 @@ public class GameContent : BindModel
     {
         _fieldInput = Instance.GetComponentInChildren<GameFieldInput>();
         _fieldInput.OnCellClick += OnOpponentFieldClick;
+
+        _chatScroll = Instance.GetComponentInChildren<ChatScroll>();
 
         _myFieldCells = new FieldCellsContent();
         _root = transform.FindChild("MyField/CellsRoot");
@@ -62,6 +68,7 @@ public class GameContent : BindModel
         
         IsChatSendEnabled.Value = true;
         ChatNewMessage.Value = string.Empty;
+        ChatNewMessage.OnValueChanged += (val) => ChatSend();
 
         TurnNumber.Value = 1;
     }
@@ -104,6 +111,7 @@ public class GameContent : BindModel
 
             if (match.My.User != null)
             {
+                _myUserId = match.My.User.Id;
                 MyInfo.Name.Value = match.My.User.Nick;
                 Core.Instance.LoadUserAvatar(match.My.User.Id, MyInfo.Avatar);
             }
@@ -138,6 +146,7 @@ public class GameContent : BindModel
 
             if (match.Opponent.User != null)
             {
+                _opponentUserId = match.Opponent.User.Id;
                 OpponentInfo.Name.Value = match.Opponent.User.Nick;
                 Core.Instance.LoadUserAvatar(match.Opponent.User.Id, OpponentInfo.Avatar);
             }
@@ -164,6 +173,31 @@ public class GameContent : BindModel
         TurnNumber.Value = match.TurnNumber;
     }
 
+    public void UpdateChat(Data.Chat chat)
+    {
+        if (_chatItems != null)
+        {
+            if (_chatItems.Length == chat.Count) return;
+
+            for (int i = 0; i < _chatItems.Length; i++) _chatItems[i].Destroy();
+        }
+        _chatItems = new ChatItem[chat.Count];
+        var chatRoot = transform.FindChild("Chat/All/Content");
+        _root = chatRoot;
+        for (int i = 0; i < chat.Count; i++)
+        {
+            var userName = string.Empty;
+            if (chat[i].UserId == _myUserId) userName = MyInfo.Name.Value;
+            if (chat[i].UserId == _opponentUserId) userName = OpponentInfo.Name.Value;
+
+            _chatItems[i] = new ChatItem(userName, chat[i].Timestamp, chat[i].Message, chat[i].UserId == _myUserId);
+            AddLast(_chatItems[i]);
+        }
+        _root = null;
+
+        if (_chatScroll) _chatScroll.ScrollToBottom();
+    }
+
     [BindCommand]
     private void Back()
     {
@@ -175,5 +209,17 @@ public class GameContent : BindModel
     {
         Core.Instance.Match.SendChatMessage(ChatNewMessage.Value);
         ChatNewMessage.Value = string.Empty;
+    }
+
+    [BindCommand]
+    private void ScrollUp()
+    {
+        if (_chatScroll) _chatScroll.ScrollUp();
+    }
+
+    [BindCommand]
+    private void ScrollDown()
+    {
+        if (_chatScroll) _chatScroll.ScrollDown();
     }
 }

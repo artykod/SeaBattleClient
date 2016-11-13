@@ -158,8 +158,7 @@ namespace Networking
 
             public void RequestChat()
             {
-                var fromDate = DateTime.UtcNow - new TimeSpan(0, 10, 0) - new DateTime(1970, 1, 1);
-                var method = string.Format("chat/{0}(\\d+)", fromDate.Ticks);
+                var method = string.Format("chat/{0}", 0);
                 Connection.Get<Data.Chat>(MatchRequest(method), resp => OnChatReceived(resp));
             }
         }
