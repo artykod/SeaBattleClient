@@ -167,7 +167,7 @@ PlayerSettings:
   iOSURLSchemes: []
   appleDeveloperTeamID: 
   AndroidTargetDevice: 0
-  AndroidSplashScreenScale: 2
+  AndroidSplashScreenScale: 1
   androidSplashScreen: {fileID: 2800000, guid: c69b35c184edd9d4aafaac5c5039418b, type: 3}
   AndroidKeystoreName: G:/projects/oriplay/BabyShapes/user.keystore
   AndroidKeyaliasName: 
