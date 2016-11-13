@@ -3,6 +3,8 @@
 	"common.btn_back":"To menu",
     "common.retry":"Play again",
     "common.exit":"Exit",
+    "common.yes":"Yes",
+    "common.no":"No",
 	
 	"menu.play":"Play",
 	"menu.dashboard":"Dashboard",
@@ -34,6 +36,7 @@
 	"layout.reset":"Reset layout",
 	"layout.autolayout":"Autolayout",
 	"layout.battle":"Battle!",
+    "layout.sure_back":"Sure to back to menu?",
 	
 	"game.chat.hint":"Type message...",
 	"game.chat.send":"Send",

@@ -216,7 +216,9 @@ public class GameContent : BindModel
     [BindCommand]
     private void Back()
     {
-        Root.Destroy();
+        new YesNoDialog("layout.sure_back")
+            .AddButton("common.yes", () => Root.Destroy())
+            .AddButton("common.no", null);
     }
 
     [BindCommand]

@@ -3,6 +3,8 @@
 	"common.btn_back":"В меню",
     "common.retry":"Сыграть еще",
     "common.exit":"Выйти",
+    "common.yes":"Да",
+    "common.no":"Нет",
 	
 	"menu.play":"Играть",
 	"menu.dashboard":"Личный кабинет",
@@ -34,6 +36,7 @@
 	"layout.reset":"Сброс расстановки",
 	"layout.autolayout":"Авторасстановка",
 	"layout.battle":"В бой!",
+    "layout.sure_back":"Уверены, что хотите выйти?",
 	
 	"game.chat.hint":"Написать сообщение...",
 	"game.chat.send":"Отправить",

@@ -5,12 +5,26 @@
 
     public TempLogin() : base("TempLogin/TempLogin")
     {
+        LanguageController.Instance.Initialize();
         ApplyUser1();
+    }
+
+    private bool Check()
+    {
+        if (string.IsNullOrEmpty(UserName.Value)) return false;
+        if (string.IsNullOrEmpty(UserPassword.Value)) return false;
+        return true;
     }
 
     [BindCommand]
     private void Login()
     {
+        if (!Check())
+        {
+            new ErrorDialog("Wrong email or password");
+            return;
+        }
+
         Networking.Connection.TempAuthUserName = UserName.Value;
         Networking.Connection.TempAuthUserPassword = UserPassword.Value;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);

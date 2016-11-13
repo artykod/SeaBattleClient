@@ -4,7 +4,7 @@
 
     public SocialContext Social { get; private set; }
     public PlayerContext Player { get; private set; }
-    
+
     public Bind<bool> IsSoundEnabled { get; private set; }
     public Bind<bool> IsTempLoginEnabled { get; private set; }
 
@@ -21,7 +21,7 @@
     public void UpdateData()
     {
         _character = Core.Instance.Character;
-        
+
         Player.Name.Value = _character.Nick;
         Player.Gold.Value = _character.Gold;
         Player.Silver.Value = _character.Silver;
@@ -30,7 +30,7 @@
 
     [BindCommand]
     private void Play()
-    { 
+    {
         new Lobby();
     }
 
@@ -55,7 +55,12 @@
     [BindCommand]
     private void Logout()
     {
-        Networking.Connection.Instance.Logout();
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TempLogin", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        new YesNoDialog("Logout?")
+            .AddButton("Yes", () =>
+            {
+                Networking.Connection.Instance.Logout();
+                UnityEngine.SceneManagement.SceneManager.LoadScene("TempLogin", UnityEngine.SceneManagement.LoadSceneMode.Single);
+            })
+            .AddButton("No", null);
     }
 }
