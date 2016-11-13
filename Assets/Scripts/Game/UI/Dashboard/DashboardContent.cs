@@ -1,4 +1,6 @@
-﻿public class DashboardContent : BindModel
+﻿using UnityEngine;
+
+public class DashboardContent : BindModel
 {
     private Data.Character _character;
 
@@ -40,12 +42,12 @@
     [BindCommand]
     private void AddGold()
     {
-        new ErrorDialog("TODO buy gold");
+        Core.OpenUrl(GameConfig.Instance.Config.BuyGoldUrl);
     }
 
     [BindCommand]
     private void AddSilver()
     {
-        new ErrorDialog("TODO buy silver");
+        Core.OpenUrl(GameConfig.Instance.Config.BuySilverUrl);
     }
 }

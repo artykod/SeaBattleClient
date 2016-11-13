@@ -25,6 +25,15 @@ public class Core : MonoBehaviour
 
     private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
 
+    public static void OpenUrl(string url)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Application.ExternalEval(string.Format("window.open(\"{0}\")", url));
+#else
+        Application.OpenURL(url);
+#endif
+    }
+
     public void MakeApiForMatch(string matchToken)
     {
         Match = new ServerApi.Match(matchToken);
@@ -49,7 +58,7 @@ public class Core : MonoBehaviour
         Instance = this;
 
         GameImpl.DebugImpl.Instance = new DebugUnity();
-        DebugConsole.Instance.Init();
+        if (GameConfig.Instance.Config.DebugMode) DebugConsole.Instance.Init();
         LanguageController.Instance.Initialize();
 
         Auth = new ServerApi.Auth();
@@ -89,7 +98,7 @@ public class Core : MonoBehaviour
 
     public void LoadUserAvatar(int userId, Bind<Texture2D> texture)
     {
-        var url = string.Format("http://45.120.149.115:4000/avatars/{0}.png", userId);
+        var url = string.Format("{0}/{1}.png", GameConfig.Instance.Config.AvatarsServerUrl, userId);
         if (_avatarsCache.ContainsKey(url))
         {
             texture.Value = _avatarsCache[url];

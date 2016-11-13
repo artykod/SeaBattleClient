@@ -11,12 +11,18 @@ namespace Networking
 {
     public class Connection : SingletonBehaviour<Connection, Connection>
     {
-        private const string GameServerAddress = "http://45.120.149.115:5000";
+        private static string GameServerAddress = "http://45.120.149.115:5000";
         private Dictionary<string, string> _requestHeaders = new Dictionary<string, string> { { "Content-Type", "application/json" } };
+
+        public Connection()
+        {
+            TempAuthServerAddress = GameConfig.Instance.Config.AuthServerUrl;
+            GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
+        }
 
 #if USE_TEMP_AUTH_SERVER
         public const bool TempLoginEnabled = true;
-        public const string TempAuthServerAddress = "http://45.120.149.115:4000";
+        private static string TempAuthServerAddress = "http://45.120.149.115:4000";
         public static string TempAuthUserName = "u1@r.ru"; // u1@r.ru; u2@r.ru;
         public static string TempAuthUserPassword = "111"; // 111; 222;
 

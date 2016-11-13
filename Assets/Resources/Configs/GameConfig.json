@@ -1,0 +1,13 @@
+{
+    "AuthServerUrl": "http://45.120.149.115:4000",
+    "GameServerUrl": "http://45.120.149.115:5000",
+    "AvatarsServerUrl": "http://45.120.149.115:4000/avatars",
+    "DebugMode": true,
+    "BuyGoldUrl": "https://google.com",
+    "BuySilverUrl": "https://yandex.ru",
+    "FacebookUrl": "https://facebook.com",
+    "VkUrl": "https://vk.com",
+    "OdnoklassnikiUrl": "https://ok.ru",
+    "MyMailUrl": "https://my.mail.ru",
+    "TwitterUrl": "https://twitter.com",
+}
