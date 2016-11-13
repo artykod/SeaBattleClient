@@ -57,4 +57,15 @@
     "error.layout_not_done":"Не все кораблки расставлены",
 
     "chat.send_fail":"Не удалось отправить сообщение. Попробуйте еще раз.",
+
+    "field.chr.a":"А",
+    "field.chr.b":"Б",
+    "field.chr.c":"В",
+    "field.chr.d":"Г",
+    "field.chr.e":"Д",
+    "field.chr.f":"Е",
+    "field.chr.g":"Ж",
+    "field.chr.h":"З",
+    "field.chr.i":"И",
+    "field.chr.j":"К",
 }

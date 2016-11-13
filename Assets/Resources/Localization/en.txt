@@ -57,4 +57,15 @@
     "error.layout_not_done":"Not all ships on field",
 
     "chat.send_fail":"Cannot send message to chat. Try again.",
+
+    "field.chr.a":"A",
+    "field.chr.b":"B",
+    "field.chr.c":"C",
+    "field.chr.d":"D",
+    "field.chr.e":"E",
+    "field.chr.f":"F",
+    "field.chr.g":"G",
+    "field.chr.h":"H",
+    "field.chr.i":"I",
+    "field.chr.j":"J",
 }
