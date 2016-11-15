@@ -43,7 +43,7 @@ public class GameContent : BindModel
     public Bind<GameObject> OpponentCellsRoot;
     public Bind<GameObject> ChatContentRoot;
 
-    private Data.FieldCells _opponentField;
+    private Data.FieldCellsData _opponentField;
     private GameFieldInput _fieldInput;
     private FieldCellsContent _myFieldCells;
     private FieldCellsContent _opponentFieldCells;
@@ -89,7 +89,7 @@ public class GameContent : BindModel
 
     private void OnOpponentFieldClick(int x, int y)
     {
-        if (IsMyTurn.Value && _opponentField != null && _opponentField[x][y] == 0)
+        if (IsMyTurn.Value && _opponentField != null && _opponentField.Cells[x][y] == 0)
         {
             Core.Instance.Match.Shoot(x, y);
             SoundController.Sound(SoundController.SOUND_SHOOT);
@@ -100,7 +100,7 @@ public class GameContent : BindModel
         }
     }
 
-    private void FillAliveShips(FieldShipsAliveStateContext ships, Data.FieldState fieldState)
+    private void FillAliveShips(FieldShipsAliveStateContext ships, Data.FieldStateData fieldState)
     {
         ships.Ship1_1.Value = fieldState.AliveShips.Count1 > 0 ? 0 : 1;
         ships.Ship1_2.Value = fieldState.AliveShips.Count1 > 1 ? 0 : 1;
@@ -114,7 +114,7 @@ public class GameContent : BindModel
         ships.Ship4_1.Value = fieldState.AliveShips.Count4 > 0 ? 0 : 1;
     }
 
-    public void UpdateData(Data.Match match)
+    public void UpdateData(Data.MatchData match)
     {
         if (match.My != null)
         {
@@ -192,24 +192,24 @@ public class GameContent : BindModel
         TurnNumber.Value = match.TurnNumber.ToString();
     }
 
-    public void UpdateChat(Data.Chat chat)
+    public void UpdateChat(Data.ChatData chat)
     {
         if (_chatItems != null)
         {
-            if (_chatItems.Length == chat.Count) return;
+            if (_chatItems.Length == chat.Chat.Count) return;
 
             for (int i = 0; i < _chatItems.Length; i++) _chatItems[i].Destroy();
         }
-        _chatItems = new ChatItem[chat.Count];
+        _chatItems = new ChatItem[chat.Chat.Count];
         var chatRoot = ChatContentRoot.Value.transform;
         _root = chatRoot;
-        for (int i = 0; i < chat.Count; i++)
+        for (int i = 0; i < chat.Chat.Count; i++)
         {
             var userName = string.Empty;
-            if (chat[i].UserId == _myUserId) userName = MyInfo.Name.Value;
-            if (chat[i].UserId == _opponentUserId) userName = OpponentInfo.Name.Value;
+            if (chat.Chat[i].UserId == _myUserId) userName = MyInfo.Name.Value;
+            if (chat.Chat[i].UserId == _opponentUserId) userName = OpponentInfo.Name.Value;
 
-            _chatItems[i] = new ChatItem(userName, chat[i].Timestamp, chat[i].Message, chat[i].UserId == _myUserId);
+            _chatItems[i] = new ChatItem(userName, chat.Chat[i].Timestamp, chat.Chat[i].Message, chat.Chat[i].UserId == _myUserId);
             AddLast(_chatItems[i]);
         }
         _root = null;

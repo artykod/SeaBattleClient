@@ -3,9 +3,9 @@
     public class SortedLobbyMatch
     {
         public string Token { get; private set; }
-        public Data.LobbyMatch Match { get; private set; }
+        public Data.LobbyMatchData Match { get; private set; }
 
-        public SortedLobbyMatch(string token, Data.LobbyMatch match)
+        public SortedLobbyMatch(string token, Data.LobbyMatchData match)
         {
             Token = token;
             Match = match;

@@ -14,7 +14,7 @@
         Core.Instance.Lobby.OnBattleStatisticsReceived -= OnStatisticsReceived;
     }
 
-    private void OnStatisticsReceived(Data.BattleStatistics stats)
+    private void OnStatisticsReceived(Data.BattleStatisticsData stats)
     {
         AddLast(new DashboardContent(Core.Instance.Character, stats));
 

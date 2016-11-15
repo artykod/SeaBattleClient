@@ -36,20 +36,20 @@ public class FieldCellsLineContext : NeastedBindContext
 
 public class FieldContext : NeastedBindContext
 {
-    public static void FillCells(Data.FieldCells cells, params FieldCellsLineContext[] lines)
+    public static void FillCells(Data.FieldCellsData cells, params FieldCellsLineContext[] lines)
     {
-        for (int i = 0; i < cells.Count; i++)
+        for (int i = 0; i < cells.Cells.Count; i++)
         {
-            lines[i].Cell_1.Mode.Value  = cells[0][i];
-            lines[i].Cell_2.Mode.Value  = cells[1][i];
-            lines[i].Cell_3.Mode.Value  = cells[2][i];
-            lines[i].Cell_4.Mode.Value  = cells[3][i];
-            lines[i].Cell_5.Mode.Value  = cells[4][i];
-            lines[i].Cell_6.Mode.Value  = cells[5][i];
-            lines[i].Cell_7.Mode.Value  = cells[6][i];
-            lines[i].Cell_8.Mode.Value  = cells[7][i];
-            lines[i].Cell_9.Mode.Value  = cells[8][i];
-            lines[i].Cell_10.Mode.Value = cells[9][i];
+            lines[i].Cell_1.Mode.Value  = cells.Cells[0][i];
+            lines[i].Cell_2.Mode.Value  = cells.Cells[1][i];
+            lines[i].Cell_3.Mode.Value  = cells.Cells[2][i];
+            lines[i].Cell_4.Mode.Value  = cells.Cells[3][i];
+            lines[i].Cell_5.Mode.Value  = cells.Cells[4][i];
+            lines[i].Cell_6.Mode.Value  = cells.Cells[5][i];
+            lines[i].Cell_7.Mode.Value  = cells.Cells[6][i];
+            lines[i].Cell_8.Mode.Value  = cells.Cells[7][i];
+            lines[i].Cell_9.Mode.Value  = cells.Cells[8][i];
+            lines[i].Cell_10.Mode.Value = cells.Cells[9][i];
         }
     }
 }
@@ -131,7 +131,7 @@ public class ShipModel
         return x * 1000 + y;
     }
 
-    public static void FillAllShips(bool showWounded, Data.FieldCells cells, List<ShipModel> shipsList1, List<ShipModel> shipsList2, List<ShipModel> shipsList3, List<ShipModel> shipsList4)
+    public static void FillAllShips(bool showWounded, Data.FieldCellsData cells, List<ShipModel> shipsList1, List<ShipModel> shipsList2, List<ShipModel> shipsList3, List<ShipModel> shipsList4)
     {
         var excludedCells = new HashSet<int>();
 
@@ -146,17 +146,17 @@ public class ShipModel
         FillShips(showWounded, 1, cells, shipsList1, excludedCells);
     }
 
-    public static void FillShips(bool showWounded, int shipSize, Data.FieldCells cells, List<ShipModel> shipsList, HashSet<int> excludedCells)
+    public static void FillShips(bool showWounded, int shipSize, Data.FieldCellsData cells, List<ShipModel> shipsList, HashSet<int> excludedCells)
     {
-        for (int i = 0; i < cells.Count; i++)
+        for (int i = 0; i < cells.Cells.Count; i++)
         {
             var usedCells = new HashSet<int>();
             var count = 0;
             var x = 0;
             var y = 0;
-            for (int j = 0; j < cells[i].Count; j++)
+            for (int j = 0; j < cells.Cells[i].Count; j++)
             {
-                if ((cells[i][j] == 1 || (showWounded && cells[i][j] == 3) || cells[i][j] == 4) && !excludedCells.Contains(GetCellHash(i, j)))
+                if ((cells.Cells[i][j] == 1 || (showWounded && cells.Cells[i][j] == 3) || cells.Cells[i][j] == 4) && !excludedCells.Contains(GetCellHash(i, j)))
                 {
                     if (count == 0)
                     {
@@ -188,15 +188,15 @@ public class ShipModel
             }
         }
 
-        for (int i = 0; i < cells.Count; i++)
+        for (int i = 0; i < cells.Cells.Count; i++)
         {
             var usedCells = new HashSet<int>();
             var count = 0;
             var x = 0;
             var y = 0;
-            for (int j = 0; j < cells[i].Count; j++)
+            for (int j = 0; j < cells.Cells[i].Count; j++)
             {
-                if ((cells[j][i] == 1 || (showWounded && cells[j][i] == 3) || cells[j][i] == 4) && !excludedCells.Contains(GetCellHash(j, i)))
+                if ((cells.Cells[j][i] == 1 || (showWounded && cells.Cells[j][i] == 3) || cells.Cells[j][i] == 4) && !excludedCells.Contains(GetCellHash(j, i)))
                 {
                     if (count == 0)
                     {

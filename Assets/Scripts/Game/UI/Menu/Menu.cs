@@ -16,7 +16,7 @@
         Core.Instance.Auth.OnLogin -= LoginHandler;
     }
 
-    private void LoginHandler(Data.Character character)
+    private void LoginHandler(Data.CharacterData character)
     {
         if (_menuContent == null)
         {

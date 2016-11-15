@@ -1,6 +1,6 @@
 ﻿public class MenuContent : BindModel
 {
-    private Data.Character _character;
+    private Data.CharacterData _character;
 
     public SocialContext Social { get; private set; }
     public PlayerContext Player { get; private set; }

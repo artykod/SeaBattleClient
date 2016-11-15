@@ -41,7 +41,7 @@ public class Game : EmptyScreenWithBackground
         new ErrorDialog("chat.send_fail");
     }
 
-    private void OnChatReceived(Data.Chat chat)
+    private void OnChatReceived(Data.ChatData chat)
     {
         if (_gameContent != null) _gameContent.UpdateChat(chat);
     }
@@ -52,7 +52,7 @@ public class Game : EmptyScreenWithBackground
         new ErrorDialog("error.match_not_found");
     }
 
-    private void OnMatchReceived(Data.Match match)
+    private void OnMatchReceived(Data.MatchData match)
     {
         if (_gameContent == null)
         {
@@ -71,7 +71,7 @@ public class Game : EmptyScreenWithBackground
         CheckEndMatch(match);
     }
 
-    private void CheckEndMatch(Data.Match match)
+    private void CheckEndMatch(Data.MatchData match)
     {
         if (match == null || match.My == null) return;
 

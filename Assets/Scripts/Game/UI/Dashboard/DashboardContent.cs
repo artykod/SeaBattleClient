@@ -2,7 +2,7 @@
 
 public class DashboardContent : BindModel
 {
-    private Data.Character _character;
+    private Data.CharacterData _character;
 
     public PlayerContext Player;
 
@@ -11,7 +11,7 @@ public class DashboardContent : BindModel
     public Bind<string> Lose;
     public Bind<string> Draw;
 
-    public DashboardContent(Data.Character character, Data.BattleStatistics stats) : base("UI/Dashboard/DashboardContent")
+    public DashboardContent(Data.CharacterData character, Data.BattleStatisticsData stats) : base("UI/Dashboard/DashboardContent")
     {
         _character = Core.Instance.Character;
         

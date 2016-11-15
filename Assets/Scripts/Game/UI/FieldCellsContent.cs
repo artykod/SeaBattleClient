@@ -15,7 +15,7 @@
     {
     }
 
-    public void UpdateData(Data.FieldCells cells)
+    public void UpdateData(Data.FieldCellsData cells)
     {
         FieldContext.FillCells(cells, Line_1, Line_2, Line_3, Line_4, Line_5, Line_6, Line_7, Line_8, Line_9, Line_10);
     }

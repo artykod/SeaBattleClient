@@ -21,7 +21,7 @@ public class Core : MonoBehaviour
     public ServerApi.Auth Auth { get; private set; }
     public ServerApi.Lobby Lobby { get; private set; }
     public ServerApi.Match Match { get; private set; }
-    public Data.Character Character { get; private set; }
+    public Data.CharacterData Character { get; private set; }
 
     private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
 
@@ -88,7 +88,7 @@ public class Core : MonoBehaviour
         while (!IsLoginDone) yield return null;
     }
 
-    private void OnLoginHandler(Data.Character character)
+    private void OnLoginHandler(Data.CharacterData character)
     {
         IsLoginDone = true;
         Character = character;

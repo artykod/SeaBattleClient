@@ -5,7 +5,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using Data;
+using SimpleJSON;
 
 namespace Networking
 {
@@ -26,10 +27,19 @@ namespace Networking
         public static string TempAuthUserName = "u1@r.ru"; // u1@r.ru; u2@r.ru;
         public static string TempAuthUserPassword = "111"; // 111; 222;
 
-        private class TempAuthResponse
+        private class TempAuthResponse : BaseData
         {
-            [JsonProperty("token")]
             public string Token { get; private set; }
+
+            public override void FromJson(JSONNode node)
+            {
+                Token = node["token"];
+            }
+
+            protected override void FillJson(JSONNode node)
+            {
+                node["token"] = Token;
+            }
         }
 
         public void SetAuthCookies(string cookies)
@@ -42,9 +52,13 @@ namespace Networking
             return _requestHeaders["Cookie"];
         }
 
-        public void Login(Action<Data.Character> onLogin)
+        public void Login(Action<Data.CharacterData> onLogin)
         {
-            GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin), null);
+            GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) =>
+            {
+                Debug.Log("token = " + resp.Token);
+                CheckLoginToken(resp.Token, onLogin);
+            }, null);
         }
 
         public void Logout()
@@ -65,36 +79,46 @@ namespace Networking
         }
 #endif
 
-        private void CheckLoginToken(string token, Action<Data.Character> onLogin)
+        private void CheckLoginToken(string token, Action<Data.CharacterData> onLogin)
         {
-            GetInternal<Data.Character>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
+            GetInternal<Data.CharacterData>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
-                var cookies = resp_h["SET-COOKIE"];
-                _requestHeaders["Cookie"] = cookies;
-                onLogin(resp);
-
+                if (resp_h.ContainsKey("SET-COOKIE"))
+                {
+                    var cookies = resp_h["SET-COOKIE"];
+                    _requestHeaders["Cookie"] = cookies;
 #if NET_DEBUG
-                Debug.Log("Auth cookies: " + cookies);
+                    Debug.Log("Auth cookies: " + cookies);
 #endif
+                }
+                else
+                {
+                    Debug.LogError("Auth cookies not found!");
+                    foreach (var i in resp_h)
+                    {
+                        Debug.Log("{0} = {1}", i.Key, i.Value);
+                    }
+                }
+                onLogin(resp);
             }, null);
         }
 
-        public static void Get<T>(string method, Action<T> result, Action<int> onError = null) where T : class
+        public static void Get<T>(string method, Action<T> result, Action<int> onError = null) where T : BaseData
         {
             Instance.GetInternal<T>(GameServerAddress, method, (resp, resp_h) => result(resp), onError);
         }
 
-        public static void Post<R, T>(string method, R data, Action<T> result, Action<int> onError = null) where T : class
+        public static void Post<R, T>(string method, R data, Action<T> result, Action<int> onError = null) where T : BaseData where R : BaseData
         {
             Instance.PostInternal<R, T>(GameServerAddress, method, data, (resp, resp_h) => result(resp), onError);
         }
 
-        private void GetInternal<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
+        private void GetInternal<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData
         {
             StartCoroutine(GetAsync(host, request, onResponse, onError));
         }
 
-        private IEnumerator GetAsync<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
+        private IEnumerator GetAsync<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData
         {
 #if NET_DEBUG
             Debug.LogWarning("GET <<< {0}{1}", host, request);
@@ -109,7 +133,9 @@ namespace Networking
 #if NET_DEBUG
                     Debug.LogWarning("GET >>> {0}", www.text);
 #endif
-                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
+                    var dataJson = Activator.CreateInstance<T>();
+                    dataJson.FromJson(JSON.Parse(www.text));
+                    onResponse(dataJson, www.responseHeaders);
                 }
                 else
                 {
@@ -118,14 +144,14 @@ namespace Networking
             }
         }
 
-        private void PostInternal<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
+        private void PostInternal<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData where R : BaseData
         {
             StartCoroutine(PostAsync(host, request, data, onResponse, onError));
         }
 
-        private IEnumerator PostAsync<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : class
+        private IEnumerator PostAsync<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData where R : BaseData
         {
-            var json = JsonConvert.SerializeObject(data);
+            var json = data.ToJson().ToString();
 #if NET_DEBUG
             Debug.LogWarning("POST <<< {0}{1}", host, request);
             Debug.Log("POST json = {0}", json);
@@ -140,7 +166,9 @@ namespace Networking
 #if NET_DEBUG
                     Debug.LogWarning("POST >>> {0}", www.text);
 #endif
-                    onResponse(JsonConvert.DeserializeObject<T>(www.text), www.responseHeaders);
+                    var dataJson = Activator.CreateInstance<T>();
+                    dataJson.FromJson(JSON.Parse(www.text));
+                    onResponse(dataJson, www.responseHeaders);
                 }
                 else
                 {

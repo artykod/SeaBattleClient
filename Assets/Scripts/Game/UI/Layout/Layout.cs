@@ -72,7 +72,7 @@ public class Layout : EmptyScreenWithBackground
         Core.Instance.Match.OnMatchNotFound -= OnMatchNotFound;
     }
 
-    private void OnMatchReceived(Data.Match match)
+    private void OnMatchReceived(Data.MatchData match)
     {
         IsLoading = false;
 

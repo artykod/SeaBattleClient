@@ -21,13 +21,13 @@ public class LobbyContent : BindModel
     private Transform _itemsContent;
     private Transform _createBattleItemsContent;
     private Transform _contentTransform;
-    private Data.Lobby _lobby;
+    private Data.LobbyData _lobby;
     private SortingColumn _sortingColumn = SortingColumn.Value;
     private SortingDirection _sortingDirection = SortingDirection.Down;
 
     protected override Transform Content { get { return _contentTransform ?? transform; } }
 
-    public LobbyContent(Data.Lobby lobby) : base("UI/Lobby/LobbyContent")
+    public LobbyContent(Data.LobbyData lobby) : base("UI/Lobby/LobbyContent")
     {
         _lobby = lobby;
 
@@ -38,7 +38,7 @@ public class LobbyContent : BindModel
         AddBattleCreateItems();
     }
 
-    public void UpdateData(Data.Lobby lobby)
+    public void UpdateData(Data.LobbyData lobby)
     {
         _lobby = lobby;
         _battleList.UpdateData(SortLobby(_lobby));
@@ -66,10 +66,10 @@ public class LobbyContent : BindModel
         Root.Destroy();
     }
 
-    private LobbyBattleList.SortedLobbyMatch[] SortLobby(Data.Lobby lobby)
+    private LobbyBattleList.SortedLobbyMatch[] SortLobby(Data.LobbyData lobby)
     {
-        var battles = new List<LobbyBattleList.SortedLobbyMatch>(lobby.Count);
-        foreach (var i in lobby) battles.Add(new LobbyBattleList.SortedLobbyMatch(i.Key, i.Value));
+        var battles = new List<LobbyBattleList.SortedLobbyMatch>(lobby.Lobby.Count);
+        foreach (var i in lobby.Lobby) battles.Add(new LobbyBattleList.SortedLobbyMatch(i.Key, i.Value));
 
         switch (_sortingColumn)
         {

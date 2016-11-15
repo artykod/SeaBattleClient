@@ -6,7 +6,7 @@ namespace Networking
     {
         public class Auth
         {
-            public event Action<Data.Character> OnLogin = delegate { };
+            public event Action<Data.CharacterData> OnLogin = delegate { };
 
             public bool IsLoggedIn { get; private set; }
 
@@ -24,9 +24,9 @@ namespace Networking
 
         public class Lobby
         {
-            public event Action<Data.Lobby> OnLobbyReceived = delegate { };
-            public event Action<string, Data.Match> OnMatchReceived = delegate { };
-            public event Action<Data.BattleStatistics> OnBattleStatisticsReceived = delegate { };
+            public event Action<Data.LobbyData> OnLobbyReceived = delegate { };
+            public event Action<string, Data.MatchData> OnMatchReceived = delegate { };
+            public event Action<Data.BattleStatisticsData> OnBattleStatisticsReceived = delegate { };
             public event Action OnFailMatchCreate = delegate { };
 
             private void CreateMatchErrorHandler(int errorCode)
@@ -36,28 +36,28 @@ namespace Networking
 
             public void GetLobby()
             {
-                Connection.Get<Data.Lobby>("/m/get", resp => OnLobbyReceived(resp));
+                Connection.Get<Data.LobbyData>("/m/get", resp => OnLobbyReceived(resp));
             }
 
             public void CreateMatch(Data.CurrencyType currency, int value, bool withBot)
             {
-                Connection.Post<Data.CreateMatchRequest, Data.CreateMatchResponse>("/m/new", new Data.CreateMatchRequest(new Data.MatchBet(currency, value), withBot), resp => OnMatchReceived(resp.Key, resp.Match), CreateMatchErrorHandler);
+                Connection.Post<Data.CreateMatchRequestData, Data.CreateMatchResponseData>("/m/new", new Data.CreateMatchRequestData(new Data.MatchBetData(currency, value), withBot), resp => OnMatchReceived(resp.Key, resp.Match), CreateMatchErrorHandler);
             }
 
             public void GetStatistics()
             {
-                Connection.Get<Data.BattleStatistics>("/m/stats", resp => OnBattleStatisticsReceived(resp));
+                Connection.Get<Data.BattleStatisticsData>("/m/stats", resp => OnBattleStatisticsReceived(resp));
             }
         }
 
         public class Match
         {
-            public event Action<Data.Match> OnMatchReceived = delegate { };
+            public event Action<Data.MatchData> OnMatchReceived = delegate { };
             public event Action<Data.ShootResultType> OnShootResult = delegate { };
-            public event Action<Data.OpponentField> OnOpponentFieldReceived = delegate { };
+            public event Action<Data.OpponentFieldData> OnOpponentFieldReceived = delegate { };
             public event Action OnMatchNotFound = delegate { };
             public event Action OnFailSendChat = delegate { };
-            public event Action<Data.Chat> OnChatReceived = delegate { };
+            public event Action<Data.ChatData> OnChatReceived = delegate { };
             public event Action OnLayoutError = delegate { };
 
             private string _matchToken;
@@ -72,7 +72,7 @@ namespace Networking
                 return string.Format("/m/k/{0}/{1}", _matchToken, string.Format(method, args));
             }
 
-            private void MatchReceived(Data.Match match)
+            private void MatchReceived(Data.MatchData match)
             {
                 OnMatchReceived(match);
             }
@@ -100,47 +100,47 @@ namespace Networking
 
             public void JoinToMatch(Data.CurrencyType currency, int value)
             {
-                Connection.Post<Data.MatchBet, Data.Match>(MatchRequest("new"), new Data.MatchBet(currency, value), resp => MatchReceived(resp), MatchRequestErrorHandler);
+                Connection.Post<Data.MatchBetData, Data.MatchData>(MatchRequest("new"), new Data.MatchBetData(currency, value), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void AutolayoutField()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("autoSetUp"), new Data.Empty(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
+                Connection.Post<Data.EmptyData, Data.MatchData>(MatchRequest("autoSetUp"), new Data.EmptyData(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
             public void ResetField()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("reset"), new Data.Empty(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
+                Connection.Post<Data.EmptyData, Data.MatchData>(MatchRequest("reset"), new Data.EmptyData(), resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
-            public void PlaceShip(Data.FieldShip ship)
+            public void PlaceShip(Data.FieldShipData ship)
             {
-                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("placeShip"), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp), LayoutRequestErrorHandler);
+                Connection.Post<Data.FieldShipData, Data.MatchData>(MatchRequest("placeShip"), ship, resp => MatchReceived(resp), LayoutRequestErrorHandler);
             }
 
-            public void ChangeShip(int x, int y, Data.FieldShip ship)
+            public void ChangeShip(int x, int y, Data.FieldShipData ship)
             {
-                Connection.Post<Data.SetShipPositionRequest, Data.Match>(MatchRequest("changeShip/{0}/{1}", x, y), new Data.SetShipPositionRequest(ship), resp => MatchReceived(resp), LayoutRequestErrorHandler);
+                Connection.Post<Data.FieldShipData, Data.EmptyData>(MatchRequest("changeShip/{0}/{1}", y, x), ship, resp => GetCurrentState(), LayoutRequestErrorHandler);
             }
 
             public void SendReady()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setReady"), new Data.Empty(), resp => MatchReceived(resp), MatchRequestErrorHandler);
+                Connection.Post<Data.EmptyData, Data.MatchData>(MatchRequest("setReady"), new Data.EmptyData(), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void SendNotReady()
             {
-                Connection.Post<Data.Empty, Data.Match>(MatchRequest("setNotReady"), new Data.Empty(), resp => MatchReceived(resp), MatchRequestErrorHandler);
+                Connection.Post<Data.EmptyData, Data.MatchData>(MatchRequest("setNotReady"), new Data.EmptyData(), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void GetCurrentState()
             {
-                Connection.Get<Data.Match>(MatchRequest(""), resp => MatchReceived(resp), MatchRequestErrorHandler);
+                Connection.Get<Data.MatchData>(MatchRequest(""), resp => MatchReceived(resp), MatchRequestErrorHandler);
             }
 
             public void Shoot(int x, int y)
             {
-                Connection.Post<Data.Empty, Data.ShootResult>(MatchRequest("shoot/{0}/{1}", x, y), new Data.Empty(), resp =>
+                Connection.Post<Data.EmptyData, Data.ShootResultData>(MatchRequest("shoot/{0}/{1}", x, y), new Data.EmptyData(), resp =>
                 {
                     OnMatchReceived(resp.Match);
                     OnShootResult(resp.Result);
@@ -149,19 +149,19 @@ namespace Networking
 
             public void GetOpponentFieldAfterBattle()
             {
-                Connection.Post<Data.Empty, Data.OpponentField>(MatchRequest("oppField"), new Data.Empty(), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
+                Connection.Post<Data.EmptyData, Data.OpponentFieldData>(MatchRequest("oppField"), new Data.EmptyData(), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
             }
 
             public void SendChatMessage(string message)
             {
                 if (string.IsNullOrEmpty(message)) return;
-                Connection.Post<Data.SendChatMessage, Data.Empty>(MatchRequest("chat"), new Data.SendChatMessage(message), resp => { }, SendChatErrorHandler);
+                Connection.Post<Data.SendChatMessageData, Data.EmptyData>(MatchRequest("chat"), new Data.SendChatMessageData(message), resp => { }, SendChatErrorHandler);
             }
 
             public void RequestChat()
             {
                 var method = string.Format("chat/{0}", 0);
-                Connection.Get<Data.Chat>(MatchRequest(method), resp => OnChatReceived(resp));
+                Connection.Get<Data.ChatData>(MatchRequest(method), resp => OnChatReceived(resp));
             }
         }
     }

@@ -45,12 +45,12 @@ public class LayoutShip : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             if (_ship == null || _ship.Model == null)
             {
                 OnSendServerRequest();
-                Core.Instance.Match.PlaceShip(new Data.FieldShip(Data.ShipDirection.Horizontal, ShipType, _x, _y));
+                Core.Instance.Match.PlaceShip(new Data.FieldShipData(Data.ShipDirection.Horizontal, ShipType, _x, _y));
             }
             else
             {
                 OnSendServerRequest();
-                Core.Instance.Match.ChangeShip(_ship.Model.X, _ship.Model.Y, new Data.FieldShip(_ship.Model.Direction, ShipType, _x, _y));
+                Core.Instance.Match.ChangeShip(_ship.Model.X, _ship.Model.Y, new Data.FieldShipData(_ship.Model.Direction, ShipType, _x, _y));
             }
         }
         else
@@ -65,7 +65,7 @@ public class LayoutShip : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             OnSendServerRequest();
             var direction = _ship.Model.Direction == Data.ShipDirection.Horizontal ? Data.ShipDirection.Vertical : Data.ShipDirection.Horizontal;
-            Core.Instance.Match.ChangeShip(_ship.Model.X, _ship.Model.Y, new Data.FieldShip(direction, ShipType, _x, _y));
+            Core.Instance.Match.ChangeShip(_ship.Model.X, _ship.Model.Y, new Data.FieldShipData(direction, ShipType, _x, _y));
         }
 
         _isDragged = false;

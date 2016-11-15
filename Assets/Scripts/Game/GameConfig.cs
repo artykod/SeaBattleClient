@@ -1,32 +1,52 @@
 ﻿using UnityEngine;
-using Newtonsoft.Json;
+using Data;
+using SimpleJSON;
 
 public class GameConfig : Singleton<GameConfig, GameConfig>
 {
-    public class ConfigJson
+    public class ConfigJson : BaseData
     {
-        [JsonProperty]
-        public string AuthServerUrl { get; private set; }
-        [JsonProperty]
-        public string GameServerUrl { get; private set; }
-        [JsonProperty]
-        public string AvatarsServerUrl { get; private set; }
-        [JsonProperty]
         public bool DebugMode { get; private set; }
-        [JsonProperty]
+        public string AuthServerUrl { get; private set; }
+        public string GameServerUrl { get; private set; }
+        public string AvatarsServerUrl { get; private set; }
         public string BuyGoldUrl { get; private set; }
-        [JsonProperty]
         public string BuySilverUrl { get; private set; }
-        [JsonProperty]
         public string FacebookUrl { get; private set; }
-        [JsonProperty]
         public string VkUrl { get; private set; }
-        [JsonProperty]
         public string OdnoklassnikiUrl { get; private set; }
-        [JsonProperty]
         public string MyMailUrl { get; private set; }
-        [JsonProperty]
         public string TwitterUrl { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            AuthServerUrl = node["AuthServerUrl"];
+            GameServerUrl = node["GameServerUrl"];
+            AvatarsServerUrl = node["AvatarsServerUrl"];
+            DebugMode = node["DebugMode"].AsBool;
+            BuyGoldUrl = node["BuyGoldUrl"];
+            BuySilverUrl = node["BuySilverUrl"];
+            FacebookUrl = node["FacebookUrl"];
+            VkUrl = node["VkUrl"];
+            OdnoklassnikiUrl = node["OdnoklassnikiUrl"];
+            MyMailUrl = node["MyMailUrl"];
+            TwitterUrl = node["TwitterUrl"];
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["AuthServerUrl"] = AuthServerUrl;
+            node["GameServerUrl"] = GameServerUrl;
+            node["AvatarsServerUrl"] = AvatarsServerUrl;
+            node["DebugMode"].AsBool = DebugMode;
+            node["BuyGoldUrl"] = BuyGoldUrl;
+            node["BuySilverUrl"] = BuySilverUrl;
+            node["FacebookUrl"] = FacebookUrl;
+            node["VkUrl"] = VkUrl;
+            node["OdnoklassnikiUrl"] = OdnoklassnikiUrl;
+            node["MyMailUrl"] = MyMailUrl;
+            node["TwitterUrl"] = TwitterUrl;
+        }
     }
 
     public ConfigJson Config { get; private set; }
@@ -38,7 +58,8 @@ public class GameConfig : Singleton<GameConfig, GameConfig>
         {
             try
             {
-                Config = JsonConvert.DeserializeObject<ConfigJson>(config.text);
+                Config = new ConfigJson();
+                Config.FromJson(JSON.Parse(config.text));
             }
             catch
             {

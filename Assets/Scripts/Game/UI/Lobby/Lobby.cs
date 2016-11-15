@@ -4,7 +4,7 @@ using System.Collections;
 public class Lobby : EmptyScreenWithBackground
 {
     private LobbyContent _content;
-    private Data.Lobby _lobby;
+    private Data.LobbyData _lobby;
 
     public Lobby() : base("Lobby/Lobby")
     {
@@ -21,7 +21,7 @@ public class Lobby : EmptyScreenWithBackground
         base.OnDestroy();
     }
 
-    private void OnLobbyReceived(Data.Lobby lobby)
+    private void OnLobbyReceived(Data.LobbyData lobby)
     {
         IsLoading = false;
         UpdateData(lobby);
@@ -37,21 +37,21 @@ public class Lobby : EmptyScreenWithBackground
         while (true);
     }
 
-    private bool CheckLobbyEquals(Data.Lobby a, Data.Lobby b)
+    private bool CheckLobbyEquals(Data.LobbyData a, Data.LobbyData b)
     {
         if (a == null && b != null) return false;
         if (a != null && b == null) return false;
 
-        if (a.Count == b.Count)
+        if (a.Lobby.Count == b.Lobby.Count)
         {
-            foreach (var i in b) if (!a.ContainsKey(i.Key)) return false;
+            foreach (var i in b.Lobby) if (!a.Lobby.ContainsKey(i.Key)) return false;
             return true;
         }
 
         return false;
     }
 
-    private void UpdateData(Data.Lobby lobby)
+    private void UpdateData(Data.LobbyData lobby)
     {
         if (CheckLobbyEquals(_lobby, lobby)) return;
 

@@ -1,20 +1,20 @@
 ﻿public class LobbyBattleListItem : BindModel
 {
     private string _matchToken;
-    private Data.LobbyMatch _matchData;
+    private Data.LobbyMatchData _matchData;
 
     public Bind<string> Nick;
     public Bind<int> CurrencyType;
     public Bind<int> CurrencyValue;
     public Bind<bool> CanJoin;
 
-    public LobbyBattleListItem(string matchToken, Data.LobbyMatch matchData) : base("UI/Lobby/LobbyBattleListItem")
+    public LobbyBattleListItem(string matchToken, Data.LobbyMatchData matchData) : base("UI/Lobby/LobbyBattleListItem")
     {
         _matchToken = matchToken;
         UpdateData(matchData);
     }
 
-    public void UpdateData(Data.LobbyMatch matchData)
+    public void UpdateData(Data.LobbyMatchData matchData)
     {
         _matchData = matchData;
 

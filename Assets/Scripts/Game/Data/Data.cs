@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using SimpleJSON;
+using Random = UnityEngine.Random;
 
 namespace Data
 {
@@ -31,241 +32,541 @@ namespace Data
         Kill = 4,
     }
 
-    public class Empty
+    public abstract class BaseData
     {
+        public abstract void FromJson(JSONNode node);
+        protected abstract void FillJson(JSONNode node);
+        public JSONNode ToJson()
+        {
+            var node = new JSONClass();
+            FillJson(node);
+            return node;
+        }
     }
 
-    public class Character
+    public class EmptyData : BaseData
     {
-        [JsonProperty("id")]
+        public override void FromJson(JSONNode node) { }
+        protected override void FillJson(JSONNode node) { }
+    }
+
+    public class CharacterData : BaseData
+    {
         public int Id { get; private set; }
-        [JsonProperty("nick")]
         public string Nick { get; private set; }
-        [JsonProperty("gameId")]
         public int GameId { get; private set; }
-        [JsonProperty("silver")]
         public int Silver { get; private set; }
-        [JsonProperty("gold")]
         public int Gold { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            Id = node["id"].AsInt;
+            Nick = node["nick"];
+            GameId = node["gameId"].AsInt;
+            Silver = node["silver"].AsInt;
+            Gold = node["gold"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["id"].AsInt = Id;
+            node["nick"] = Nick;
+            node["gameId"].AsInt = GameId;
+            node["silver"].AsInt = Silver;
+            node["gold"].AsInt = Gold;
+        }
     }
 
-    public class MatchBet
+    public class MatchBetData : BaseData
     {
-        [JsonProperty("type")]
         public int Type { get; private set; }
-        [JsonProperty("val")]
         public int Value { get; private set; }
 
-        public MatchBet(CurrencyType currency, int value)
+        public MatchBetData() { }
+        public MatchBetData(CurrencyType currency, int value)
         {
             Type = (int)currency;
             Value = value;
         }
+
+        public override void FromJson(JSONNode node)
+        {
+            Type = node["type"].AsInt;
+            Value = node["val"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["type"].AsInt = Type;
+            node["val"].AsInt = Value;
+        }
     }
 
-    public class CreateMatchRequest
+    public class CreateMatchRequestData : BaseData
     {
-        [JsonProperty("bet")]
-        public MatchBet Bet { get; private set; }
-        [JsonProperty("withBot")]
+        public MatchBetData Bet { get; private set; }
         public bool WithBot { get; private set; }
 
-        public CreateMatchRequest(MatchBet bet, bool withBot)
+        public CreateMatchRequestData(MatchBetData bet, bool withBot)
         {
             Bet = bet;
             WithBot = withBot;
         }
+
+        public override void FromJson(JSONNode node)
+        {
+            Bet = new MatchBetData();
+            Bet.FromJson(node["bet"]);
+            WithBot = node["withBot"].AsBool;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["bet"] = Bet.ToJson();
+            node["withBot"].AsBool = WithBot;
+        }
     }
 
-    public class CreateMatchResponse
+    public class CreateMatchResponseData : BaseData
     {
-        [JsonProperty("key")]
         public string Key { get; private set; }
-        [JsonProperty("match")]
-        public Match Match { get; private set; }
+        public MatchData Match { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            Key = node["key"];
+            Match = new MatchData();
+            Match.FromJson(node["match"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["key"] = Key;
+            node["match"] = Match.ToJson();
+        }
     }
 
-    public class LobbyMatchPlayer
+    public class LobbyMatchPlayerData : BaseData
     {
-        [JsonProperty("id")]
         public int Id { get; private set; }
-        [JsonProperty("nick")]
         public string Nick { get; private set; }
 
-        public LobbyMatchPlayer(int id, string nick)
+        public LobbyMatchPlayerData() { }
+        public LobbyMatchPlayerData(int id, string nick)
         {
             Id = id;
             Nick = nick;
         }
+
+        public override void FromJson(JSONNode node)
+        {
+            Id = node["id"].AsInt;
+            Nick = node["nick"];
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["id"].AsInt = Id;
+            node["nick"] = Nick;
+        }
     }
 
-    public class LobbyMatch
+    public class LobbyMatchData : BaseData
     {
-        [JsonProperty("sides")]
-        public LobbyMatchPlayer[] Sides { get; private set; }
-        [JsonProperty("bet")]
-        public MatchBet Bet { get; private set; }
+        public LobbyMatchPlayerData[] Sides { get; private set; }
+        public MatchBetData Bet { get; private set; }
 
-        public LobbyMatch(MatchBet bet, LobbyMatchPlayer[] sides)
+        public LobbyMatchData() { }
+        public LobbyMatchData(MatchBetData bet, LobbyMatchPlayerData[] sides)
         {
             Sides = sides;
             Bet = bet;
         }
-    }
 
-    public class Lobby : Dictionary<string, LobbyMatch>
-    {
-        public static Lobby GenerateStub(int count = 10)
+        public override void FromJson(JSONNode node)
         {
-            var lobby = new Lobby();
-            for (int i = 0; i < count; i++)
-                lobby.Add(System.Guid.NewGuid().ToString(), new LobbyMatch(
-                    new MatchBet(Random.value > 0.5f ? CurrencyType.Gold : CurrencyType.Silver, Random.Range(10, 1000)),
-                    new LobbyMatchPlayer[] {
-                        new LobbyMatchPlayer(Random.Range(0, 9999999), System.Guid.NewGuid().ToString()),
-                        Random.value > 0.5f ? null : new LobbyMatchPlayer(Random.Range(0, 9999999), System.Guid.NewGuid().ToString()),
-                    }));
-            return lobby;
+            var sides = node["sides"].AsArray;
+            Sides = new LobbyMatchPlayerData[sides.Count];
+            for (int i = 0; i < sides.Count; i++)
+            {
+                Sides[i] = new LobbyMatchPlayerData();
+                Sides[i].FromJson(sides[i]);
+            }
+            Bet = new MatchBetData();
+            Bet.FromJson(node["bet"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            var sides = new JSONNode();
+            for (int i = 0; i < Sides.Length; i++)
+            {
+                sides[i] = Sides[i].ToJson();
+            }
+            node["sides"] = sides;
+            node["bet"] = Bet.ToJson();
         }
     }
 
-    public class Match
+    public class LobbyData : BaseData
     {
-        [JsonProperty("my")]
-        public FieldState My { get; private set; }
-        [JsonProperty("opponent")]
-        public FieldState Opponent { get; private set; }
-        [JsonProperty("bet")]
-        public MatchBet Bet { get; private set; }
-        [JsonProperty("turnCnt")]
+        public Dictionary<string, LobbyMatchData> Lobby { get; private set; }
+
+        public static LobbyData GenerateStub(int count = 10)
+        {
+            var lobby = new LobbyData();
+            for (int i = 0; i < count; i++)
+            {
+                lobby.Lobby.Add(Guid.NewGuid().ToString(), new LobbyMatchData(
+                    new MatchBetData(Random.value > 0.5f ? CurrencyType.Gold : CurrencyType.Silver, Random.Range(10, 1000)),
+                    new LobbyMatchPlayerData[] {
+                        new LobbyMatchPlayerData(Random.Range(0, 9999999), Guid.NewGuid().ToString()),
+                        Random.value > 0.5f ? null : new LobbyMatchPlayerData(Random.Range(0, 9999999), Guid.NewGuid().ToString()),
+                    }));
+            }
+            return lobby;
+        }
+
+        public override void FromJson(JSONNode node)
+        {
+            Lobby = new Dictionary<string, LobbyMatchData>();
+            foreach (var i in node.AsObject.GetAllKeys())
+            {
+                Lobby[i] = new LobbyMatchData();
+                Lobby[i].FromJson(node[i]);
+            }
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            foreach (var i in Lobby) node[i.Key] = i.Value.ToJson();
+        }
+    }
+
+    public class MatchData : BaseData
+    {
+        public FieldStateData My { get; private set; }
+        public FieldStateData Opponent { get; private set; }
+        public MatchBetData Bet { get; private set; }
         public int TurnNumber { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            My = new FieldStateData();
+            My.FromJson(node["my"]);
+            if (node["opponent"] != null)
+            {
+                Opponent = new FieldStateData();
+                Opponent.FromJson(node["opponent"]);
+            }
+            else
+            {
+                Opponent = null;
+            }
+            Bet = new MatchBetData();
+            Bet.FromJson(node["bet"]);
+            TurnNumber = node["turnCnt"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["my"] = My.ToJson();
+            node["opponent"] = Opponent.ToJson();
+            node["bet"] = Bet.ToJson();
+            node["turnCnt"].AsInt = TurnNumber;
+        }
     }
 
-    public class MatchUser
+    public class MatchUserData : BaseData
     {
-        [JsonProperty("id")]
         public int Id { get; private set; }
-        [JsonProperty("nick")]
         public string Nick { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            Id = node["id"].AsInt;
+            Nick = node["nick"];
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["id"].AsInt = Id;
+            node["nick"] = Nick;
+        }
     }
 
-    public class FieldState
+    public class FieldStateData : BaseData
     {
-        [JsonProperty("user")]
-        public MatchUser User { get; private set; }
-        [JsonProperty("status")]
+        public MatchUserData User { get; private set; }
         public int Status { get; private set; }
-        [JsonProperty("field")]
-        public FieldCells Field { get; private set; }
-        [JsonProperty("freeShips")]
-        public FieldShipsCount FreeShips { get; private set; }
-        [JsonProperty("aliveShips")]
-        public FieldShipsCount AliveShips { get; private set; }
+        public FieldCellsData Field { get; private set; }
+        public FieldShipsCountData FreeShips { get; private set; }
+        public FieldShipsCountData AliveShips { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            User = new MatchUserData();
+            User.FromJson(node["user"]);
+            Status = node["status"].AsInt;
+            Field = new FieldCellsData();
+            Field.FromJson(node["field"]);
+            if (node["freeShips"] != null)
+            {
+                FreeShips = new FieldShipsCountData();
+                FreeShips.FromJson(node["freeShips"]);
+            }
+            else
+            {
+                FreeShips = null;
+            }
+            AliveShips = new FieldShipsCountData();
+            AliveShips.FromJson(node["aliveShips"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["user"] = User.ToJson();
+            node["status"].AsInt = Status;
+            node["field"] = Field.ToJson();
+            node["freeShips"] = FreeShips.ToJson();
+            node["aliveShips"] = AliveShips.ToJson();
+        }
     }
 
-    public class OpponentField
+    public class OpponentFieldData : BaseData
     {
-        [JsonProperty("field")]
-        public FieldCells Field { get; private set; }
+        public FieldCellsData Field { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            Field = new FieldCellsData();
+            Field.FromJson(node["field"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["field"] = Field.ToJson();
+        }
     }
 
-    public class FieldCells : List<List<int>>
+    public class FieldCellsData : BaseData
     {
+        public List<List<int>> Cells { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            var rows = node.AsArray;
+            Cells = new List<List<int>>(rows.Count);
+            for (int i = 0; i < rows.Count; i++)
+            {
+                var cols = rows[i].AsArray;
+                Cells.Add(new List<int>(cols.Count));
+                for (int j = 0; j < cols.Count; j++)
+                {
+                    Cells[i].Add(cols[j].AsInt);
+                }
+            }
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            for (int i = 0; i < Cells.Count; i++)
+            {
+                node[i] = new JSONNode();
+                for (int j = 0; j < Cells[i].Count; j++)
+                {
+                    node[i][j].AsInt = Cells[i][j];
+                }
+            }
+        }
     }
 
-    public class FieldShipsCount
+    public class FieldShipsCountData : BaseData
     {
-        [JsonProperty("1")]
         public int Count1 { get; private set; }
-        [JsonProperty("2")]
         public int Count2 { get; private set; }
-        [JsonProperty("3")]
         public int Count3 { get; private set; }
-        [JsonProperty("4")]
         public int Count4 { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            Count1 = node["1"].AsInt;
+            Count2 = node["2"].AsInt;
+            Count3 = node["3"].AsInt;
+            Count4 = node["4"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["1"].AsInt = Count1;
+            node["2"].AsInt = Count2;
+            node["3"].AsInt = Count3;
+            node["4"].AsInt = Count4;
+        }
     }
 
-    public class FieldShip
+    public class FieldShipData : BaseData
     {
-        [JsonProperty("direction")]
         public int DirectionRaw { get; private set; }
-        [JsonProperty("type")]
         public int TypeRaw { get; private set; }
-        [JsonProperty("colIdx")]
         public int X { get; private set; }
-        [JsonProperty("rowIdx")]
         public int Y { get; private set; }
-
-        [JsonIgnore]
         public ShipDirection Direction { get { return (ShipDirection)DirectionRaw; } }
-        [JsonIgnore]
         public ShipType Type { get { return (ShipType)TypeRaw; } }
 
-        public FieldShip(ShipDirection direction, ShipType shipType, int x, int y)
+        public FieldShipData() { }
+        public FieldShipData(ShipDirection direction, ShipType shipType, int x, int y)
         {
             DirectionRaw = (int)direction;
             TypeRaw = (int)shipType;
             X = x;
             Y = y;
         }
+
+        public override void FromJson(JSONNode node)
+        {
+            DirectionRaw = node["direction"].AsInt;
+            TypeRaw = node["type"].AsInt;
+            X = node["rowIdx"].AsInt;
+            Y = node["colIdx"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["direction"].AsInt = DirectionRaw;
+            node["type"].AsInt = TypeRaw;
+            node["rowIdx"].AsInt = X;
+            node["colIdx"].AsInt = Y;
+        }
     }
 
-    public class SetShipPositionRequest
+    public class SetShipPositionRequestData : BaseData
     {
-        [JsonProperty("ship")]
-        public FieldShip Ship { get; private set; }
+        public FieldShipData Ship { get; private set; }
 
-        public SetShipPositionRequest(FieldShip ship)
+        public SetShipPositionRequestData() { }
+        public SetShipPositionRequestData(FieldShipData ship)
         {
             Ship = ship;
         }
-    }
 
-    public class ShootResult
-    {
-        [JsonProperty("result")]
-        public int ResultRaw { get; private set; }
-        [JsonProperty("match")]
-        public Match Match { get; private set; }
-
-        [JsonIgnore]
-        public ShootResultType Result { get { return (ShootResultType)ResultRaw; } }
-    }
-
-    public class BattleStatistics
-    {
-        [JsonProperty("cnt")]
-        public int TotalBattles { get; private set; }
-        [JsonProperty("wins")]
-        public int WinCount { get; private set; }
-        [JsonProperty("losses")]
-        public int LoseCount { get; private set; }
-        [JsonIgnore]
-        public int DrawCount { get { return TotalBattles - WinCount - LoseCount; } }
-    }
-
-    public class SendChatMessage
-    {
-        [JsonProperty("msg")]
-        public string Message { get; private set; }
-
-        public SendChatMessage(string message)
+        public override void FromJson(JSONNode node)
         {
-            Message = message;
+            Ship = new FieldShipData();
+            Ship.FromJson(node["ship"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["ship"] = Ship.ToJson();
         }
     }
 
-    public class ChatMessage
+    public class ShootResultData : BaseData
     {
-        [JsonProperty("usrId")]
-        public int UserId { get; private set; }
-        [JsonProperty("ts")]
-        public int Timestamp { get; private set; }
-        [JsonProperty("msg")]
-        public string Message { get; private set; }
+        public int ResultRaw { get; private set; }
+        public MatchData Match { get; private set; }
+        public ShootResultType Result { get { return (ShootResultType)ResultRaw; } }
+
+        public override void FromJson(JSONNode node)
+        {
+            ResultRaw = node["result"].AsInt;
+            Match = new MatchData();
+            Match.FromJson(node["match"]);
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["result"].AsInt = ResultRaw;
+            node["match"] = Match.ToJson();
+        }
     }
 
-    public class Chat : List<ChatMessage>
+    public class BattleStatisticsData : BaseData
     {
+        public int TotalBattles { get; private set; }
+        public int WinCount { get; private set; }
+        public int LoseCount { get; private set; }
+        public int DrawCount { get { return TotalBattles - WinCount - LoseCount; } }
+
+        public override void FromJson(JSONNode node)
+        {
+            TotalBattles = node["cnt"].AsInt;
+            WinCount = node["wins"].AsInt;
+            LoseCount = node["losses"].AsInt;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["cnt"].AsInt = TotalBattles;
+            node["wins"].AsInt = WinCount;
+            node["losses"].AsInt = LoseCount;
+        }
+    }
+
+    public class SendChatMessageData : BaseData
+    {
+        public string Message { get; private set; }
+
+        public SendChatMessageData() { }
+        public SendChatMessageData(string message)
+        {
+            Message = message;
+        }
+
+        public override void FromJson(JSONNode node)
+        {
+            Message = node["msg"];
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["msg"] = Message;
+        }
+    }
+
+    public class ChatMessageData : BaseData
+    {
+        public int UserId { get; private set; }
+        public int Timestamp { get; private set; }
+        public string Message { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            UserId = node["usrId"].AsInt;
+            Timestamp = node["ts"].AsInt;
+            Message = node["msg"];
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["usrId"].AsInt = UserId;
+            node["ts"].AsInt = Timestamp;
+            node["msg"] = Message;
+        }
+    }
+
+    public class ChatData : BaseData
+    {
+        public List<ChatMessageData> Chat { get; private set; }
+
+        public override void FromJson(JSONNode node)
+        {
+            var chat = node.AsArray;
+            Chat = new List<ChatMessageData>(chat.Count);
+            for (int i = 0; i < chat.Count; i++)
+            {
+                Chat.Add(new ChatMessageData());
+                Chat[i].FromJson(chat[i]);
+            }
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            for (int i = 0; i < Chat.Count; i++)
+            {
+                node[i] = Chat[i].ToJson();
+            }
+        }
     }
 }

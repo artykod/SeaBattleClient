@@ -97,7 +97,7 @@ public abstract class LobbyCreateBattleItem : BindModel
         new ErrorDialog("error.cant_create_match");
     }
 
-    private void OnNewMatchReceived(string token, Data.Match match)
+    private void OnNewMatchReceived(string token, Data.MatchData match)
     {
         Unsubscribe();
         IsLoading = false;
