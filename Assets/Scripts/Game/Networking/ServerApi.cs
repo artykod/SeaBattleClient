@@ -58,6 +58,7 @@ namespace Networking
             public event Action OnMatchNotFound = delegate { };
             public event Action OnFailSendChat = delegate { };
             public event Action<Data.Chat> OnChatReceived = delegate { };
+            public event Action OnLayoutError = delegate { };
 
             private string _matchToken;
 
@@ -79,6 +80,7 @@ namespace Networking
             private void LayoutRequestErrorHandler(int errorCode)
             {
                 MatchRequestErrorHandler(errorCode);
+                OnLayoutError();
             }
 
             private void MatchRequestErrorHandler(int errorCode)

@@ -28,6 +28,7 @@ public class Layout : EmptyScreenWithBackground
     {
         Core.Instance.Match.OnMatchReceived += OnMatchReceived;
         Core.Instance.Match.OnMatchNotFound += OnMatchNotFound;
+        Core.Instance.Match.OnLayoutError += OnLayoutError;
 
         _fieldCells = new FieldCellsContent();
         _root = transform.FindChild("CellsRoot");
@@ -39,7 +40,24 @@ public class Layout : EmptyScreenWithBackground
         Ship3.Count.Value = 2;
         Ship4.Count.Value = 1;
 
-        AutoLayout();
+        //AutoLayout();
+        IsLoading = true;
+        Core.Instance.Match.GetCurrentState();
+
+        var allLayoutShips = Instance.GetComponentsInChildren<LayoutShip>();
+        foreach (var i in allLayoutShips) i.OnSendServerRequest += OnLayoutShipSendRequest;
+    }
+
+    private void OnLayoutError()
+    {
+        IsLoading = false;
+        Core.Instance.Match.GetCurrentState();
+        IsLoading = true;
+    }
+
+    private void OnLayoutShipSendRequest()
+    {
+        IsLoading = true;
     }
 
     private void OnMatchNotFound()

@@ -72,8 +72,11 @@ public class ShipViewContext : NeastedBindContext
     public Bind<float> Rotation;
     public Bind<Vector3> Position;
     public Bind<GameObject> Object;
+    public Bind<GameObject> ViewOnField;
 
     private Vector3 _initialPosition;
+
+    public ShipModel Model { get; private set; }
 
     public ShipViewContext()
     {
@@ -89,13 +92,25 @@ public class ShipViewContext : NeastedBindContext
         {
             var cellW = 64f;
             var w = cellW * 5f;
-            var model = models[index];
-            UpdateData(new Vector3(model.X * cellW - w + cellW - 10f, (9 - model.Y) * cellW - w + 10f), model.Direction);
+            Model = models[index];
+            UpdateData(new Vector3(Model.X * cellW - w + cellW - 10f, (9 - Model.Y) * cellW - w + 10f), Model.Direction);
         }
         else
         {
-            UpdateData(_initialPosition, Data.ShipDirection.Horizontal);
+            Reset();
         }
+
+        if (ViewOnField.Value != null)
+        {
+            var layoutShip = ViewOnField.Value.GetComponent<LayoutShip>();
+            if (layoutShip) layoutShip.FetchShipView(this);
+        }
+    }
+
+    public void Reset()
+    {
+        Model = null;
+        UpdateData(_initialPosition, Data.ShipDirection.Horizontal);
     }
 
     private void UpdateData(Vector3 position, Data.ShipDirection direction)
@@ -107,9 +122,9 @@ public class ShipViewContext : NeastedBindContext
 
 public class ShipModel
 {
-    public Data.ShipDirection Direction { get; private set; }
-    public int X { get; private set; }
-    public int Y { get; private set; }
+    public Data.ShipDirection Direction { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
 
     private static int GetCellHash(int x, int y)
     {
