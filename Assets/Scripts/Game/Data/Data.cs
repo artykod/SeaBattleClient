@@ -191,8 +191,15 @@ namespace Data
             Sides = new LobbyMatchPlayerData[sides.Count];
             for (int i = 0; i < sides.Count; i++)
             {
-                Sides[i] = new LobbyMatchPlayerData();
-                Sides[i].FromJson(sides[i]);
+                if (sides[i].IsNull())
+                {
+                    Sides[i] = null;
+                }
+                else
+                {
+                    Sides[i] = new LobbyMatchPlayerData();
+                    Sides[i].FromJson(sides[i]);
+                }
             }
             Bet = new MatchBetData();
             Bet.FromJson(node["bet"]);
@@ -203,7 +210,7 @@ namespace Data
             var sides = new JSONNode();
             for (int i = 0; i < Sides.Length; i++)
             {
-                sides[i] = Sides[i].ToJson();
+                sides[i] = Sides[i] != null ? Sides[i].ToJson() : null;
             }
             node["sides"] = sides;
             node["bet"] = Bet.ToJson();
@@ -256,14 +263,14 @@ namespace Data
         {
             My = new FieldStateData();
             My.FromJson(node["my"]);
-            if (node["opponent"] != null)
+            if (node["opponent"].IsNull())
             {
-                Opponent = new FieldStateData();
-                Opponent.FromJson(node["opponent"]);
+                Opponent = null;
             }
             else
             {
-                Opponent = null;
+                Opponent = new FieldStateData();
+                Opponent.FromJson(node["opponent"]);
             }
             Bet = new MatchBetData();
             Bet.FromJson(node["bet"]);
@@ -312,14 +319,14 @@ namespace Data
             Status = node["status"].AsInt;
             Field = new FieldCellsData();
             Field.FromJson(node["field"]);
-            if (node["freeShips"] != null)
+            if (node["freeShips"].IsNull())
             {
-                FreeShips = new FieldShipsCountData();
-                FreeShips.FromJson(node["freeShips"]);
+                FreeShips = null;
             }
             else
             {
-                FreeShips = null;
+                FreeShips = new FieldShipsCountData();
+                FreeShips.FromJson(node["freeShips"]);
             }
             AliveShips = new FieldShipsCountData();
             AliveShips.FromJson(node["aliveShips"]);

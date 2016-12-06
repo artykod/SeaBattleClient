@@ -57,7 +57,7 @@ public class GameFieldInput : MonoBehaviour, IPointerClickHandler
         _x = Mathf.Clamp(Mathf.FloorToInt((mp.x + 32f) / 64f), -4, 5);
         _y = Mathf.Clamp(Mathf.FloorToInt((mp.y + 16f) / 64f), -5, 4);
 
-        var crossPosition = new Vector2(_x * 64 - 16f, _y * 64);
+        var crossPosition = new Vector2(_x * 64 - 8f, _y * 64 + 3f);
 
         _x += 4;
         _y = 4 - _y;

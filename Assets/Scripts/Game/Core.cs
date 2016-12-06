@@ -128,6 +128,7 @@ public class Core : MonoBehaviour
             }
             else
             {
+                Debug.LogError("Error while loading avatar " + url + ": " + loader.error);
                 texture.Value = Resources.Load<Texture2D>("Textures/avatar");
             }
         }

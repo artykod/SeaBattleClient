@@ -61,6 +61,14 @@ namespace SimpleJSON
         FloatValue = 7,
     }
 
+    public static class JSONNodeExtenstions
+    {
+        public static bool IsNull(this JSONNode node)
+        {
+            return node == null || node.Value == "null";
+        }
+    }
+
     public class JSONNode
     {
         protected bool m_String;
