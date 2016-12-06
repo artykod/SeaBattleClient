@@ -17,12 +17,6 @@ namespace Networking
 
         public event Action<int> OnErrorReceived;
 
-        public Connection()
-        {
-            TempAuthServerAddress = GameConfig.Instance.Config.AuthServerUrl;
-            GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
-        }
-
         public void ForceDisconnect()
         {
             if (OnErrorReceived != null) OnErrorReceived(-1);
@@ -30,7 +24,14 @@ namespace Networking
 
         public void DisconnectAll()
         {
+            _requestHeaders.Remove("TokenAuth");
             StopAllCoroutines();
+        }
+
+        private void Awake()
+        {
+            TempAuthServerAddress = GameConfig.Instance.Config.AuthServerUrl;
+            GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
         }
 
 #if USE_TEMP_AUTH_SERVER
