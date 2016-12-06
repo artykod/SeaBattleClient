@@ -57,6 +57,7 @@ namespace Data
         public int GameId { get; private set; }
         public int Silver { get; private set; }
         public int Gold { get; private set; }
+        public string Token { get; private set; }
 
         public override void FromJson(JSONNode node)
         {
@@ -65,6 +66,7 @@ namespace Data
             GameId = node["gameId"].AsInt;
             Silver = node["silver"].AsInt;
             Gold = node["gold"].AsInt;
+            Token = node["token"];
         }
 
         protected override void FillJson(JSONNode node)

@@ -44,15 +44,15 @@ namespace Networking
 
         public void SetAuthCookies(string cookies)
         {
-            _requestHeaders["Cookie"] = cookies;
+            _requestHeaders["TokenAuth"] = cookies;
         }
 
         public string GetAuthCookies()
         {
-            return _requestHeaders["Cookie"];
+            return _requestHeaders["TokenAuth"];
         }
 
-        public void Login(Action<Data.CharacterData> onLogin)
+        public void Login(Action<CharacterData> onLogin)
         {
             GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) =>
             {
@@ -63,12 +63,12 @@ namespace Networking
 
         public void Logout()
         {
-            _requestHeaders.Remove("Cookie");
+            _requestHeaders.Remove("TokenAuth");
         }
 #else
         public const bool TempLoginEnabled = false;
 
-        public void Login(Action<Data.Character> onLogin)
+        public void Login(Action<Character> onLogin)
         {
             throw new NotImplementedException();
             //CheckLoginToken("<website token>", onLogin);
@@ -79,26 +79,15 @@ namespace Networking
         }
 #endif
 
-        private void CheckLoginToken(string token, Action<Data.CharacterData> onLogin)
+        private void CheckLoginToken(string token, Action<CharacterData> onLogin)
         {
-            GetInternal<Data.CharacterData>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
+            GetInternal<CharacterData>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
-                if (resp_h.ContainsKey("SET-COOKIE"))
-                {
-                    var cookies = resp_h["SET-COOKIE"];
-                    _requestHeaders["Cookie"] = cookies;
+                var cookies = resp.Token;
+                _requestHeaders["TokenAuth"] = cookies;
 #if NET_DEBUG
-                    Debug.Log("Auth cookies: " + cookies);
+                Debug.Log("Auth cookies: " + cookies);
 #endif
-                }
-                else
-                {
-                    Debug.LogError("Auth cookies not found!");
-                    foreach (var i in resp_h)
-                    {
-                        Debug.Log("{0} = {1}", i.Key, i.Value);
-                    }
-                }
                 onLogin(resp);
             }, null);
         }
