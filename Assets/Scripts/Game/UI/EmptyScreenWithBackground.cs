@@ -64,13 +64,18 @@ public abstract class EmptyScreenWithBackground : BindModel
 
     protected override void OnDestroy()
     {
-        _screens.Pop();
-
+        if (_screens.Count > 0) _screens.Pop();
         base.OnDestroy();
-
         if (_screens.Count > 0) _screens.Peek().IsVisible = true;
     }
 
     protected virtual void OnShowScreen() { }
     protected virtual void OnHideScreen() { }
+
+    public static void CloseAll()
+    {
+        var screens = _screens.ToArray();
+        for (int i = _screens.Count - 1; i >= 0; i--) screens[i].Destroy();
+        _screens.Clear();
+    }
 }

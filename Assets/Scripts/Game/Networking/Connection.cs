@@ -15,10 +15,22 @@ namespace Networking
         private static string GameServerAddress = "http://45.120.149.115:5000";
         private Dictionary<string, string> _requestHeaders = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
+        public event Action<int> OnErrorReceived;
+
         public Connection()
         {
             TempAuthServerAddress = GameConfig.Instance.Config.AuthServerUrl;
             GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
+        }
+
+        public void ForceDisconnect()
+        {
+            if (OnErrorReceived != null) OnErrorReceived(-1);
+        }
+
+        public void DisconnectAll()
+        {
+            StopAllCoroutines();
         }
 
 #if USE_TEMP_AUTH_SERVER
@@ -169,7 +181,9 @@ namespace Networking
         private void ThrowNetworkError(string error, Action<int> errorCallback)
         {
             Debug.LogError("Network error: " + error);
-            if (errorCallback != null) errorCallback(ParseErrorCode(error));
+            var errorCode = ParseErrorCode(error);
+            if (errorCallback != null) errorCallback(errorCode);
+            if (OnErrorReceived != null) OnErrorReceived(errorCode);
         }
 
         private int ParseErrorCode(string error)
@@ -179,7 +193,6 @@ namespace Networking
             if (error.Contains("404")) return 404;
             if (error.Contains("409")) return 409;
             if (error.Contains("500")) return 500;
-
             return -1;
         }
     }

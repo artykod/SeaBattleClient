@@ -55,10 +55,14 @@ public class Core : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == this) return;
+
         //SoundController.Music(SoundController.MUSIC);
         SoundController.StartButtonsClickTracker();
 
         Instance = this;
+
+        Connection.Instance.OnErrorReceived += OnConnectionError;
 
         GameImpl.DebugImpl.Instance = new DebugUnity();
         if (GameConfig.Instance.Config.DebugMode) DebugConsole.Instance.Init();
@@ -78,6 +82,36 @@ public class Core : MonoBehaviour
 #endif
 
         if (PreloaderBehaviour.Instance == null) StartGame();
+    }
+
+    private void OnDestroy()
+    {
+        Connection.Instance.OnErrorReceived -= OnConnectionError;
+    }
+
+    private void OnConnectionError(int errorCode)
+    {
+        switch (errorCode)
+        {
+            case 400:
+            case 404:
+            case 500:
+            case -1:
+                try
+                {
+                    Connection.Instance.DisconnectAll();
+                    EmptyScreenWithBackground.CloseAll();
+                }
+                catch (System.Exception e)
+                {
+                    Debug.Log("Exception on disconnect: " + e.Message);
+                }
+                var caption = "ERROR";
+                if (errorCode > 0) caption += " (" + errorCode + ")";
+                new EmptyScreen();
+                new ErrorDialog(caption).OnClose += (d) => UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);
+                break;
+        }
     }
 
     private IEnumerator Start()
@@ -112,7 +146,15 @@ public class Core : MonoBehaviour
 
     private IEnumerator LoadUserAvatar(string url, Bind<Texture2D> texture)
     {
-        using (var loader = new WWW(url))
+        var headers = new Dictionary<string, string>
+        {
+            { "Access-Control-Allow-Credentials", "true"},
+            { "Access-Control-Allow-Headers", "Accept, X-Access-Token, X-Application-Name, X-Request-Sent-Time" },
+            { "Access-Control-Allow-Methods", "GET, POST, OPTIONS" },
+            { "Access-Control-Allow-Origin", "*"},
+        };
+
+        using (var loader = new WWW(url, null, headers))
         {
             while (!loader.isDone) yield return null;
 
