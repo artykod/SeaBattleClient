@@ -146,15 +146,7 @@ public class Core : MonoBehaviour
 
     private IEnumerator LoadUserAvatar(string url, Bind<Texture2D> texture)
     {
-        var headers = new Dictionary<string, string>
-        {
-            { "Access-Control-Allow-Credentials", "true"},
-            { "Access-Control-Allow-Headers", "Accept, X-Access-Token, X-Application-Name, X-Request-Sent-Time" },
-            { "Access-Control-Allow-Methods", "GET, POST, OPTIONS" },
-            { "Access-Control-Allow-Origin", "*"},
-        };
-
-        using (var loader = new WWW(url, null, headers))
+        using (var loader = new WWW(url))
         {
             while (!loader.isDone) yield return null;
 
