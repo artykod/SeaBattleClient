@@ -2,16 +2,11 @@
 
 public class PreloaderBehaviour : MonoBehaviour
 {
-    public static PreloaderBehaviour Instance { get; private set; }
+    public static bool Used { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        Used = true;
         new Preloader();
-    }
-
-    private void OnDestroy()
-    {
-        Instance = null;
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Preloader : EmptyScreenWithBackground
@@ -9,24 +10,35 @@ public class Preloader : EmptyScreenWithBackground
     public Preloader() : base("Preloader")
     {
         AddFirst(new BackgroundArt());
-        
-        Progress.Value = 0f;
+
+        StartCoroutine(ProgressAnimation());
         StartCoroutine(LoadMainScene());
+    }
+
+    private IEnumerator ProgressAnimation()
+    {
+        var time = 2f;
+        var value = 0f;
+        while (value < time)
+        {
+            var progress = value / time;
+            Progress.Value = progress;
+            LoadingStatus.Value = "Loading " + (progress * 100f) + "%";
+            value += Time.unscaledDeltaTime;
+            yield return null;
+        }
     }
 
     private IEnumerator LoadMainScene()
     {
-        var loading = SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
-        while (!loading.isDone)
-        {
-            Progress.Value = loading.progress;
-            LoadingStatus.Value = "Loading scene: " + (loading.progress * 100f) + "%";
-            yield return null;
-        }
-        Progress.Value = loading.progress;
-        Destroy();
-        SceneManager.UnloadScene(SceneManager.GetSceneByName("Preloader"));
+        yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
+        Core.Instance.StartCoroutine(StartGame());
+    }
 
+    private IEnumerator StartGame()
+    {
+        Destroy();
+        yield return SceneManager.UnloadSceneAsync("Preloader");
         Core.Instance.StartGame();
     }
 }

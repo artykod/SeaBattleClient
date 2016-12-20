@@ -1,6 +1,4 @@
-﻿//#define DEBUG_BATTLE
-
-using UnityEngine;
+﻿using UnityEngine;
 using Networking;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,13 +7,6 @@ public class Core : MonoBehaviour
 {
     private static Core _instance;
     public static Core Instance { get; private set; }
-
-#if UNITY_EDITOR
-    static Core()
-    {
-        GameImpl.DebugImpl.Instance = new DebugUnity();
-    }
-#endif
 
     public bool IsLoginDone { get; private set; }
     public ServerApi.Auth Auth { get; private set; }
@@ -56,8 +47,7 @@ public class Core : MonoBehaviour
     private void Awake()
     {
         if (Instance == this) return;
-
-        //SoundController.Music(SoundController.MUSIC);
+        
         SoundController.StartButtonsClickTracker();
 
         Instance = this;
@@ -71,17 +61,10 @@ public class Core : MonoBehaviour
         Auth = new ServerApi.Auth();
         Lobby = new ServerApi.Lobby();
 
-#if DEBUG_BATTLE
-        IsLoginDone = true;
-        LoadMatchAuth();
-
-        new Layout();
-#else
         Auth.OnLogin += OnLoginHandler;
         IsLoginDone = false;
-#endif
 
-        if (PreloaderBehaviour.Instance == null) StartGame();
+        if (!PreloaderBehaviour.Used) StartGame();
     }
 
     private void OnDestroy()
@@ -116,9 +99,7 @@ public class Core : MonoBehaviour
 
     private IEnumerator Start()
     {
-#if !DEBUG_BATTLE
         Auth.Login();
-#endif
         while (!IsLoginDone) yield return null;
     }
 
