@@ -24,7 +24,6 @@
             _menuContent.IsSoundEnabled.Value = SoundController.IsSoundEnabled;
             AddLast(_menuContent);
         }
-
         IsLoading = false;
     }
 

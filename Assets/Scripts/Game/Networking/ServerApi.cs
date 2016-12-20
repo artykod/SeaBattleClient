@@ -14,11 +14,16 @@ namespace Networking
             {
                 IsLoggedIn = false;
 
-                Connection.Instance.Login((chr) =>
-                {
-                    IsLoggedIn = true;
-                    OnLogin(chr);
-                });
+                if (GameConfig.Instance.Config.TempLogin)
+                    Connection.Instance.TempLogin(LoginHandler);
+                else
+                    Connection.Instance.Login(LoginHandler);
+            }
+
+            private void LoginHandler(Data.CharacterData chr)
+            {
+                IsLoggedIn = true;
+                OnLogin(chr);
             }
         }
 

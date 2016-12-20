@@ -5,11 +5,21 @@ public class TempLoginBehaviour : MonoBehaviour
 {
     private IEnumerator Start()
     {
-        GameImpl.DebugImpl.Instance = new DebugUnity();
-        if (GameConfig.Instance.Config.DebugMode) DebugConsole.Instance.Init();
+        Core.Init();
 
-        yield return null;
+        if (GameConfig.Instance.Config.TempLogin)
+        {
+            yield return null;
+            new TempLogin(LoadGame);
+        }
+        else
+        {
+            LoadGame();
+        }
+    }
 
-        new TempLogin();
+    private void LoadGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }

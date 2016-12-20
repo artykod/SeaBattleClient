@@ -1,7 +1,7 @@
 ﻿using System;
 using GameImpl;
 
-public class Debug
+public sealed class Debug
 {
     public static void Log(string format, params object[] args)
     {
@@ -23,7 +23,7 @@ public class Debug
 
 namespace GameImpl
 {
-    public class DebugImpl
+    public sealed class DebugImpl
     {
         public static IDebug Instance { get; set; }
     }

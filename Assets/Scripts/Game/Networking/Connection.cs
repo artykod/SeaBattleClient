@@ -1,7 +1,4 @@
-﻿#define USE_TEMP_AUTH_SERVER
-#define NET_DEBUG
-
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,16 +7,30 @@ using SimpleJSON;
 
 namespace Networking
 {
+    public class TempAuthResponse : BaseData
+    {
+        public string Token { get; private set; }
+        public override void FromJson(JSONNode node) { Token = node["token"]; }
+        protected override void FillJson(JSONNode node) { node["token"] = Token; }
+    }
+
     public class Connection : SingletonBehaviour<Connection, Connection>
     {
-        private static string GameServerAddress = "http://45.120.149.115:5000";
+        public static string TempAuthUserName;
+        public static string TempAuthUserPassword;
+        private static string GameServerAddress;
         private Dictionary<string, string> _requestHeaders = new Dictionary<string, string> { { "Content-Type", "application/json" } };
 
         public event Action<int> OnErrorReceived;
 
-        public void ForceDisconnect()
+        private void Awake()
         {
-            if (OnErrorReceived != null) OnErrorReceived(-1);
+            GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
+        }
+
+        public void ForceDisconnect(int code = -1)
+        {
+            if (OnErrorReceived != null) OnErrorReceived(code);
         }
 
         public void DisconnectAll()
@@ -28,79 +39,27 @@ namespace Networking
             StopAllCoroutines();
         }
 
-        private void Awake()
+        public void TempLogin(Action<CharacterData> onLogin)
         {
-            TempAuthServerAddress = GameConfig.Instance.Config.AuthServerUrl;
-            GameServerAddress = GameConfig.Instance.Config.GameServerUrl;
+            GetInternal<TempAuthResponse>(GameConfig.Instance.Config.AuthServerUrl, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin), null);
         }
 
-#if USE_TEMP_AUTH_SERVER
-        public const bool TempLoginEnabled = true;
-        private static string TempAuthServerAddress = "http://45.120.149.115:4000";
-        public static string TempAuthUserName = "u1@r.ru"; // u1@r.ru; u2@r.ru;
-        public static string TempAuthUserPassword = "111"; // 111; 222;
-
-        private class TempAuthResponse : BaseData
+        public void TempLogout()
         {
-            public string Token { get; private set; }
-
-            public override void FromJson(JSONNode node)
-            {
-                Token = node["token"];
-            }
-
-            protected override void FillJson(JSONNode node)
-            {
-                node["token"] = Token;
-            }
-        }
-
-        public void SetAuthCookies(string cookies)
-        {
-            _requestHeaders["TokenAuth"] = cookies;
-        }
-
-        public string GetAuthCookies()
-        {
-            return _requestHeaders["TokenAuth"];
+            _requestHeaders.Remove("TokenAuth");
         }
 
         public void Login(Action<CharacterData> onLogin)
         {
-            GetInternal<TempAuthResponse>(TempAuthServerAddress, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) =>
-            {
-                Debug.Log("token = " + resp.Token);
-                CheckLoginToken(resp.Token, onLogin);
-            }, null);
-        }
-
-        public void Logout()
-        {
-            _requestHeaders.Remove("TokenAuth");
-        }
-#else
-        public const bool TempLoginEnabled = false;
-
-        public void Login(Action<Character> onLogin)
-        {
-            throw new NotImplementedException();
+            ForceDisconnect(-2);
             //CheckLoginToken("<website token>", onLogin);
         }
-
-        public void Logout()
-        {
-        }
-#endif
 
         private void CheckLoginToken(string token, Action<CharacterData> onLogin)
         {
             GetInternal<CharacterData>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
-                var cookies = resp.Token;
-                _requestHeaders["TokenAuth"] = cookies;
-#if NET_DEBUG
-                Debug.Log("Auth cookies: " + cookies);
-#endif
+                _requestHeaders["TokenAuth"] = resp.Token;
                 onLogin(resp);
             }, null);
         }
@@ -122,9 +81,7 @@ namespace Networking
 
         private IEnumerator GetAsync<T>(string host, string request, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData
         {
-#if NET_DEBUG
             Debug.LogWarning("GET <<< {0}{1}", host, request);
-#endif
 
             using (var www = new WWW(host + request, null, _requestHeaders))
             {
@@ -132,9 +89,8 @@ namespace Networking
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-#if NET_DEBUG
                     Debug.LogWarning("GET >>> {0}", www.text);
-#endif
+
                     var dataJson = Activator.CreateInstance<T>();
                     dataJson.FromJson(JSON.Parse(www.text));
                     onResponse(dataJson, www.responseHeaders);
@@ -154,10 +110,9 @@ namespace Networking
         private IEnumerator PostAsync<R, T>(string host, string request, R data, Action<T, Dictionary<string, string>> onResponse, Action<int> onError) where T : BaseData where R : BaseData
         {
             var json = data.ToJson().ToString();
-#if NET_DEBUG
+
             Debug.LogWarning("POST <<< {0}{1}", host, request);
             Debug.Log("POST json = {0}", json);
-#endif
 
             using (var www = new WWW(host + request, System.Text.Encoding.UTF8.GetBytes(json), _requestHeaders))
             {
@@ -165,9 +120,8 @@ namespace Networking
 
                 if (string.IsNullOrEmpty(www.error))
                 {
-#if NET_DEBUG
                     Debug.LogWarning("POST >>> {0}", www.text);
-#endif
+
                     var dataJson = Activator.CreateInstance<T>();
                     dataJson.FromJson(JSON.Parse(www.text));
                     onResponse(dataJson, www.responseHeaders);
@@ -182,6 +136,7 @@ namespace Networking
         private void ThrowNetworkError(string error, Action<int> errorCallback)
         {
             Debug.LogError("Network error: " + error);
+
             var errorCode = ParseErrorCode(error);
             if (errorCallback != null) errorCallback(errorCode);
             if (OnErrorReceived != null) OnErrorReceived(errorCode);

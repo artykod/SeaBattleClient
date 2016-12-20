@@ -7,6 +7,7 @@ public class GameConfig : Singleton<GameConfig, GameConfig>
     public class ConfigJson : BaseData
     {
         public bool DebugMode { get; private set; }
+        public bool TempLogin { get; private set; }
         public string AuthServerUrl { get; private set; }
         public string GameServerUrl { get; private set; }
         public string AvatarsServerUrl { get; private set; }
@@ -18,12 +19,21 @@ public class GameConfig : Singleton<GameConfig, GameConfig>
         public string MyMailUrl { get; private set; }
         public string TwitterUrl { get; private set; }
 
+        public ConfigJson()
+        {
+            AuthServerUrl = "http://45.120.149.115:4000";
+            GameServerUrl = "http://45.120.149.115:5000";
+            TempLogin = true;
+            DebugMode = true;
+        }
+
         public override void FromJson(JSONNode node)
         {
             AuthServerUrl = node["AuthServerUrl"];
             GameServerUrl = node["GameServerUrl"];
             AvatarsServerUrl = node["AvatarsServerUrl"];
             DebugMode = node["DebugMode"].AsBool;
+            TempLogin = node["TempLogin"].AsBool;
             BuyGoldUrl = node["BuyGoldUrl"];
             BuySilverUrl = node["BuySilverUrl"];
             FacebookUrl = node["FacebookUrl"];
@@ -39,6 +49,7 @@ public class GameConfig : Singleton<GameConfig, GameConfig>
             node["GameServerUrl"] = GameServerUrl;
             node["AvatarsServerUrl"] = AvatarsServerUrl;
             node["DebugMode"].AsBool = DebugMode;
+            node["TempLogin"].AsBool = TempLogin;
             node["BuyGoldUrl"] = BuyGoldUrl;
             node["BuySilverUrl"] = BuySilverUrl;
             node["FacebookUrl"] = FacebookUrl;
@@ -53,28 +64,23 @@ public class GameConfig : Singleton<GameConfig, GameConfig>
 
     public GameConfig()
     {
+        Config = new ConfigJson();
+
         var config = Resources.Load<TextAsset>("Configs/GameConfig");
         if (config != null)
         {
             try
             {
-                Config = new ConfigJson();
                 Config.FromJson(JSON.Parse(config.text));
             }
             catch
             {
                 Debug.LogError("Cannot deserialize game config.");
-                Config = new ConfigJson();
             }
         }
         else
         {
             Debug.LogError("Game config not found in Configs/GameConfig.json");
-            Config = new ConfigJson();
         }
-    }
-
-    public void Load()
-    {
     }
 }

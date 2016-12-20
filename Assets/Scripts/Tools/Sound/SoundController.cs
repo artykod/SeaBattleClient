@@ -167,19 +167,14 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
 
     public static void StartButtonsClickTracker()
     {
-        if (buttonsClickTracker != null)
-        {
-            return;
-        }
+        if (buttonsClickTracker != null) return;
+
         Instance.StartCoroutine(buttonsClickTracker = TrackButtonsClick());
     }
 
     public static void StopButtonsClickTracker()
     {
-        if (buttonsClickTracker == null)
-        {
-            return;
-        }
+        if (buttonsClickTracker == null) return;
 
         Instance.StopCoroutine(buttonsClickTracker);
         buttonsClickTracker = null;

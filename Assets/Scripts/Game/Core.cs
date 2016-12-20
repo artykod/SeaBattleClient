@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class Core : MonoBehaviour
 {
+    private static bool _firstInitDone;
     private static Core _instance;
     public static Core Instance { get; private set; }
 
@@ -15,6 +16,25 @@ public class Core : MonoBehaviour
     public Data.CharacterData Character { get; private set; }
 
     private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
+
+    public static void Init()
+    {
+        if (_firstInitDone) return;
+        _firstInitDone = true;
+        
+        if (GameConfig.Instance.Config.DebugMode)
+        {
+            GameImpl.DebugImpl.Instance = new DebugUnity();
+            DebugConsole.Instance.Init();
+        }
+        else
+        {
+            GameImpl.DebugImpl.Instance = new DebugIgnore();
+        }
+
+        LanguageController.Instance.Initialize();
+        SoundController.StartButtonsClickTracker();
+    }
 
     public static void OpenUrl(string url)
     {
@@ -28,40 +48,24 @@ public class Core : MonoBehaviour
     public void MakeApiForMatch(string matchToken)
     {
         Match = new ServerApi.Match(matchToken);
-        SaveMatchAuth(matchToken);
-    }
-
-    private void SaveMatchAuth(string token)
-    {
-        PlayerPrefs.SetString("match_token", token);
-        PlayerPrefs.SetString("auth_cookie", Connection.Instance.GetAuthCookies());
-        PlayerPrefs.Save();
-    }
-
-    private void LoadMatchAuth()
-    {
-        Connection.Instance.SetAuthCookies(PlayerPrefs.GetString("auth_cookie"));
-        MakeApiForMatch(PlayerPrefs.GetString("match_token"));
     }
 
     private void Awake()
     {
-        if (Instance == this) return;
-        
-        SoundController.StartButtonsClickTracker();
-
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
 
+        Init();
+
         Connection.Instance.OnErrorReceived += OnConnectionError;
-
-        GameImpl.DebugImpl.Instance = new DebugUnity();
-        if (GameConfig.Instance.Config.DebugMode) DebugConsole.Instance.Init();
-        LanguageController.Instance.Initialize();
-
         Auth = new ServerApi.Auth();
+        Auth.OnLogin += OnLoginHandler;
         Lobby = new ServerApi.Lobby();
 
-        Auth.OnLogin += OnLoginHandler;
         IsLoginDone = false;
 
         if (!PreloaderBehaviour.Used) StartGame();
@@ -74,27 +78,34 @@ public class Core : MonoBehaviour
 
     private void OnConnectionError(int errorCode)
     {
+        var caption = string.Empty;
         switch (errorCode)
         {
             case 400:
             case 404:
             case 500:
+                caption = "ERROR " + errorCode;
+                break;
             case -1:
-                try
-                {
-                    Connection.Instance.DisconnectAll();
-                    EmptyScreenWithBackground.CloseAll();
-                }
-                catch (System.Exception e)
-                {
-                    Debug.Log("Exception on disconnect: " + e.Message);
-                }
-                var caption = "ERROR";
-                if (errorCode > 0) caption += " (" + errorCode + ")";
-                new EmptyScreen();
-                new ErrorDialog(caption).OnClose += (d) => UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);
+                caption = "CONNECTION ERROR";
+                break;
+            case -2:
+                caption = "Website login not implemented yet!";
                 break;
         }
+
+        try
+        {
+            Connection.Instance.DisconnectAll();
+            EmptyScreenWithBackground.CloseAll();
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log("Exception on disconnect: " + e.Message);
+        }
+
+        new EmptyScreen();
+        new ErrorDialog(caption).OnClose += d => UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     private IEnumerator Start()

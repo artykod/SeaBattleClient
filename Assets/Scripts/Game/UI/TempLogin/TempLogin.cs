@@ -3,9 +3,11 @@
     public Bind<string> UserName;
     public Bind<string> UserPassword;
 
-    public TempLogin() : base("TempLogin/TempLogin")
+    private System.Action _gameLoader;
+
+    public TempLogin(System.Action gameLoader) : base("TempLogin/TempLogin")
     {
-        LanguageController.Instance.Initialize();
+        _gameLoader = gameLoader;
         ApplyUser1();
     }
 
@@ -27,7 +29,8 @@
 
         Networking.Connection.TempAuthUserName = UserName.Value;
         Networking.Connection.TempAuthUserPassword = UserPassword.Value;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Preloader", UnityEngine.SceneManagement.LoadSceneMode.Single);
+
+        _gameLoader();
     }
 
     [BindCommand]

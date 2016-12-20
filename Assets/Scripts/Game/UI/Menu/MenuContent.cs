@@ -14,8 +14,8 @@
 
         UpdateData();
 
-        IsSoundEnabled.OnValueChanged += (val) => SoundController.IsSoundEnabled = val.Value;
-        IsTempLoginEnabled.Value = Networking.Connection.TempLoginEnabled;
+        IsSoundEnabled.OnValueChanged += val => SoundController.IsSoundEnabled = val.Value;
+        IsTempLoginEnabled.Value = GameConfig.Instance.Config.TempLogin;
     }
 
     public void UpdateData()
@@ -58,7 +58,7 @@
         new YesNoDialog("Logout?")
             .AddButton("Yes", () =>
             {
-                Networking.Connection.Instance.Logout();
+                Networking.Connection.Instance.TempLogout();
                 UnityEngine.SceneManagement.SceneManager.LoadScene("TempLogin", UnityEngine.SceneManagement.LoadSceneMode.Single);
             })
             .AddButton("No", null);
