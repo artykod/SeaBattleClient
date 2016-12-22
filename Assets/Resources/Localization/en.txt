@@ -5,6 +5,7 @@
     "common.exit":"Exit",
     "common.yes":"Yes",
     "common.no":"No",
+    "common.restart":"Restart",
 	
 	"menu.play":"Play",
 	"menu.dashboard":"Dashboard",

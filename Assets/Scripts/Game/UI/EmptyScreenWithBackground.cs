@@ -74,8 +74,12 @@ public abstract class EmptyScreenWithBackground : BindModel
 
     public static void CloseAll()
     {
-        var screens = _screens.ToArray();
-        for (int i = _screens.Count - 1; i >= 0; i--) screens[i].Destroy();
+        var screens = Object.FindObjectsOfType<BindContextMonoBehaviour>();
+        foreach (var i in screens)
+        {
+            var bind = i.GetContext() as BindModel;
+            if (bind != null) bind.Destroy();
+        }
         _screens.Clear();
     }
 }

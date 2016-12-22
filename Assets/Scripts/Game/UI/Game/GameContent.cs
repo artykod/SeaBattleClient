@@ -43,6 +43,7 @@ public class GameContent : BindModel
     public Bind<GameObject> OpponentCellsRoot;
     public Bind<GameObject> ChatContentRoot;
 
+    private Data.MatchData _lastMatchData;
     private Data.FieldCellsData _opponentField;
     private GameFieldInput _fieldInput;
     private FieldCellsContent _myFieldCells;
@@ -92,7 +93,7 @@ public class GameContent : BindModel
         if (IsMyTurn.Value && _opponentField != null && _opponentField.Cells[x][y] == 0)
         {
             Core.Instance.Match.Shoot(x, y);
-            SoundController.Sound(SoundController.SOUND_SHOOT);
+            SoundController.Sound(SoundController.SOUND_BUTTON_CLICK);
         }
         else
         {
@@ -190,6 +191,17 @@ public class GameContent : BindModel
         }
 
         TurnNumber.Value = match.TurnNumber.ToString();
+
+        if (_lastMatchData != null && match != null)
+        {
+            if (FieldDiffTool.CheckKillShip(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_SHOOT);
+            else if (FieldDiffTool.CheckHit(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_SHOOT);
+
+            if (FieldDiffTool.CheckKillShip(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_SHOOT);
+            else if (FieldDiffTool.CheckHit(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_SHOOT);
+        }
+
+        _lastMatchData = match;
     }
 
     public void UpdateChat(Data.ChatData chat)

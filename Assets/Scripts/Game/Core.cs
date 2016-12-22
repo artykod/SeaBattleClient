@@ -92,12 +92,17 @@ public class Core : MonoBehaviour
             case -2:
                 caption = "Website login not implemented yet!";
                 break;
+            case 403:
+            case 409:
+                // ignore wrong move (forbidden and confict) in game
+                if (Game.HasActiveGame) return;
+                break;
         }
 
         try
         {
-            Connection.Instance.DisconnectAll();
             EmptyScreenWithBackground.CloseAll();
+            Connection.Instance.DisconnectAll();
         }
         catch (System.Exception e)
         {

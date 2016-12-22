@@ -5,6 +5,7 @@
     "common.exit":"Выйти",
     "common.yes":"Да",
     "common.no":"Нет",
+    "common.restart":"Перезагрузить",
 	
 	"menu.play":"Играть",
 	"menu.dashboard":"Личный кабинет",

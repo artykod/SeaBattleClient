@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Game : EmptyScreenWithBackground
 {
+    public static bool HasActiveGame { get; private set; }
+
     private GameContent _gameContent;
     private bool _lastRequestSuccess;
     private bool _isBattleDone;
@@ -12,12 +14,14 @@ public class Game : EmptyScreenWithBackground
         Subscribe();
         StartCoroutine(CheckBattleState());
         IsLoading = true;
+        HasActiveGame = true;
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Unsubscribe();
+        HasActiveGame = false;
     }
 
     private void Subscribe()
