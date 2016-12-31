@@ -195,11 +195,11 @@ public class GameContent : BindModel
         if (_lastMatchData != null && match != null)
         {
             if (FieldDiffTool.CheckKillShip(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_BOOM);
-            else if (FieldDiffTool.CheckHit(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_SHOOT);
+            else if (FieldDiffTool.CheckHit(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_BOOM);
             else if (FieldDiffTool.CheckMiss(_lastMatchData.My, match.My)) SoundController.Sound(SoundController.SOUND_MISS);
 
             if (FieldDiffTool.CheckKillShip(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_BOOM);
-            else if (FieldDiffTool.CheckHit(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_SHOOT);
+            else if (FieldDiffTool.CheckHit(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_BOOM);
             else if (FieldDiffTool.CheckMiss(_lastMatchData.Opponent, match.Opponent)) SoundController.Sound(SoundController.SOUND_MISS);
         }
 
