@@ -4,4 +4,11 @@
     {
         SoundController.Sound(SoundController.SOUND_LOSE);
     }
+
+    [BindCommand]
+    private void ShowOpponentField()
+    {
+        Exit();
+        new OpponentField();
+    }
 }

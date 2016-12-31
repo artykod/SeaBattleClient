@@ -69,4 +69,6 @@
     "field.chr.h":"H",
     "field.chr.i":"I",
     "field.chr.j":"J",
+
+    "oppfield.title":"Opponent field",
 }

@@ -342,20 +342,8 @@ namespace Data
         }
     }
 
-    public class OpponentFieldData : BaseData
+    public class OpponentFieldData : FieldCellsData
     {
-        public FieldCellsData Field { get; private set; }
-
-        public override void FromJson(JSONNode node)
-        {
-            Field = new FieldCellsData();
-            Field.FromJson(node["field"]);
-        }
-
-        protected override void FillJson(JSONNode node)
-        {
-            node["field"] = Field.ToJson();
-        }
     }
 
     public class FieldCellsData : BaseData

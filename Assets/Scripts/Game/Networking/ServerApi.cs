@@ -154,7 +154,7 @@ namespace Networking
 
             public void GetOpponentFieldAfterBattle()
             {
-                Connection.Post<Data.EmptyData, Data.OpponentFieldData>(MatchRequest("oppField"), new Data.EmptyData(), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
+                Connection.Get<Data.OpponentFieldData>(MatchRequest("oppField"), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
             }
 
             public void SendChatMessage(string message)

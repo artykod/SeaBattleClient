@@ -69,4 +69,6 @@
     "field.chr.h":"З",
     "field.chr.i":"И",
     "field.chr.j":"К",
+
+    "oppfield.title":"Поле оппонента",
 }
