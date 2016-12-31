@@ -5,7 +5,6 @@
     public SocialContext Social { get; private set; }
     public PlayerContext Player { get; private set; }
 
-    public Bind<bool> IsSoundEnabled { get; private set; }
     public Bind<bool> IsTempLoginEnabled { get; private set; }
 
     public MenuContent() : base("UI/Menu/MenuContent")
@@ -14,7 +13,6 @@
 
         UpdateData();
 
-        IsSoundEnabled.OnValueChanged += val => SoundController.IsSoundEnabled = val.Value;
         IsTempLoginEnabled.Value = GameConfig.Instance.Config.TempLogin;
     }
 

@@ -2,19 +2,25 @@
 {
     public Bind<int> Language;
     public Bind<float> Volume;
-    public Bind<bool> IsVolumeDisabled;
 
     public Settings() : base("Settings")
     {
         Language.Value = LanguageController.Instance.CurrentLanguage == global::Language.Russian ? 1 : 2;
-        IsVolumeDisabled.Value = !SoundController.IsSoundEnabled;
-        Volume.OnValueChanged += (val) =>
+        Volume.OnValueChanged += val =>
         {
-            SoundController.SoundVolume = val.Value;
-            SoundController.IsSoundEnabled = val.Value > 0.0001f;
-            IsVolumeDisabled.Value = !SoundController.IsSoundEnabled;
+            if (val.Value > 0.0001f)
+            {
+                SoundController.SoundVolume = val.Value;
+                SoundController.IsSoundEnabled = true;
+            }
+            else
+            {
+                SoundController.IsSoundEnabled = false;
+            }
+            IsSoundEnabled.Value = SoundController.IsSoundEnabled;
         };
         Volume.Value = SoundController.IsSoundEnabled ? SoundController.SoundVolume : 0f;
+        IsSoundEnabled.OnValueChanged += val => Volume.Value = SoundController.IsSoundEnabled ? SoundController.SoundVolume : 0f;
     }
 
     [BindCommand]

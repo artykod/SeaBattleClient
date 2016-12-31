@@ -10,6 +10,9 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
     private int _firstSiblingCounter;
     private HashSet<BindModel> _children;
 
+    // TODO move to game class
+    public Bind<bool> IsSoundEnabled { get; private set; }
+
     public GameObject Instance
     {
         get;
@@ -64,6 +67,10 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
         _children = new HashSet<BindModel>();
         Instance.SetActive(true);
         OnCreate();
+
+        // TODO move to game class
+        IsSoundEnabled.Value = SoundController.IsSoundEnabled;
+        IsSoundEnabled.OnValueChanged += val => SoundController.IsSoundEnabled = val.Value;
     }
 
     public void Destroy()
