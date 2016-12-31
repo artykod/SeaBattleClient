@@ -21,6 +21,8 @@ public class SoundController : SingletonBehaviour<SoundController, SoundControll
     public const string SOUND_LOSE = "lose";
     public const string SOUND_ERROR = "error";
     public const string SOUND_SHOOT = "shoot";
+    public const string SOUND_BOOM = "explosion";
+    public const string SOUND_MISS = "miss";
     public const string SOUND_BEEP = "beep";
 
     public const string MUSIC = "music";

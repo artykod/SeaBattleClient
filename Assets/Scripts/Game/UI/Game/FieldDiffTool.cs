@@ -35,4 +35,22 @@ public class FieldDiffTool
 
         return prevHitsCount != currHitsCount;
     }
+
+    public static bool CheckMiss(FieldStateData prev, FieldStateData curr)
+    {
+        if (!IsValidData(prev, curr)) return false;
+
+        var prevMissCount = 0;
+        var currMissCount = 0;
+
+        foreach (var r in prev.Field.Cells)
+            foreach (var c in r)
+                if (c == 2) prevMissCount++;
+
+        foreach (var r in curr.Field.Cells)
+            foreach (var c in r)
+                if (c == 2) currMissCount++;
+
+        return prevMissCount != currMissCount;
+    }
 }
