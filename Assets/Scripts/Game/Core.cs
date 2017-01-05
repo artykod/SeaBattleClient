@@ -15,7 +15,9 @@ public class Core : MonoBehaviour
     public ServerApi.Match Match { get; private set; }
     public Data.CharacterData Character { get; private set; }
 
+    private Texture2D _defaultAvatar;
     private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
+    private Dictionary<string, int> _brokenAvatarUrls = new Dictionary<string, int>();
 
     public static void Init()
     {
@@ -58,6 +60,8 @@ public class Core : MonoBehaviour
             return;
         }
         Instance = this;
+
+        _defaultAvatar = Resources.Load<Texture2D>("Textures/avatar");
 
         Init();
 
@@ -143,6 +147,19 @@ public class Core : MonoBehaviour
 
     private IEnumerator LoadUserAvatar(string url, Bind<Texture2D> texture)
     {
+        if (_brokenAvatarUrls.ContainsKey(url))
+        {
+            if (_brokenAvatarUrls[url] > 2)
+            {
+                texture.Value = _defaultAvatar;
+                yield break;
+            }
+        }
+        else
+        {
+            _brokenAvatarUrls[url] = 0;
+        }
+
         using (var loader = new WWW(url))
         {
             while (!loader.isDone) yield return null;
@@ -150,17 +167,15 @@ public class Core : MonoBehaviour
             if (string.IsNullOrEmpty(loader.error))
             {
                 var tex = loader.textureNonReadable;
-                if (_avatarsCache.ContainsKey(url))
-                {
-                    Destroy(_avatarsCache[url]);
-                }
+                if (_avatarsCache.ContainsKey(url)) Destroy(_avatarsCache[url]);
                 _avatarsCache[url] = tex;
                 texture.Value = tex;
             }
             else
             {
                 Debug.LogError("Error while loading avatar " + url + ": " + loader.error);
-                texture.Value = Resources.Load<Texture2D>("Textures/avatar");
+                texture.Value = _defaultAvatar;
+                _brokenAvatarUrls[url]++;
             }
         }
     }

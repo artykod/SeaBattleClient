@@ -342,10 +342,6 @@ namespace Data
         }
     }
 
-    public class OpponentFieldData : FieldCellsData
-    {
-    }
-
     public class FieldCellsData : BaseData
     {
         public List<List<int>> Cells { get; private set; }

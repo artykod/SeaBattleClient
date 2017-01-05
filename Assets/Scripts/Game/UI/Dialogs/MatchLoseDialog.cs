@@ -1,7 +1,10 @@
 ﻿public class MatchLoseDialog : MatchDialogBase
 {
-    public MatchLoseDialog() : base("MatchLoseDialog")
+    private Data.FieldCellsData _lastOpponentField;
+
+    public MatchLoseDialog(Data.FieldCellsData lastOpponentField) : base("MatchLoseDialog")
     {
+        _lastOpponentField = lastOpponentField;
         SoundController.Sound(SoundController.SOUND_LOSE);
     }
 
@@ -9,6 +12,6 @@
     private void ShowOpponentField()
     {
         Exit();
-        new OpponentField();
+        new OpponentField(_lastOpponentField);
     }
 }

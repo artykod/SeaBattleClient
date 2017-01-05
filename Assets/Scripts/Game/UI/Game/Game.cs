@@ -8,6 +8,7 @@ public class Game : EmptyScreenWithBackground
     private GameContent _gameContent;
     private bool _lastRequestSuccess;
     private bool _isBattleDone;
+    private int _lastTurnNumber;
 
     public Game() : base("Game/Game")
     {
@@ -58,6 +59,18 @@ public class Game : EmptyScreenWithBackground
 
     private void OnMatchReceived(Data.MatchData match)
     {
+        if (_isBattleDone) return;
+
+        if (match.TurnNumber < _lastTurnNumber)
+        {
+            Debug.LogWarning("Malformed matchData with turn " + match.TurnNumber + ". Last received turn number = " + _lastTurnNumber);
+            return;
+        }
+        else
+        {
+            _lastTurnNumber = match.TurnNumber;
+        }
+
         if (_gameContent == null)
         {
             _gameContent = new GameContent();
@@ -83,17 +96,25 @@ public class Game : EmptyScreenWithBackground
         {
             case 4:
                 Unsubscribe();
-                new MatchLoseDialog().OnClose += (dialog) => ExitFromBattle();
                 _isBattleDone = true;
+                StartCoroutine(DelayAfterGameEnd(1f, () => new MatchLoseDialog(match.Opponent.Field).OnClose += dialog => ExitFromBattle()));
                 break;
             case 5:
                 Unsubscribe();
-                new MatchWinDialog((Data.CurrencyType)match.Bet.Type, match.Bet.Value).OnClose += (dialog) => ExitFromBattle();
                 _isBattleDone = true;
+                StartCoroutine(DelayAfterGameEnd(1f, () => new MatchWinDialog((Data.CurrencyType)match.Bet.Type, match.Bet.Value).OnClose += dialog => ExitFromBattle()));
                 break;
         }
 
         if (_isBattleDone && _gameContent != null) _gameContent.BlockUI();
+    }
+
+    private IEnumerator DelayAfterGameEnd(float delaySeconds, System.Action gameResultCallback)
+    {
+        IsLoading = true;
+        yield return new WaitForSeconds(delaySeconds);
+        gameResultCallback();
+        IsLoading = false;
     }
 
     private void ExitFromBattle()

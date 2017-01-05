@@ -59,7 +59,7 @@ namespace Networking
         {
             public event Action<Data.MatchData> OnMatchReceived = delegate { };
             public event Action<Data.ShootResultType> OnShootResult = delegate { };
-            public event Action<Data.OpponentFieldData> OnOpponentFieldReceived = delegate { };
+            public event Action<Data.FieldCellsData> OnOpponentFieldReceived = delegate { };
             public event Action OnMatchNotFound = delegate { };
             public event Action OnFailSendChat = delegate { };
             public event Action<Data.ChatData> OnChatReceived = delegate { };
@@ -154,7 +154,7 @@ namespace Networking
 
             public void GetOpponentFieldAfterBattle()
             {
-                Connection.Get<Data.OpponentFieldData>(MatchRequest("oppField"), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
+                Connection.Get<Data.FieldCellsData>(MatchRequest("oppField"), resp => OnOpponentFieldReceived(resp), MatchRequestErrorHandler);
             }
 
             public void SendChatMessage(string message)
