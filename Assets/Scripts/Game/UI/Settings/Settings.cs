@@ -40,6 +40,7 @@
     [BindCommand]
     private void Back()
     {
+        Core.Instance.SaveSettings();
         Destroy();
     }
 }

@@ -70,7 +70,11 @@ public abstract class BindModel : BindContext, BindContextMonoBehaviour.IUnityLi
 
         // TODO move to game class
         IsSoundEnabled.Value = SoundController.IsSoundEnabled;
-        IsSoundEnabled.OnValueChanged += val => SoundController.IsSoundEnabled = val.Value;
+        IsSoundEnabled.OnValueChanged += val =>
+        {
+            SoundController.IsSoundEnabled = val.Value;
+            Core.Instance.SaveSettings();
+        };
     }
 
     public void Destroy()

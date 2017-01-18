@@ -50,6 +50,41 @@ namespace Data
         protected override void FillJson(JSONNode node) { }
     }
 
+    public class SettingsData : BaseData
+    {
+        public enum Languages
+        {
+            Russian = 0,
+            English,
+        }
+
+        public Languages Language { get; private set; }
+        public int Volume { get; private set; }
+        public bool IsSoundEnabled { get; private set; }
+
+        public SettingsData() { }
+        public SettingsData(Languages language, int volume, bool soundEnabled)
+        {
+            Language = language;
+            Volume = volume;
+            IsSoundEnabled = soundEnabled;
+        }
+
+        public override void FromJson(JSONNode node)
+        {
+            Language = (Languages)node["languageId"].AsInt;
+            Volume = node["soundLvl"].AsInt;
+            IsSoundEnabled = node["soundOn"].AsInt != 0;
+        }
+
+        protected override void FillJson(JSONNode node)
+        {
+            node["languageId"].AsInt = (int)Language;
+            node["soundLvl"].AsInt = Volume;
+            node["soundOn"].AsInt = IsSoundEnabled ? 1 : 0;
+        }
+    }
+
     public class CharacterData : BaseData
     {
         public int Id { get; private set; }
@@ -58,6 +93,7 @@ namespace Data
         public int Silver { get; private set; }
         public int Gold { get; private set; }
         public string Token { get; private set; }
+        public SettingsData Settings { get; private set; }
 
         public override void FromJson(JSONNode node)
         {
@@ -67,6 +103,7 @@ namespace Data
             Silver = node["silver"].AsInt;
             Gold = node["gold"].AsInt;
             Token = node["token"];
+            (Settings = new SettingsData()).FromJson(node["settings"]);
         }
 
         protected override void FillJson(JSONNode node)
@@ -76,6 +113,7 @@ namespace Data
             node["gameId"].AsInt = GameId;
             node["silver"].AsInt = Silver;
             node["gold"].AsInt = Gold;
+            node["settings"] = Settings.ToJson();
         }
     }
 

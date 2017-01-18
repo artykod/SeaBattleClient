@@ -18,6 +18,7 @@ public class Core : MonoBehaviour
     private Texture2D _defaultAvatar;
     private Dictionary<string, Texture2D> _avatarsCache = new Dictionary<string, Texture2D>();
     private Dictionary<string, int> _brokenAvatarUrls = new Dictionary<string, int>();
+    private float _lastSettingsSaveTime;
 
     public static void Init()
     {
@@ -68,6 +69,7 @@ public class Core : MonoBehaviour
         Connection.Instance.OnErrorReceived += OnConnectionError;
         Auth = new ServerApi.Auth();
         Auth.OnLogin += OnLoginHandler;
+        Auth.OnSettingsSaveResult += OnSaveSettingsResult;
         Lobby = new ServerApi.Lobby();
 
         IsLoginDone = false;
@@ -127,6 +129,42 @@ public class Core : MonoBehaviour
     {
         IsLoginDone = true;
         Character = character;
+
+        switch (character.Settings.Language)
+        {
+            case Data.SettingsData.Languages.Russian:
+                LanguageController.Instance.CurrentLanguage = Language.Russian;
+                break;
+            default:
+                LanguageController.Instance.CurrentLanguage = Language.English;
+                break;
+        }
+        SoundController.SoundVolume = character.Settings.Volume * 0.01f;
+        SoundController.IsSoundEnabled = character.Settings.IsSoundEnabled;
+    }
+
+    private void OnSaveSettingsResult(int respCode)
+    {
+        Debug.Log("Settings save result: " + respCode);
+        if (respCode != 200)
+        {
+            var waitTime = 2f;
+            Debug.LogWarning("Try save settings again after " + waitTime);
+            StartCoroutine(WaitAndInvoke(waitTime, SaveSettings));
+        }
+    }
+
+    private IEnumerator WaitAndInvoke(float time, System.Action action)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        if (action != null) action();
+    }
+
+    public void SaveSettings()
+    {
+        if (Time.unscaledTime - _lastSettingsSaveTime < 1f) return;
+        _lastSettingsSaveTime = Time.unscaledTime;
+        Core.Instance.Auth.SaveSettings(LanguageController.Instance.CurrentLanguage, (int)(SoundController.SoundVolume * 100f), SoundController.IsSoundEnabled);
     }
 
     public void StartGame()

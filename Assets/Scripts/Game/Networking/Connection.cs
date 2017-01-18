@@ -39,7 +39,7 @@ namespace Networking
             StopAllCoroutines();
         }
 
-        public void TempLogin(Action<CharacterData> onLogin)
+        public void TempLogin(Action<CharacterData, string> onLogin)
         {
             GetInternal<TempAuthResponse>(GameConfig.Instance.Config.AuthServerUrl, string.Format("/users/login?email={0}&psw={1}", TempAuthUserName, TempAuthUserPassword), (resp, resp_h) => CheckLoginToken(resp.Token, onLogin), null);
         }
@@ -49,18 +49,18 @@ namespace Networking
             _requestHeaders.Remove("TokenAuth");
         }
 
-        public void Login(Action<CharacterData> onLogin)
+        public void Login(Action<CharacterData, string> onLogin)
         {
             ForceDisconnect(-2);
             //CheckLoginToken("<website token>", onLogin);
         }
 
-        private void CheckLoginToken(string token, Action<CharacterData> onLogin)
+        private void CheckLoginToken(string token, Action<CharacterData, string> onLogin)
         {
             GetInternal<CharacterData>(GameServerAddress, "/checkToken/" + token, (resp, resp_h) =>
             {
                 _requestHeaders["TokenAuth"] = resp.Token;
-                onLogin(resp);
+                onLogin(resp, resp.Token);
             }, null);
         }
 

@@ -7,8 +7,10 @@ namespace Networking
         public class Auth
         {
             public event Action<Data.CharacterData> OnLogin = delegate { };
+            public event Action<int> OnSettingsSaveResult = delegate { };
 
             public bool IsLoggedIn { get; private set; }
+            public string Token { get; private set; }
 
             public void Login()
             {
@@ -20,9 +22,22 @@ namespace Networking
                     Connection.Instance.Login(LoginHandler);
             }
 
-            private void LoginHandler(Data.CharacterData chr)
+            public void SaveSettings(Language language, int volume, bool isSoundEnabled)
+            {
+                var lang = Data.SettingsData.Languages.English;
+                switch (language)
+                {
+                    case Language.Russian:
+                        lang = Data.SettingsData.Languages.Russian;
+                        break;
+                }
+                Connection.Post<Data.SettingsData, Data.EmptyData>("/settings/" + Token, new Data.SettingsData(lang, volume, isSoundEnabled), resp => OnSettingsSaveResult(200), err => OnSettingsSaveResult(err));
+            }
+
+            private void LoginHandler(Data.CharacterData chr, string token)
             {
                 IsLoggedIn = true;
+                Token = token;
                 OnLogin(chr);
             }
         }
